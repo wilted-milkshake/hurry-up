@@ -1,0 +1,13 @@
+{
+  "name": "hurryup",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "startreact": "node node_modules/react-native/local-cli/cli.js start",
+    "startserver": "node server/server.js"
+  },
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-native": "^0.23.0"
+  }
+}
