@@ -3,12 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "startreact": "node node_modules/react-native/local-cli/cli.js start",
-    "startserver": "node server/server.js"
+    "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "body-parser": "^1.15.0",
+    "bookshelf": "^0.9.4",
+    "express": "^4.13.4",
     "knex": "^0.10.0",
+    "path": "^0.12.7",
     "react": "^0.14.8",
-    "react-native": "^0.23.0"
+    "react-native": "^0.23.0",
+    "react-native-form": "^2.0.5",
+    "sqlite3": "^3.1.3"
   }
 }
