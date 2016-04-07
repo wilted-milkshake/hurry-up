@@ -7,6 +7,7 @@
     "startserver": "node server/server.js"
   },
   "dependencies": {
+    "knex": "^0.10.0",
     "react": "^0.14.8",
     "react-native": "^0.23.0"
   }
