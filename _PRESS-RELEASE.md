@@ -5,7 +5,7 @@ Hurry Up
 Name the product in a way the reader (i.e. your target customers) will understand.
 
 ##Summary##
-Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+This product is for people who need a reminder of when they are supposed to leave to make an appointment on time. 
 
 ##Problem##
 Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
