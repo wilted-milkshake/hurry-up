@@ -8,23 +8,83 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput,
+  PickerIOS
 } from 'react-native';
+
+import Form from 'react-native-form';
+
 
 class hurryup extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Hurry Up!
         </Text>
+
         <Text style={styles.instructions}>
-          To get started, edit index.ios.js
+          Your Event:
         </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventName"/>
+        </View>
+
         <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
+          Event Location:
         </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventLocation"/>
+        </View>
+
+        <Text style={styles.instructions}>
+          Event Time:
+        </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventTime"/>
+        </View>
+
+        <Text style={styles.instructions}>
+          am/pm:
+        </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventTime"/>
+        </View>
+
+        <Text style={styles.instructions}>
+          How Early Do You Want To Get There:
+        </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventTime"/>
+        </View>
+
+        <Text style={styles.instructions}>
+          How Are You Getting There:
+        </Text>
+        <View>
+          <TextInput
+            style={styles.eventName}
+            type='TextInput'
+            name="eventTime"/>
+        </View>
+
+
       </View>
     );
   }
@@ -46,6 +106,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+    eventName: {
+      backgroundColor: 'white',
+      color: 'black',
+      height: 40,
+      borderColor: 'black',
+      borderWidth: 1,
+      width: 200
   },
 });
 
