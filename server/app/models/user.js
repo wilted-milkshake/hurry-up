@@ -4,14 +4,8 @@ var Event = require('./event.js');
 var User = db.Model.extend({
   tableName: 'users',
   events: function() {
-    return this.belongsToMany(Event);
+    return this.hasMany(Event);
   }
 });
-
-// var newUser = new User({
-//   username: 'cat',
-//   password: 'kitty'
-// });
-// newUser.save();
 
 module.exports = User;

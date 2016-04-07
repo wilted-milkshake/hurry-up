@@ -3,8 +3,8 @@ var User = require('./user.js');
 
 var Event = db.Model.extend({
   tableName: 'events',
-  users: function() {
-    return this.belongsToMany(User);
+  user: function() {
+    return this.belongsTo(User);
   }
 });
 

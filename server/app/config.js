@@ -29,17 +29,7 @@ db.knex.schema.hasTable('events').then(function(exists) {
       event.string('eventLocation', 20);
       event.integer('arrivalMargin', 3);
       event.string('transportMode', 3);
-    }).then(function(table) {
-      console.log('Created Event Table', table);
-    });
-  }
-});
-
-db.knex.schema.hasTable('users_events').then(function(exists) {
-  if (!exists) {
-    db.knex.schema.createTable('users_events', function(table) {
-      table.integer('user_id').references('users.id');
-      table.integer('event_id').references('events.id');
+      event.integer('userId');
     }).then(function(table) {
       console.log('Created Event Table', table);
     });
