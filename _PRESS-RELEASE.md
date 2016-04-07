@@ -11,7 +11,7 @@ This product is for people who need a reminder of when they are supposed to leav
 Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
 
 ##Solution##
-Describe the problem your product solves.
+Never be late again.
 
 ##Quote from You##
 Describe how your product elegantly solves the problem.
