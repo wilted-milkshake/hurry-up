@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api/event', function(req, res) {
+app.post('/api/events', function(req, res) {
   //1. parse out req.body data
 
   var eventName = req.body.eventName;
@@ -31,7 +31,7 @@ app.post('/api/event', function(req, res) {
     .then(function(user) {
       var newEvent = new Event({
         eventName: eventName,
-        eventTime: eventTime,
+        eventTime: eventTime, // ADD: origin
         destination: destination,
         earlyArrival: earlyArrival,
         mode: mode,
@@ -39,6 +39,8 @@ app.post('/api/event', function(req, res) {
       });
 
       newEvent.save().then(function(createdEvent) {
+        worker(createdEvent);
+
         res.status(201).send(createdEvent);
       }).catch(function(err) {
         res.send(500, err);

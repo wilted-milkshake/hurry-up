@@ -26,9 +26,10 @@ db.knex.schema.hasTable('events').then(function(exists) {
       event.increments('id').primary();
       event.string('eventName', 20);
       event.string('eventTime', 20);
-      event.string('destination', 20);
-      event.integer('earlyArrival', 3);
-      event.string('mode', 3);
+      event.string('origin', 100);
+      event.string('destination', 100);
+      event.integer('earlyArrival', 10);
+      event.string('mode', 30);
       event.integer('userId');
     }).then(function(table) {
       console.log('Created Event Table', table);
