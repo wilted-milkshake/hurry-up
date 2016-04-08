@@ -14,11 +14,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/api/event', function(req, res) {
   //1. parse out req.body data
 
-  var eventName = req.query.eventName;
-  var eventTime = req.query.eventTime;
-  var destination = req.query.destination;
-  var earlyArrival = parseInt(req.query.earlyArrival);
-  var mode = req.query.mode;
+  var eventName = req.body.eventName;
+  var eventTime = req.body.eventTime;
+  var destination = req.body.destination;
+  var earlyArrival = parseInt(req.body.earlyArrival);
+  var mode = req.body.mode;
   // TODO: determine username on client side ? or sessions?
   var username = 'Liam';
 
