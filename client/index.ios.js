@@ -10,85 +10,109 @@ import React, {
   Text,
   View,
   TextInput,
-  PickerIOS
+  TouchableHighlight
 } from 'react-native';
 
 import Form from 'react-native-form';
-
+console.log("HELLO");
 
 class hurryup extends Component {
+
+  buttonClicked() {
+    console.log('Submit button pressed');
+    var value = this.refs.form.getValues();
+    console.log(value);
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Hurry Up!
-        </Text>
+        <View style={styles.container}>
+        <Form ref='form'>
+          <Text style={styles.welcome}>
+            Hurry Up!
+          </Text>
 
-        <Text style={styles.instructions}>
-          Your Event:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventName"/>
-        </View>
+          <Text style={styles.instructions}>
+            Your Event:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="eventName"
+              placeholder='Cool Party'/>
+          </View>
 
-        <Text style={styles.instructions}>
-          Event Location:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventLocation"/>
-        </View>
+          <Text style={styles.instructions}>
+            Event Location:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="eventLocation"
+              placeholder='SomePlace'/>
+          </View>
 
-        <Text style={styles.instructions}>
-          Event Time:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventTime"/>
-        </View>
+          <Text style={styles.instructions}>
+            Event Time:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="eventTime"
+              placeholder='6:00'/>
+          </View>
 
-        <Text style={styles.instructions}>
-          am/pm:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventTime"/>
-        </View>
+          <Text style={styles.instructions}>
+            am/pm:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="ampm"
+              placeholder='am or pm'/>
+          </View>
 
-        <Text style={styles.instructions}>
-          How Early Do You Want To Get There:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventTime"/>
-        </View>
+          <Text style={styles.instructions}>
+            How Early Do You Want To Get There:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="earlyArrive"
+              placeholder='5 min'/>
+          </View>
 
-        <Text style={styles.instructions}>
-          How Are You Getting There:
-        </Text>
-        <View>
-          <TextInput
-            style={styles.eventName}
-            type='TextInput'
-            name="eventTime"/>
-        </View>
+          <Text style={styles.instructions}>
+            How Are You Getting There:
+          </Text>
+          <View>
+            <TextInput
+              style={styles.eventName}
+              type='TextInput'
+              name="gettingThere"
+              placeholder='driving, transit, walking' />
+          </View>
+        </Form>
+
+        <TouchableHighlight
+          style={styles.button}
+          onPress={this.buttonClicked.bind(this)}>
+          <View>
+            <Text style={styles.buttonText}>Submit!</Text>
+          </View>
+        </TouchableHighlight>
 
 
       </View>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
