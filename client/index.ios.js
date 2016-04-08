@@ -15,7 +15,9 @@ import React, {
 
 import Form from 'react-native-form';
 
-require('./helpers/request-helpers.js');
+import Helpers from './helpers/request-helpers';
+
+//this also works... require('./helpers/request-helpers.js');
 
 class hurryup extends Component {
 
