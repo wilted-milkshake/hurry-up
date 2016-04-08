@@ -5,7 +5,7 @@ window.React = React;
 //importing extra folers https://github.com/facebook/react-native/issues/740
 
 var sendEvent = (values) => {
-  fetch('http://localhost:8080/api/event' , {
+  fetch('http://localhost:8080/api/events' , {
     method: 'POST' ,
     headers: {
       'Accept': 'application/json',
