@@ -1,10 +1,4 @@
-var React = require('react-native'),
-    window = global || window;
-
-window.React = React;
-//importing extra folers https://github.com/facebook/react-native/issues/740
-
-var sendEvent = (values) => {
+const sendEvent = (values) => {
   fetch('http://localhost:8080/api/events' , {
     method: 'POST' ,
     headers: {
@@ -19,5 +13,4 @@ var sendEvent = (values) => {
   });
 };
 
-
-window.sendEvent = sendEvent;
+export default sendEvent;

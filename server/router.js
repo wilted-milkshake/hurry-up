@@ -4,16 +4,12 @@ var User = require('./app/models/user.js');
 var Events = require('./app/collections/events.js');
 var Event = require('./app/models/event.js');
 var bodyParser = require('body-parser');
-// var utility = require('./herlp.js');
-
-// app.get()
+var worker = require('./worker.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/events', function(req, res) {
-  //1. parse out req.body data
-
   var eventName = req.body.eventName;
   var eventTime = req.body.eventTime;
   var destination = req.body.destination;
@@ -21,10 +17,6 @@ app.post('/api/events', function(req, res) {
   var mode = req.body.mode;
   // TODO: determine username on client side ? or sessions?
   var username = 'Liam';
-
-  //2. write data to db
-  // TODO: double check fetch-where query
-
 
   new User({ username: username })
     .fetch()
@@ -49,5 +41,9 @@ app.post('/api/events', function(req, res) {
       res.send(500, err);
     });
 });
+
+// app.put('/api/events/:id', function(req, res) {
+
+// });
 
 module.exports = app;
