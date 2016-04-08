@@ -14,14 +14,15 @@ import React, {
 } from 'react-native';
 
 import Form from 'react-native-form';
-console.log("HELLO");
+
+require('./helpers/request-helpers.js');
 
 class hurryup extends Component {
 
   buttonClicked() {
-    console.log('Submit button pressed');
-    var value = this.refs.form.getValues();
-    console.log(value);
+    var values = this.refs.form.getValues();
+    console.log(values);
+    sendEvent(values);
   }
 
   render() {
@@ -50,7 +51,7 @@ class hurryup extends Component {
             <TextInput
               style={styles.eventName}
               type='TextInput'
-              name="eventLocation"
+              name="destination"
               placeholder='SomePlace'/>
           </View>
 
@@ -62,18 +63,7 @@ class hurryup extends Component {
               style={styles.eventName}
               type='TextInput'
               name="eventTime"
-              placeholder='6:00'/>
-          </View>
-
-          <Text style={styles.instructions}>
-            am/pm:
-          </Text>
-          <View>
-            <TextInput
-              style={styles.eventName}
-              type='TextInput'
-              name="ampm"
-              placeholder='am or pm'/>
+              placeholder='1800'/>
           </View>
 
           <Text style={styles.instructions}>
@@ -83,7 +73,7 @@ class hurryup extends Component {
             <TextInput
               style={styles.eventName}
               type='TextInput'
-              name="earlyArrive"
+              name="earlyArrival"
               placeholder='5 min'/>
           </View>
 
@@ -94,7 +84,7 @@ class hurryup extends Component {
             <TextInput
               style={styles.eventName}
               type='TextInput'
-              name="gettingThere"
+              name="mode"
               placeholder='driving, transit, walking' />
           </View>
         </Form>
