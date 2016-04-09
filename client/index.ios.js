@@ -17,12 +17,37 @@ import Form from 'react-native-form';
 
 import sendEvent from './helpers/request-helpers';
 
+//import Location from 'react-native-location';
+
+
 class hurryup extends Component {
+
+  constructor(props) {
+    super(props);
+  
+
+  this.watchID = null;
+
+  this.state = {
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
+    };
+
+  }
+//change this to getInitialLocation
+ componentDidMount() {
+  this.watchID = navigator.geolocation.watchPosition((position) => {
+    var lastPosition = position;
+    this.setState({lastPosition});
+  });
+ }
 
   buttonClicked() {
     var values = this.refs.form.getValues();
-    console.log(values);
+    values.origin = this.state.lastPosition.coords; //change this to initionLocation
+    console.log('Log Origin: ', values);
     sendEvent(values);
+    //start watchPosition here
   }
 
   render() {
