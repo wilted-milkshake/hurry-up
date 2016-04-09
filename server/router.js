@@ -14,6 +14,8 @@ app.post('/api/events', function(req, res) {
   var eventTime = req.body.eventTime;
   var destination = req.body.destination;
   var earlyArrival = parseInt(req.body.earlyArrival);
+  var origin = req.body.origin;
+  console.log('New origin test', origin);
   var mode = req.body.mode;
   // TODO: determine username on client side ? or sessions?
   var username = 'Liam';
@@ -27,11 +29,12 @@ app.post('/api/events', function(req, res) {
         destination: destination,
         earlyArrival: earlyArrival,
         mode: mode,
+        origin: origin,
         userId: user.get('id')
       });
 
       newEvent.save().then(function(createdEvent) {
-        worker(createdEvent);
+        //worker(createdEvent);
 
         res.status(201).send(createdEvent);
       }).catch(function(err) {

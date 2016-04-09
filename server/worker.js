@@ -16,7 +16,7 @@ var worker = function(event, responseToClient) {
     } else {
       var parsedBody = JSON.parse(body);
       var duration = parsedBody.routes[0].legs[0].duration.value;
-
+//CHANGE: Want this to be handled by set timouts rather then ifs and elses
       if (duration > timeLeft) {
         // TODO: send Twilio 'leave you're late'
         console.log('WORKER SAYS: Youre gonna be late: ', duration);
