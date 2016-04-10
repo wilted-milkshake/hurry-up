@@ -49,10 +49,10 @@ gulp.task('serve', function () {
 
 gulp.task('serveprod', function() {
   connect.server({
-    root: ['.', '.tmp'],
+    root: ['/Users/datascience/Documents/Project/hurry-up/'],
     port: process.env.PORT || 8080, 
     livereload: false
   });
 });
 
-gulp.task('default', ['start' , 'serveprod']);
+gulp.task('default', ['start' , 'serveprod' ]);

@@ -9,6 +9,16 @@ var worker = require('./worker.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/api/events', function(req, res) {
+  Event.fetchAll({})
+    .then(function(events) {
+      res.status(200).json(events);
+    })
+    .catch(function(err) {
+      console.error(err);
+    });
+});
+
 app.post('/api/events', function(req, res) {
   var eventName = req.body.eventName;
   var eventTime = req.body.eventTime;
