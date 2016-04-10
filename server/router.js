@@ -32,8 +32,6 @@ app.post('/api/events', function(req, res) {
       });
 
       newEvent.save().then(function(createdEvent) {
-        // TODO: refactor worker
-        // worker(createdEvent);
 
         res.status(201).send(createdEvent);
       }).catch(function(err) {
@@ -53,6 +51,16 @@ app.put('/api/users/:id', function(req, res) {
     .then(function(user) {
       user.set('origin', origin);
       user.save().then(function(updatedUser) {
+        // TODO: refactor worker
+
+        Event.fetchAll({ where: { userId: userId }})
+          .then(function(events) {
+            events.forEach(function(event) {
+              console.log('in put event fetchall: ', event.attributes);
+              worker(event.attributes);
+            });
+          });
+
         res.status(201).send(updatedUser);
       });
     }).catch(function(error) {
