@@ -15,10 +15,9 @@ import React, {
 
 import Form from 'react-native-form';
 
-import sendEvent from './helpers/request-helpers';
+import {sendEvent, updateLocation} from './helpers/request-helpers';
 
 //import Location from 'react-native-location';
-
 
 class hurryup extends Component {
 
@@ -32,27 +31,34 @@ class hurryup extends Component {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
     };
-
   }
-//change this to getInitialLocation
- componentDidMount() {
-  this.watchID = navigator.geolocation.watchPosition((position) => {
-    var lastPosition = position;
-    this.setState({lastPosition});
-  });
- }
+  
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      var initialPosition = position;
+      this.setState({initialPosition});
+    },
+    (error) => alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+  }
 
   buttonClicked() {
-    var values = this.refs.form.getValues();
-    values.origin = this.state.lastPosition.coords; //change this to initionLocation
-    console.log('Log Origin: ', values);
-    sendEvent(values);
-    //start watchPosition here
+    var newEvent = this.refs.form.getValues();
+    var origin = this.state.initialPosition.coords; 
+    sendEvent(newEvent);
+    updateLocation(origin);
+
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lastPosition = position;
+      this.setState({lastPosition});
+    });
+
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
         <Form ref='form'>
           <Text style={styles.welcome}>
             Hurry Up!

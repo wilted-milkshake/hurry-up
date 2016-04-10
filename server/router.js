@@ -13,10 +13,9 @@ app.post('/api/events', function(req, res) {
   var eventName = req.body.eventName;
   var eventTime = req.body.eventTime;
   var destination = req.body.destination;
-  var earlyArrival = parseInt(req.body.earlyArrival);
-  var origin = req.body.origin;
-  console.log('New origin test', origin);
+  var earlyArrival = req.body.earlyArrival;
   var mode = req.body.mode;
+
   // TODO: determine username on client side ? or sessions?
   var username = 'Liam';
 
@@ -29,12 +28,12 @@ app.post('/api/events', function(req, res) {
         destination: destination,
         earlyArrival: earlyArrival,
         mode: mode,
-        origin: origin,
         userId: user.get('id')
       });
 
       newEvent.save().then(function(createdEvent) {
-        //worker(createdEvent);
+        // TODO: refactor worker
+        // worker(createdEvent);
 
         res.status(201).send(createdEvent);
       }).catch(function(err) {
@@ -45,8 +44,20 @@ app.post('/api/events', function(req, res) {
     });
 });
 
-// app.put('/api/events/:id', function(req, res) {
+app.put('/api/users/:id', function(req, res) {
+  var userId = req.params.id;
+  var origin = req.body.origin;
 
-// });
+  new User({ id: userId })
+    .fetch()
+    .then(function(user) {
+      user.set('origin', origin);
+      user.save().then(function(updatedUser) {
+        res.status(201).send(updatedUser);
+      });
+    }).catch(function(error) {
+      res.status(404).send('User not found');
+    });
+});
 
 module.exports = app;
