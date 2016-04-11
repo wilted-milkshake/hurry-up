@@ -51,10 +51,10 @@ class hurryup extends Component {
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = position;
       this.setState({lastPosition});
-      //updateLocation(this.state.lastPosition.coords);
+      updateLocation(this.state.lastPosition.coords);
     });
 
-     navigator.geolocation.clearWatch(this.watchID);
+    // navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {

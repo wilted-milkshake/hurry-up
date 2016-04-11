@@ -53,7 +53,7 @@ app.post('/api/events', function(req, res) {
     });
 });
 
-//PUT request for every new user location (Origin field in Users table)
+//PUT request for every new user location (PUTs to Origin field in Users table)
 app.put('/api/users/:id', function(req, res) {
   var userId = req.params.id;
   var origin = req.body.origin;
@@ -66,14 +66,21 @@ app.put('/api/users/:id', function(req, res) {
         //Fetch all user events
         Event.fetchAll({ where: { userId: userId }})
           .then(function(events) {
-            console.log("ALL EVENT", events.length);
-            //if no events clear watch here??
-            events.forEach(function(event) {
+            if (events.length !== 0) {
               //Call the GoogleApi worker for each event
-              worker(event.attributes, updatedUser.attributes.origin);
-            });
+              events.forEach(function(event) {
+                worker(event.attributes, updatedUser.attributes.origin);
+              });
+              updatedUser.clearWatch = false;
+              console.log(updatedUser);
+              res.status(201).send({clearWatch: false, updatedUser: updatedUser});
+            } else {
+              console.log("No event scheduled");
+              //some how send response to tell worker to clear the watch;
+              updatedUser.clearWatch = true;
+              res.status(201).send({clearWatch: true, updatedUser: updatedUser});
+            }
           });
-        res.status(201).send(updatedUser);
       });
     }).catch(function(error) {
       res.status(404).send('User not found');
