@@ -25,7 +25,15 @@ export const updateLocation = (origin) => {
     },
     body: JSON.stringify({ origin: origin }),
   })
-  .then((response) => console.log('PUT response: ', response))
+  .then((response) => {
+    var res = JSON.parse(response._bodyText);
+    if (res.clearWatch) {
+      navigator.geolocation.clearWatch(this.watchID);
+    } else {
+      console.log(res.clearWatch);
+    }
+    console.log('PUT response: HHHHHHH', response);
+  })
   .catch((error) => {
     console.warn('Unable to send phone location', error);
   });

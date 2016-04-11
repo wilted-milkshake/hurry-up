@@ -33,43 +33,27 @@ var worker = function(event, origin, responseToClient) {
     if (events[event.id]) {
       clearTimeout(events[event.id]);
     }
-    events[event.id] = setTimeout(function() { sendTwilio(event); }, timeoutDuration*1000);
+    events[event.id] = setTimeout(function() { sendTwilio(event, 5000); }, timeoutDuration*1000);  //send twilio second parameter ultimately will be ( duration + early arrival to delete when the event starts)
     // TODO: responseToClient.send(200, true)
   });
 };
 
-var sendTwilio = function(event) {
+var sendTwilio = function(event, timeoutTime) {
   console.log('Twilio text - leave now to get to ' + event.eventName + ' by ' + event.eventTime);
   //after event is sent, delete record from table
 
-  console.log("EVENT", event, event.id);
+  // Set another timeout after message sent to delete event from database after event starts
+  setTimeout(function() {
+    new Event({id: event.id})
+    .destroy()
+    .then(function(model) {
+      console.log('Should be destroyed', model);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }, timeoutTime);
 
-  new Event({id: event.id})
-  .destroy()
-  .then(function(model) {
-    console.log('Should be destroyed', model);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
-
-  //OTHERs maybe
-  // Event.forge({id: event.id})
-  // .fetch()
-  // .then(function (item) {
-  //   var relation = item.someRelation();
-  //   var tableName = relation.relatedData.targetTableName;
-  //   var foreignKey = relation.relatedData.key('foreignKey');
-
-  //   return Bookshelf.DB.knex('events')
-  //   .where(id, event.id)
-  //   .del()
-  //   .then(function (numRows) {
-  //     console.log(numRows + ' rows have been deleted');
-  //   }).catch(function (err) {
-  //     console.log(err);
-  //   });
-// });
 };
 
 module.exports = worker;
