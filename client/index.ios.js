@@ -23,7 +23,7 @@ class hurryup extends Component {
 
   constructor(props) {
     super(props);
-  
+
 
   this.watchID = null;
 
@@ -32,7 +32,7 @@ class hurryup extends Component {
       lastPosition: 'unknown',
     };
   }
-  
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       var initialPosition = position;
@@ -44,16 +44,17 @@ class hurryup extends Component {
 
   buttonClicked() {
     var newEvent = this.refs.form.getValues();
-    var origin = this.state.initialPosition.coords; 
+    var origin = this.state.initialPosition.coords;
     sendEvent(newEvent);
     updateLocation(origin);
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = position;
       this.setState({lastPosition});
+      updateLocation(this.state.lastPosition.coords);
     });
 
-    navigator.geolocation.clearWatch(this.watchID);
+    // navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {

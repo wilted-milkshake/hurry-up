@@ -67,7 +67,7 @@ app.put('/api/users/:id', function(req, res) {
           .then(function(events) {
             events.forEach(function(event) {
               console.log('in put event fetchall: ', event.attributes);
-              worker(event.attributes);
+              worker(event.attributes, updatedUser);
             });
           });
 
