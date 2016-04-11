@@ -35,3 +35,6 @@ npm-debug.log
 
 # Keys
 server/api_keys.js
+
+# Dist
+dist/
