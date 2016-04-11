@@ -1,12 +1,10 @@
-// Twilio Credentials
-var accountSid = 'ACdb8157df25c232242bf29813de83c0d9';
-var authToken = '8de5aef449d5bac36d44357500be1c33';
+var Keys = require('./api_keys.js');
 
 // Utility object for Twilio API interactions
 var Twilio = {
 
   //require the Twilio module and create a REST client
-  client: require('twilio')(accountSid, authToken),
+  client: require('twilio')(Keys.twilioAccountSid, Keys.twilioAuthToken),
 
   sendText: function(userPhoneNumber, eventObj) {
     this.client.sendMessage({
