@@ -19,6 +19,7 @@ app.get('/api/events', function(req, res) {
     });
 });
 
+//POST request for every new event
 app.post('/api/events', function(req, res) {
   var eventName = req.body.eventName;
   var eventTime = req.body.eventTime;
@@ -34,7 +35,7 @@ app.post('/api/events', function(req, res) {
     .then(function(user) {
       var newEvent = new Event({
         eventName: eventName,
-        eventTime: eventTime, // ADD: origin
+        eventTime: eventTime,
         destination: destination,
         earlyArrival: earlyArrival,
         mode: mode,
@@ -52,25 +53,26 @@ app.post('/api/events', function(req, res) {
     });
 });
 
+//PUT request for every new user location (Origin field in Users table)
 app.put('/api/users/:id', function(req, res) {
   var userId = req.params.id;
   var origin = req.body.origin;
-
+  //Set User Location
   new User({ id: userId })
     .fetch()
     .then(function(user) {
       user.set('origin', origin);
       user.save().then(function(updatedUser) {
-        // TODO: refactor worker
-
+        //Fetch all user events
         Event.fetchAll({ where: { userId: userId }})
           .then(function(events) {
+            console.log("ALL EVENT", events.length);
+            //if no events clear watch here??
             events.forEach(function(event) {
-              console.log('in put event fetchall: ', event.attributes);
-              worker(event.attributes, updatedUser);
+              //Call the GoogleApi worker for each event
+              worker(event.attributes, updatedUser.attributes.origin);
             });
           });
-
         res.status(201).send(updatedUser);
       });
     }).catch(function(error) {
