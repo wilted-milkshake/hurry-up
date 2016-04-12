@@ -1,6 +1,6 @@
 var request = require('request');
 var API_KEYS = require('./api_keys.js');
-var Event = require('./app/models/event.js');
+var TwilioSend = require('./twilio-api-calls.js');
 
 // note: in-memory storage ? write to db?
 var events = {};
@@ -10,7 +10,7 @@ var worker = function(event, origin, responseToClient) {
 
 
   // var arrivalTime = event.eventTime (convert to UTC sec) - event.earlyArrival (convert to UTC sec);
-  var arrivalTime = Date.now()/1000 + 600; //seconds
+  var arrivalTime = Date.now()/1000; //seconds
   var currentTime = Date.now()/1000; //seconds
 
   var originLat = origin.latitude; //37.773972
@@ -33,27 +33,11 @@ var worker = function(event, origin, responseToClient) {
     if (events[event.id]) {
       clearTimeout(events[event.id]);
     }
-    events[event.id] = setTimeout(function() { sendTwilio(event, 5000); }, timeoutDuration*1000);  //send twilio second parameter ultimately will be ( duration + early arrival to delete when the event starts)
-    // TODO: responseToClient.send(200, true)
+    //send twilio third parameter ultimately will be ( duration + early arrival to delete when the event starts, now just hardcoded to delete after 5 sec.)
+    events[event.id] = setTimeout(function() { TwilioSend('+19258726914', event, 5000); }, timeoutDuration*1000);
   });
 };
 
-var sendTwilio = function(event, timeoutTime) {
-  console.log('Twilio text - leave now to get to ' + event.eventName + ' by ' + event.eventTime);
-  //after event is sent, delete record from table
-
-  // Set another timeout after message sent to delete event from database after event starts
-  setTimeout(function() {
-    new Event({id: event.id})
-    .destroy()
-    .then(function(model) {
-      console.log('Should be destroyed', model);
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
-  }, timeoutTime);
-
-};
-
 module.exports = worker;
+
+
