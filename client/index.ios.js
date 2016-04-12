@@ -51,10 +51,23 @@ class hurryup extends Component {
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = position;
       this.setState({lastPosition});
-      updateLocation(this.state.lastPosition.coords);
-    });
 
-    // navigator.geolocation.clearWatch(this.watchID);
+      var initialPosition = this.state.initialPosition;
+      var initialLatitude = initialPosition.coords.latitude;
+      var initialLongitude = initialPosition.coords.longitude;
+      var lastLatitude = lastPosition.coords.latitude;
+      var lastLongitude = lastPosition.coords.longitude;
+
+      var distanceTraveled = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
+
+      if (distanceTraveled >= 0.004) { //TODO: set constant for 0.004
+        var that = this;
+        updateLocation(this.state.lastPosition.coords, that);
+        this.setState({ initialPosition: lastPosition });
+      } 
+    },
+    (error) => alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000});
   }
 
   render() {

@@ -13,7 +13,7 @@ export const sendEvent = (newEvent) => {
   });
 };
 
-export const updateLocation = (origin) => {
+export const updateLocation = (origin, that) => {
   // TODO: grab user id from login session(?)
   var userId = 1;
 
@@ -28,11 +28,11 @@ export const updateLocation = (origin) => {
   .then((response) => {
     var res = JSON.parse(response._bodyText);
     if (res.clearWatch) {
-      navigator.geolocation.clearWatch(this.watchID);
+      navigator.geolocation.clearWatch(that.watchID);
     } else {
       console.log(res.clearWatch);
     }
-    console.log('PUT response: HHHHHHH', response);
+    console.log('PUT response: ', response);
   })
   .catch((error) => {
     console.warn('Unable to send phone location', error);
