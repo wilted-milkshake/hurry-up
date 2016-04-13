@@ -1,3 +1,5 @@
+/* Use  path 104.236.147.132 instead of localhost in production mode*/
+
 export const sendEvent = (newEvent) => {
   fetch('http://localhost:8080/api/events' , {
     method: 'POST' ,
