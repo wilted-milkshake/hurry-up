@@ -6,53 +6,43 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 //var jshint = require("gulp-jshint");
 var connect = require('gulp-connect');
+var git = require('gulp-git');
+var exec = require('child_process').exec;
 
-var paths = {
-  // client  js files and place holder for specs
-  scripts: ['client/**/*.js'],
-  test: ['specs/**/*.js']
-};
-//concat uglify and watch the client side code
-gulp.task('js-concat-uglify', function(){
-  return gulp.src(['client/**/*.js' , 'client/helpers/*.js' ])
-    .pipe(concat('concat.js'))
-    .pipe(gulp.dest('dist'))
-    .pipe(rename('uglify.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'));
-});
 
-///jshint task
-// gulp.task('jshint', function () {
-//     gulp.src('./app/**/*.js') // path to your files
-//     .pipe(jshint())
-//     .pipe(jshint.reporter('default')); // Dump results
-// });
-
-//starting and serving the client side
-gulp.task('start', ['serve'], function () {
-  sync({
-    notify: true,
-    injectChanges: true,
-    files: paths.scripts ,
-    proxy: 'localhost:8080'
-  });
-});
 
 // start our node server using nodemon
-gulp.task('serve', function () {
+gulp.task('server-dev', function () {
+  exec('npm start');
   nodemon({
     script: './server/server.js',
     ignore: 'node_modules/**/*.js'
   });
 });
-
-gulp.task('serveprod', function() {
-  connect.server({
-    root: ['/Users/datascience/Documents/Project/hurry-up/'],
-    port: process.env.PORT || 8080, 
-    livereload: false
+gulp.task('task', function() {
+  exec('npm start', function(err) {
+    if(err) {console.log(err);}
   });
+
 });
 
-gulp.task('default', ['start' , 'serveprod' ]);
+gulp.task('server-prod', ['task'], function() {
+ // git.push('live', 'master', function (err) {
+ //    if (err) throw err;
+ //  });
+ console.log('Running server-prod');
+});
+
+
+gulp.task('upload', function() {
+  if(process.argv[2] === '-prod'){
+    process.env.NODE_ENV='production';
+    gulp.start('server-prod');
+  } else {
+    process.env.NODE_ENV='development'; 
+    gulp.start('server-dev');
+  }
+
+});
+
+gulp.task('default', ['upload']);
