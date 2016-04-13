@@ -9,6 +9,8 @@
     "body-parser": "^1.15.0",
     "bookshelf": "^0.9.4",
     "express": "^4.13.4",
+    "gulp-exec": "^2.1.2",
+    "gulp-git": "^1.7.1",
     "knex": "^0.10.0",
     "path": "^0.12.7",
     "react": "^0.14.8",
