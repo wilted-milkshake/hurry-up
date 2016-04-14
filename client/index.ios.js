@@ -10,14 +10,17 @@ import React, {
   Text,
   View,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  Image,
+  Dimensions
 } from 'react-native';
 
 import Form from 'react-native-form';
-
 import {sendEvent, updateLocation} from './helpers/request-helpers';
-
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
 class hurryup extends Component {
 
@@ -74,83 +77,74 @@ class hurryup extends Component {
   render() {
     return (
       <View style={styles.parent}>
-      <Text style={styles.welcome}>
-        Hurry Up!
-      </Text>
-      <ScrollableTabView style={{marginTop: 10, }} tabBarBackgroundColor="#499371">
-        <View tabLabel='Create Event' style={styles.container}>
-          <Form ref='form'>
+        <Image style={styles.bg} source={require('./background.png')} />
+        <Text style={styles.welcome}>
+          hurryup
+        </Text>
+        <ScrollableTabView style={{marginTop: 0, top: 0}} tabBarBackgroundColor="transparent" tabBarUnderlineColor="#F5F5F6" tabBarActiveTextColor="#F5F5F6" tabBarInactiveTextColor="#ACB2BE" tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
+          <View tabLabel='Create Event' style={styles.container}>
+            <Form ref='form'>
 
-            <Text style={styles.instructions}>
-              Your Event:
-            </Text>
-            <View>
-              <TextInput
-                style={styles.eventName}
-                type='TextInput'
-                name="eventName"
-                placeholder='Cool Party'/>
-            </View>
+              <View style={styles.inputs}>
+                <TextInput
+                  style={styles.eventName}
+                  type="TextInput"
+                  name="eventName"
+                  placeholderTextColor="#F5F5F6"
+                  placeholder="Event Name"/>
+              </View>
 
-            <Text style={styles.instructions}>
-              Event Location:
-            </Text>
-            <View>
-              <TextInput
-                style={styles.eventName}
-                type='TextInput'
-                name="destination"
-                placeholder='SomePlace'/>
-            </View>
+              <View style={styles.inputs}>
+                <TextInput
+                  style={styles.eventName}
+                  type="TextInput"
+                  name="destination"
+                  placeholderTextColor="#F5F5F6"
+                  placeholder='Event Location'/>
+              </View>
 
-            <Text style={styles.instructions}>
-              Event Time:
-            </Text>
-            <View>
-              <TextInput
-                style={styles.eventName}
-                type='TextInput'
-                name="eventTime"
-                placeholder='1800'/>
-            </View>
+              <View style={styles.inputs}>
+                <TextInput
+                  style={styles.eventName}
+                  type="TextInput"
+                  name="eventTime"
+                  placeholderTextColor="#F5F5F6"
+                  placeholder="Event Time"/>
+              </View>
 
-            <Text style={styles.instructions}>
-              How Early Do You Want To Get There:
-            </Text>
-            <View>
-              <TextInput
-                style={styles.eventName}
-                type='TextInput'
-                name="earlyArrival"
-                placeholder='5 min'/>
-            </View>
+              <View style={styles.inputs}>
+                <TextInput
+                  style={styles.eventName}
+                  type="TextInput"
+                  name="earlyArrival"
+                  placeholderTextColor="#F5F5F6"
+                  placeholder="Early Arrival"/>
+              </View>
 
-            <Text style={styles.instructions}>
-              How Are You Getting There:
-            </Text>
-            <View>
-              <TextInput
-                style={styles.eventName}
-                type='TextInput'
-                name="mode"
-                placeholder='driving, transit, walking' />
-            </View>
-          </Form>
+              <View style={styles.inputs}>
+                <TextInput
+                  style={styles.eventName}
+                  type="TextInput"
+                  name="mode"
+                  placeholderTextColor="#F5F5F6"
+                  placeholder="Mode of Transport" />
+              </View>
+            </Form>
 
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.buttonText}>Submit!</Text>
-            </View>
-          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.buttonClicked.bind(this)}>
+              <View>
+                <Text style={styles.buttonText}>Submit!</Text>
+              </View>
+            </TouchableHighlight>
 
 
-        </View>
-        <View tabLabel='My Events' style={styles.container}>
-          <Text style={styles.welcome}>AWESOME</Text>
-        </View>
-      </ScrollableTabView>
+          </View>
+          <View tabLabel='My Events' style={styles.container}>
+            <Text style={styles.welcome}>AWESOME</Text>
+          </View>
+        </ScrollableTabView>
       </View>
     );
   }
@@ -160,32 +154,57 @@ class hurryup extends Component {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: '#499371'
+    flexDirection: 'column',
+    backgroundColor: 'transparent'
+  },
+  bg: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: deviceWidth,
+    height: deviceHeight
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00b37a',
+    backgroundColor: 'transparent',
   },
   welcome: {
-    fontSize: 20,
+    color: '#F5F5F6',
+    fontSize: 25,
+    fontFamily: 'HelveticaNeue',
     textAlign: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
-  instructions: {
+  eventName: {
+    backgroundColor: 'transparent',
+    color: '#F5F5F6',
+    left: 40,
+    fontSize: 14,
+    height: 25,
+    width: deviceWidth - 40
+  },
+  button: {
+    backgroundColor: '#34778A',
+    marginTop: 30,
+    padding: 15,
+    alignItems: 'center',
+    width: deviceWidth
+  },
+  buttonText: {
+    color: '#F5F5F6',
+    fontSize: 16,
+    fontFamily: 'HelveticaNeue-Light',
     textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
-    eventName: {
-      backgroundColor: 'white',
-      color: 'black',
-      height: 40,
-      borderColor: 'black',
-      borderWidth: 1,
-      width: 200
-  },
+  inputs: {
+    padding: 10,
+    margin: 10,
+    borderWidth: 1,
+    borderBottomColor: '#F5F5F6',
+    borderColor: 'transparent'
+  }
 });
 
 AppRegistry.registerComponent('hurryup', () => hurryup);
