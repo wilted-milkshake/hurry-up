@@ -15,12 +15,9 @@ import React, {
   Image
 } from 'react-native';
 
-import Form from 'react-native-form';
 const windowSize = Dimensions.get('window');
 
-//import Location from 'react-native-location';
-
-class hurryup extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props);
@@ -35,14 +32,13 @@ class hurryup extends Component {
   render() {
     return (
       <View style={styles.container}>
-          <Image style={styles.bg} source={require('./fadeBackground.jpg')} />
           <View style={styles.header}>
               <Image style={styles.mark} source={{uri: 'http://i.imgur.com/da4G0Io.png'}} />
           </View>
           <View style={styles.inputs}>
               <View style={styles.inputContainer}>
                   <Image style={styles.inputUsername} source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
-                  <TextInput 
+                  <TextInput
                       style={[styles.input, styles.whiteFont]}
                       placeholder="Username"
                       placeholderTextColor="#FFF"
@@ -141,7 +137,7 @@ const styles = StyleSheet.create({
       top: 12,
       right: 0,
       height: 20,
-      
+
   },
   greyFont: {
     color: '#D8D8D8'
@@ -152,4 +148,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('hurryup', () => hurryup);
+export default Login;
