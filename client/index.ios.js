@@ -16,6 +16,7 @@ import React, {
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CreateEvent from './views/create-event';
+import Login from './views/signin_mock';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -29,6 +30,7 @@ class hurryup extends Component {
           hurryup
         </Text>
         <ScrollableTabView style={{marginTop: 0, top: 0}} tabBarBackgroundColor="transparent" tabBarUnderlineColor="#F5F5F6" tabBarActiveTextColor="#F5F5F6" tabBarInactiveTextColor="#ACB2BE" tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
+          <Login tabLabel='Log In/Out' locked='true' />
           <CreateEvent tabLabel='Create Event' />
           <View tabLabel='My Events' style={styles.container}>
             <Text style={styles.welcome}>AWESOME</Text>
