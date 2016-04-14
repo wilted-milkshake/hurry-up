@@ -9,6 +9,37 @@ var worker = require('./worker.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post('/api/login', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  // compare to db
+
+  // redirect
+
+});
+
+app.post('/api/signup', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  var phoneNumber = '+1' + req.body.password;
+
+  // check username against db to avoid duplicate users
+  new User({ username: username }).fetch().then(function(found) {
+    if (found) {
+      console.log('Sorry, that username is already in the database!');
+    } else {
+      // create the user
+      Users.create({
+
+      }).then(function(){
+
+      });
+    }
+  });
+
+});
+
 app.get('/api/events', function(req, res) {
   Event.fetchAll({})
     .then(function(events) {
