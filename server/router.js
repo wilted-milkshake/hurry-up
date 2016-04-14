@@ -87,4 +87,15 @@ app.put('/api/users/:id', function(req, res) {
     });
 });
 
+app.get('/api/events:id', function(req, res) {
+  var userId = req.params.id;
+  Event.fetchAll({where: { userId: userId }})
+  .then(function(events) {
+    res.send(events);
+  })
+  .catch(function(error) {
+    res.status(404).send("Could not get all events");
+  });
+});
+
 module.exports = app;

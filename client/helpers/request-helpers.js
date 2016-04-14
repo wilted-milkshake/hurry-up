@@ -40,3 +40,20 @@ export const updateLocation = (origin, that) => {
     console.warn('Unable to send phone location', error);
   });
 };
+
+export const getAllEvents = () => {
+  var userId = 1;
+  fetch('http://localhost:8080/api/events' + userId, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => {
+    console.log("GET response: ",response);
+  })
+  .catch((error) => {
+    console.warn('Unable to get user events', error);
+  });
+};
