@@ -38,7 +38,7 @@ class Picker extends Component {
 
   render() {
     return (
-      <Animated.View style={{ transform: [{translateY: this.props.offSet}], backgroundColor: '#D8D8D8', position: 'absolute', width: 410, height: 290, top: 20, left: -10}}>
+      <Animated.View style={[{ transform: [{translateY: this.props.offSet}] }, styles.pickerPosition]}>
           <View style={styles.closeButtonContainer}>
             <TouchableHighlight onPress={this.closeModal.bind(this)} underlayColor="transparent" style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Choose</Text>
@@ -61,6 +61,14 @@ class Picker extends Component {
 };
 
 const styles = StyleSheet.create({
+  pickerPosition: {
+    backgroundColor: '#D8D8D8', 
+    position: 'absolute', 
+    width: deviceWidth, 
+    height: deviceHeight*.5,
+    top: deviceHeight*.1,
+    left: -(deviceWidth*.025),
+  },
   closeButtonContainer: {
     flexDirection: 'row', 
     justifyContent: 'flex-end', 
@@ -77,7 +85,6 @@ const styles = StyleSheet.create({
   closeButtonText: {
    color: '#027afe'
   },
-
 });
 
 export default Picker;

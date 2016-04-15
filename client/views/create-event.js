@@ -16,7 +16,7 @@ import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const deviceWidth       = Dimensions.get('window').width;
 const deviceHeight      = Dimensions.get('window').height;
-const earlyArrivalTimes = [{time: '5 minutes', value: 300},{time: '10 minutes', value: 600},{time: '15 minutes', value: 900}, {time: '20 minutes', value: 1200}];
+const earlyArrivalTimes = [{time: '5 minutes', value: '300'},{time: '10 minutes', value: '600'},{time: '15 minutes', value: '900'}, {time: '20 minutes', value: '1200'}];
 const DISTANCE_TO_REFRESH = 0.004;
 
 class CreateEvent extends Component {
