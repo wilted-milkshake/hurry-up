@@ -5,9 +5,58 @@ var Events = require('./app/collections/events.js');
 var Event = require('./app/models/event.js');
 var bodyParser = require('body-parser');
 var worker = require('./worker.js');
+var bcrypt = require('bcrypt');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
+app.post('/api/login', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  // compare to db
+  new User({ username: username }).fetch().then(function(user) {
+    if (user) {
+      bcrypt.compare(password, user.get('password'), function(err, match) {
+        if (match) {
+          // log the user in!
+        } else {
+          console.log('That password was incorrect.')
+        }
+      });
+    } else {
+      // user was not found... we could send them to the signup page, or
+      // keep them on the login page.
+    }
+  });
+});
+
+app.post('/api/signup', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  var phoneNumber = '+1' + req.body.password; // Add +1 to beggining for use with twilio
+
+  // check username against db to avoid duplicate users
+  new User({ username: username }).fetch().then(function(found) {
+    if (found) {
+      console.log('Sorry, that username is already in the database!');
+    } else {
+      // if we decide to use a salt, we pass it in instead of null
+      bcrypt.hash(password, null, function(err, hashedPassword){
+        Users.create({
+          username: username,
+          password: hashedPassword,
+          phoneNumber: phoneNumber
+        }).then(function(user) {
+          // this is where we create a session or execute whatever action
+          // needs to take place after a user is successfully created.
+        });
+      });
+    }
+  });
+});
 
 app.get('/api/events', function(req, res) {
   Event.fetchAll({})
