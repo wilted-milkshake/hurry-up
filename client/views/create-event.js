@@ -6,26 +6,35 @@ import React, {
   TextInput,
   TouchableHighlight,
   Image,
-  Dimensions
+  Dimensions,
+  Animated,
+  PickerIOS
 } from 'react-native';
 
-import Form from 'react-native-form';
+import Picker from './picker';
 import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const deviceWidth       = Dimensions.get('window').width;
 const deviceHeight      = Dimensions.get('window').height;
-const distanceToRefresh = 0.004;
+const earlyArrivalTimes = [{time: '5 minutes', value: '300'},{time: '10 minutes', value: '600'},{time: '15 minutes', value: '900'}, {time: '20 minutes', value: '1200'}];
+const DISTANCE_TO_REFRESH = 0.004;
 
 class CreateEvent extends Component {
 
   constructor(props) {
     super(props);
 
-  this.watchID = null;
+    this.watchID = null;
 
-  this.state = {
+    this.state = {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
+      eventName: '',
+      eventTime: '',
+      destination: '',
+      earlyArrivalIndex: 0,
+      mode: '',
+      offSet: new Animated.Value(deviceHeight),
     };
   }
 
@@ -38,8 +47,30 @@ class CreateEvent extends Component {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
   }
 
+  changeEarlyArrival(earlyArrivalIndex) {
+    this.setState({ earlyArrivalIndex });
+  }
+
+  clearForm() {
+    this.setState({
+      eventName: '',
+      eventTime: '',
+      destination: '',
+      earlyArrivalIndex: 0,
+      mode: '',
+      modal: false,
+    });
+  }
+
   buttonClicked() {
-    var newEvent  = this.refs.form.getValues();
+    var newEvent  = {
+      eventName: this.state.eventName,
+      eventTime: this.state.eventTime,
+      destination: this.state.destination,
+      earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
+      mode: this.state.mode,
+    };
+    this.clearForm();
     var origin    = this.state.initialPosition.coords;
     sendEvent(newEvent);
     updateLocation(origin);
@@ -58,7 +89,7 @@ class CreateEvent extends Component {
 
       var that = this;
 
-      if (distanceTraveled >= distanceToRefresh) {
+      if (distanceTraveled >= DISTANCE_TO_REFRESH) {
         updateLocation(this.state.lastPosition.coords, that);
         this.setState({ initialPosition: lastPosition });
       }
@@ -70,61 +101,67 @@ class CreateEvent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Form ref='form'>
+        <View style={styles.inputsContainer}>
 
-          <View style={styles.inputs}>
-            <TextInput
-              style={styles.eventName}
-              type="TextInput"
-              name="eventName"
+          <View style={styles.inputContainer}>
+            <TextInput 
+              style={[styles.inputFormat, styles.inputStyle]}
+              placeholder="Event Name"
               placeholderTextColor="#F5F5F6"
-              placeholder="Event Name"/>
+              value={this.state.eventName}
+              onChangeText={(eventName) => this.setState({eventName})}
+            />
           </View>
 
-          <View style={styles.inputs}>
-            <TextInput
-              style={styles.eventName}
-              type="TextInput"
-              name="destination"
+          <View style={styles.inputContainer}>
+            <TextInput 
+              style={[styles.inputFormat, styles.inputStyle]}
+              placeholder="Event Location"
               placeholderTextColor="#F5F5F6"
-              placeholder='Event Location'/>
+              value={this.state.destination}
+              onChangeText={(destination) => this.setState({destination})}
+            />
           </View>
 
-          <View style={styles.inputs}>
-            <TextInput
-              style={styles.eventName}
-              type="TextInput"
-              name="eventTime"
+          <View style={styles.inputContainer}>
+            <TextInput 
+              style={[styles.inputFormat, styles.inputStyle]}
+              placeholder="Event Time"
               placeholderTextColor="#F5F5F6"
-              placeholder="Event Time"/>
+              value={this.state.eventTime}
+              onChangeText={(eventTime) => this.setState({eventTime})}
+            />
           </View>
 
-          <View style={styles.inputs}>
-            <TextInput
-              style={styles.eventName}
-              type="TextInput"
-              name="earlyArrival"
-              placeholderTextColor="#F5F5F6"
-              placeholder="Early Arrival"/>
+          <View style={styles.inputContainer}>
+            <TouchableHighlight style={styles.inputFormat} underlayColor="transparent" onPress={ () => this.setState({modal: true}) }>
+              <Text style={styles.inputStyle}>Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}</Text>
+            </TouchableHighlight>
+            { this.state.modal ? <Picker closeModal={() => this.setState({ modal: false })} offSet={this.state.offSet} changeEarlyArrival={this.changeEarlyArrival.bind(this)} earlyArrivalIndex={this.state.earlyArrivalIndex} /> : null } 
           </View>
 
-          <View style={styles.inputs}>
-            <TextInput
-              style={styles.eventName}
-              type="TextInput"
-              name="mode"
+          <View style={this.state.modal ? styles.hidden : styles.inputContainer}>
+            <TextInput 
+              style={[styles.inputFormat, styles.inputStyle]}
+              placeholder="Mode of Transport"
               placeholderTextColor="#F5F5F6"
-              placeholder="Mode of Transport" />
+              value={this.state.mode}
+              onChangeText={(mode) => this.setState({mode})}
+            />
           </View>
-        </Form>
+
+        </View>
 
         <TouchableHighlight
-          style={styles.button}
+          pointerEvents={this.state.modal ? 'none' : 'auto'}
+          style={this.state.modal ? styles.hidden : styles.submitButton}
           onPress={this.buttonClicked.bind(this)}>
           <View>
-            <Text style={styles.buttonText}>Submit!</Text>
+            <Text style={styles.inputStyle}>Submit!</Text>
           </View>
         </TouchableHighlight>
+
+        <View style={styles.empty}></View>
       </View>
     );
   }
@@ -133,24 +170,40 @@ class CreateEvent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'transparent',
+  },
+  inputsContainer: {
+    marginTop: 20,
+    marginBottom: 10,
+    flex: .75
+  },
+  inputContainer: {
+    padding: 10,
+    margin: 10,
+    borderWidth: 1,
+    borderBottomColor: '#CCC',
+    borderColor: 'transparent'
+  },
+  inputFormat: {
+    left: 35,
+    top: 5,
+    right: 0,
+    height: 25,
+  },
+  inputStyle: {
+    color: '#F5F5F6',
+    fontSize: 16
+  },
+  submitButton: {
+    backgroundColor: '#34778A',
+    padding: 20,
+    alignItems: 'center',
+  },
+  empty: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
-  },
-  eventName: {
-    backgroundColor: 'transparent',
-    color: '#F5F5F6',
-    left: 40,
-    fontSize: 14,
-    height: 25,
-    width: deviceWidth - 40
-  },
-  button: {
-    backgroundColor: '#34778A',
-    marginTop: 30,
-    padding: 15,
-    alignItems: 'center',
-    width: deviceWidth
+    flex: .15
   },
   buttonText: {
     color: '#F5F5F6',
@@ -164,6 +217,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomColor: '#F5F5F6',
     borderColor: 'transparent'
+  },
+  hidden: {
+    opacity: 0,
   }
 });
 
