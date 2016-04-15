@@ -22,9 +22,9 @@ class CreateEvent extends Component {
   constructor(props) {
     super(props);
 
-  this.watchID = null;
+    this.watchID = null;
 
-  this.state = {
+    this.state = {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       eventName: '',
@@ -33,10 +33,6 @@ class CreateEvent extends Component {
       earlyArrivalIndex: 0,
       mode: '',
     };
-  }
-
-  changeTime(earlyArrivalIndex) {
-    this.setState({ earlyArrivalIndex });
   }
 
   componentDidMount() {
@@ -48,6 +44,20 @@ class CreateEvent extends Component {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
   }
 
+  changeEarlyArrival(earlyArrivalIndex) {
+    this.setState({ earlyArrivalIndex });
+  }
+
+  clearForm() {
+    this.setState({
+      eventName: '',
+      eventTime: '',
+      destination: '',
+      earlyArrivalIndex: 0,
+      mode: '',
+    });
+  }
+
   buttonClicked() {
     var newEvent  = {
       eventName: this.state.eventName,
@@ -56,6 +66,7 @@ class CreateEvent extends Component {
       earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
       mode: this.state.mode,
     };
+    this.clearForm();
     var origin    = this.state.initialPosition.coords;
     sendEvent(newEvent);
     updateLocation(origin);
