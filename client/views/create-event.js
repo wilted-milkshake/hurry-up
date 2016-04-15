@@ -6,10 +6,12 @@ import React, {
   TextInput,
   TouchableHighlight,
   Image,
-  Dimensions
+  Dimensions,
+  Animated,
+  PickerIOS
 } from 'react-native';
 
-import Form from 'react-native-form';
+import Picker from './picker';
 import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const deviceWidth       = Dimensions.get('window').width;
@@ -32,6 +34,7 @@ class CreateEvent extends Component {
       destination: '',
       earlyArrivalIndex: 0,
       mode: '',
+      offSet: new Animated.Value(deviceHeight),
     };
   }
 
@@ -55,6 +58,7 @@ class CreateEvent extends Component {
       destination: '',
       earlyArrivalIndex: 0,
       mode: '',
+      modal: false,
     });
   }
 
@@ -130,15 +134,13 @@ class CreateEvent extends Component {
           </View>
 
           <View style={styles.inputContainer}>
-            <TextInput 
-              style={[styles.inputFormat, styles.inputStyle]}
-              placeholder="Early Arrival"
-              placeholderTextColor="#F5F5F6"
-              value={"Early: " + earlyArrivalTimes[this.state.earlyArrivalIndex].time}
-            />
+            <TouchableHighlight style={styles.inputFormat} underlayColor="transparent" onPress={ () => this.setState({modal: true}) }>
+              <Text style={styles.inputStyle}>Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}</Text>
+            </TouchableHighlight>
+            { this.state.modal ? <Picker closeModal={() => this.setState({ modal: false })} offSet={this.state.offSet} changeEarlyArrival={this.changeEarlyArrival.bind(this)} earlyArrivalIndex={this.state.earlyArrivalIndex} /> : null } 
           </View>
 
-          <View style={styles.inputContainer}>
+          <View style={this.state.modal ? styles.hidden : styles.inputContainer}>
             <TextInput 
               style={[styles.inputFormat, styles.inputStyle]}
               placeholder="Mode of Transport"
@@ -151,7 +153,8 @@ class CreateEvent extends Component {
         </View>
 
         <TouchableHighlight
-          style={styles.submitButton}
+          pointerEvents={this.state.modal ? 'none' : 'auto'}
+          style={this.state.modal ? styles.hidden : styles.submitButton}
           onPress={this.buttonClicked.bind(this)}>
           <View>
             <Text style={styles.inputStyle}>Submit!</Text>
@@ -214,36 +217,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomColor: '#F5F5F6',
     borderColor: 'transparent'
+  },
+  hidden: {
+    opacity: 0,
   }
-
-  /* ORIGINAL */
-  // button: {
-  //   backgroundColor: '#34778A',
-  //   marginTop: 30,
-  //   padding: 15,
-  //   alignItems: 'center',
-  //   width: deviceWidth
-  // },
-
-
-  //   eventName: {
-  //   backgroundColor: 'transparent',
-  //   color: '#F5F5F6',
-  //   left: 40,
-  //   fontSize: 14,
-  //   height: 25,
-  //   width: deviceWidth - 40
-  // },
-
-//  <View style={styles.inputs}>
-//    <TextInput
-//      style={styles.eventName}
-//      type="TextInput"
-//      name="eventName"
-//      placeholderTextColor="#F5F5F6"
-//      placeholder="Event Name"/>
-//   </View>
-
 });
 
 
