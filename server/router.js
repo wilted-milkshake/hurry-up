@@ -16,7 +16,7 @@ app.post('/api/login', function(req, res) {
 
   // compare to db
 
-  // redirect
+  // redirect?
 
 });
 
@@ -30,11 +30,16 @@ app.post('/api/signup', function(req, res) {
     if (found) {
       console.log('Sorry, that username is already in the database!');
     } else {
-      // create the user
-      Users.create({
-
-      }).then(function(){
-
+      // if we decide to use a salt, we pass it in instead of null
+      bcrypt.hash(password, null, function(err, hashedPassword){
+        Users.create({
+          username: username,
+          password: hashedPassword,
+          phoneNumber: phoneNumber
+        }).then(function(user) {
+          // this would be where we create a session or execute whatever action
+          // needs to take place after a user is successfully created.  
+        });
       });
     }
   });
