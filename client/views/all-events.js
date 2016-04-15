@@ -3,27 +3,22 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableHighlight,
-  Image,
   Dimensions,
   ScrollView
 } from 'react-native';
 
-import Form from 'react-native-form';
 import {getAllEvents} from '../helpers/request-helpers';
 
-const deviceWidth       = Dimensions.get('window').width;
-const deviceHeight      = Dimensions.get('window').height;
-const distanceToRefresh = 0.004;
+const deviceWidth = Dimensions.get('window').width;
 
 class AllEvents extends Component {
 
   constructor(props) {
     super(props);
 
-  this.state = {
-    events: []
+    this.state = {
+      events: []
     };
   }
 
@@ -41,72 +36,83 @@ class AllEvents extends Component {
   render() {
     var _scrollView: ScrollView;
     return (
-          <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
-            <TouchableHighlight
-              style={styles.button}
-              onPress={this.buttonClicked.bind(this)}>
-              <View>
-                <Text style={styles.buttonText}>Refresh!</Text>
+      <View style={{flex: 1}}>
+      <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
+          {this.state.events.map((event, index) =>
+            <View style={styles.EventContainer} key={index}>
+              <View style={styles.EventRow}>
+                <Text style={styles.EventTitle}>Event:</Text>
+                <View style={styles.EventInput}>
+                  <Text style={styles.EventText}>{event.eventName} @ {event.eventTime}</Text>
+                </View>
               </View>
-            </TouchableHighlight>
-
-              {this.state.events.map((event, index) =>
-              <Text style={styles.welcome} key={index}> {event.eventName}</Text>
-              )}
-
-            <Text style={styles.welcome}>Can Scroll Down</Text>
-            <Text style={styles.welcome}>Try it Out!</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-            <Text style={styles.welcome}>AWESOME POSSUM</Text>
-          </ScrollView>
+              <View style={styles.EventRow}>
+                <Text style={styles.EventTitle}>Where: </Text>
+                <View style={styles.EventInput}>
+                  <Text style={styles.EventText}>{event.destination}</Text>
+                </View>
+              </View>
+              <View style={styles.EventRow}>
+                <Text style={styles.EventTitle}>Getting there by: </Text>
+                <View style={styles.EventInput}>
+                  <Text style={styles.EventText}>{event.mode}</Text>
+                </View>
+              </View>
+            </View>
+          )}
+          <Text style={styles.welcome}>no more events</Text>
+      </ScrollView>
+      <TouchableHighlight
+        style={styles.button}
+        onPress={this.buttonClicked.bind(this)}>
+        <View>
+          <Text style={styles.buttonText}>Refresh!</Text>
+        </View>
+      </TouchableHighlight>
+      </View>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  container: {
+  EventContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    margin: 7,
+    padding: 15,
+    height: 150,
+    borderWidth: 1,
+    borderBottomColor: '#F5F5F6',
+    borderColor: 'transparent'
   },
-  eventName: {
-    backgroundColor: 'transparent',
-    color: '#F5F5F6',
-    left: 40,
+  EventRow: {
+    flex: 1,
+    flexDirection:'row',
+  },
+  EventTitle: {
+    margin: 5,
     fontSize: 14,
-    height: 25,
-    width: deviceWidth - 40
+    color: '#ACB2BE',
+    textDecorationLine: 'underline'
+  },
+  EventInput: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  EventText: {
+    flex: 1,
+    margin: 5,
+    fontSize: 16,
+    color: '#F5F5F6',
+  },
+  welcome: {
+    color: '#ACB2BE',
+    fontSize: 20,
+    fontFamily: 'HelveticaNeue',
+    textAlign: 'center',
+    margin: 20,
   },
   button: {
     backgroundColor: '#34778A',
-    marginTop: 30,
     padding: 15,
     alignItems: 'center',
     width: deviceWidth
@@ -116,20 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Light',
     textAlign: 'center',
-  },
-  inputs: {
-    padding: 10,
-    margin: 10,
-    borderWidth: 1,
-    borderBottomColor: '#F5F5F6',
-    borderColor: 'transparent'
-  },
-  welcome: {
-    color: '#F5F5F6',
-    fontSize: 25,
-    fontFamily: 'HelveticaNeue',
-    textAlign: 'center',
-    marginTop: 20,
   },
 });
 
