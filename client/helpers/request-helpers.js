@@ -41,7 +41,7 @@ export const updateLocation = (origin, that) => {
   });
 };
 
-export const getAllEvents = () => {
+export const getAllEvents = (that) => {
   var userId = 1;
   fetch('http://localhost:8080/api/events' + userId, {
     method: 'GET',
@@ -51,7 +51,9 @@ export const getAllEvents = () => {
     },
   })
   .then((response) => {
-    console.log("GET response: ",response);
+    var res = JSON.parse(response._bodyText);
+    that.setState({ events: res });
+    console.log("GET response: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", res);
   })
   .catch((error) => {
     console.warn('Unable to get user events', error);
