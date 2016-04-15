@@ -38,3 +38,6 @@ server/api_keys.js
 
 # Dist
 dist/
+
+#DB
+server/db/hurryup.sqlite
