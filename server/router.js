@@ -5,6 +5,7 @@ var Events = require('./app/collections/events.js');
 var Event = require('./app/models/event.js');
 var bodyParser = require('body-parser');
 var worker = require('./worker.js');
+var bcrypt = require('bcrypt');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
