@@ -1,4 +1,5 @@
 import React, {
+  SegmentedControlIOS,
   Component,
   StyleSheet,
   Text,
@@ -33,7 +34,8 @@ class CreateEvent extends Component {
       eventTime: '',
       destination: '',
       earlyArrivalIndex: 0,
-      mode: '',
+      mode: 'not selected',
+      values: ['walk' ,'drive' ,'public transport'],
       offSet: new Animated.Value(deviceHeight),
     };
   }
@@ -98,6 +100,19 @@ class CreateEvent extends Component {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000});
   }
 
+  _onChange(event){
+    this.setState({
+    selectedIndex: event.nativeEvent.selectedSegmentIndex,
+    });
+  }
+
+  _onValueChange(value) {
+    console.log('value>>>>>',value);
+    this.setState({
+      mode: value,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -144,10 +159,11 @@ class CreateEvent extends Component {
             <TextInput 
               style={[styles.inputFormat, styles.inputStyle]}
               placeholder="Mode of Transport"
-              placeholderTextColor="#F5F5F6"
-              value={this.state.mode}
-              onChangeText={(mode) => this.setState({mode})}
-            />
+              placeholderTextColor="#F5F5F6"/>
+            <SegmentedControlIOS tintColor="#66ccff"
+              values={this.state.values}
+              onChange={this._onChange.bind(this)}
+              onValueChange={this._onValueChange.bind(this)}/>
           </View>
 
         </View>
@@ -217,6 +233,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomColor: '#F5F5F6',
     borderColor: 'transparent'
+  },
+  text: {
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '500',
+    margin: 10,
   },
   hidden: {
     opacity: 0,
