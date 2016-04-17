@@ -1,6 +1,6 @@
-var User   = require('../app/models/user.js');
-var Event  = require('../app/models/event.js');
-var bcrypt = require('bcrypt');
+var User         = require('../app/models/user.js');
+var Event        = require('../app/models/event.js');
+var bcrypt       = require('bcrypt');
 var googleWorker = require('../workers/google-api-call.js');
 
 exports.addEvent = function(req, res) {
@@ -31,12 +31,12 @@ exports.addEvent = function(req, res) {
         })
         .catch(function(err) {
           console.error('Could not create new event: ', err);
-          res.send(500, err);
+          res.status(500).send(err);
         });
     })
     .catch(function(err) {
       console.error('Could not create new event: ', err);
-      res.send(500, err);
+      res.status(500).send(err);
     });
 };
 
@@ -56,8 +56,8 @@ exports.updateUserLocation =  function(req, res) {
                 events.forEach(function(event) {
                   googleWorker(event.attributes, updatedUser.attributes.origin);
                 });
-                updatedUser.clearWatch = false;
                 console.log('Called worker for each scheduled event');
+                updatedUser.clearWatch = false;
                 res.status(201).send({clearWatch: false, updatedUser: updatedUser});
               } else {
                 console.log("No events scheduled");

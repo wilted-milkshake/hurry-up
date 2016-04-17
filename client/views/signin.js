@@ -17,12 +17,17 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-
-  this.state = {
+    this.state = {
       username: '',
       password: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      loggedIn: props.loggedIn,
+      handleClick: props.handlePress
     };
+  }
+
+  onClick() {
+    this.state.handleClick();
   }
 
   render() {
@@ -33,45 +38,62 @@ class Login extends Component {
             style={styles.mark}
             source={{uri: 'http://i.imgur.com/da4G0Io.png'}}/>
         </View>
-        <View style={styles.inputs}>
-          <View style={styles.inputContainer}>
-            <Image
-              style={styles.inputUsername}
-              source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
-            <TextInput
-              placeholder="Username"
-              value={this.state.username}
-              placeholderTextColor="#FFF"
-              style={[styles.input, styles.whiteFont]}/>
-          </View>
-          <View style={styles.inputContainer}>
-            <Image
-              style={styles.inputPassword}
-              source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
-            <TextInput
-              password={true}
-              placeholder="Password"
-              value={this.state.password}
-              placeholderTextColor="#FFF"
-              style={[styles.input, styles.whiteFont]}/>
-          </View>
-          <View style={styles.inputContainer}>
-            <Image
-              style={styles.inputPassword}
-              source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
-            <TextInput
-              style={[styles.input, styles.whiteFont]}
-              placeholder="Phone Number"
-              placeholderTextColor="#FFF"
-              value={this.state.phoneNumber}/>
-          </View>
-        </View>
-        <View style={styles.signin}>
-          <Text style={styles.whiteFont}>
-            Sign In
-          </Text>
-        </View>
-        <View style={styles.signup}></View>
+        {this.state.loggedIn
+          ? null
+          :(<View style={styles.inputs}>
+            <View style={styles.inputContainer}>
+              <Image
+                style={styles.inputUsername}
+                source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
+              <TextInput
+                placeholder="Username"
+                value={this.state.username}
+                placeholderTextColor="#FFF"
+                style={[styles.input, styles.whiteFont]}/>
+            </View>
+            <View style={styles.inputContainer}>
+              <Image
+                style={styles.inputPassword}
+                source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+              <TextInput
+                password={true}
+                placeholder="Password"
+                value={this.state.password}
+                placeholderTextColor="#FFF"
+                style={[styles.input, styles.whiteFont]}/>
+            </View>
+            <View style={styles.inputContainer}>
+              <Image
+                style={styles.inputPassword}
+                source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+              <TextInput
+                style={[styles.input, styles.whiteFont]}
+                placeholder="Phone Number"
+                placeholderTextColor="#FFF"
+                value={this.state.phoneNumber}/>
+            </View>
+          </View>)
+        }
+        <TouchableHighlight
+          style={styles.signin}
+          onPress={this.onClick.bind(this)}>
+            {this.state.loggedIn
+              ?(<Text style={styles.whiteFont}>
+                  Sign Out
+                </Text>)
+              : (<Text style={styles.whiteFont}>
+                  Sign In
+                </Text>)
+            }
+        </TouchableHighlight>
+
+        {this.state.loggedIn
+          ? (<View style={styles.signup}></View>)
+          : (<View style={styles.signup}>
+              <Text style={styles.greyFont}>Don't have an account?</Text>
+              <Text style={styles.whiteFont}>Sign Up</Text>
+            </View>)
+        }
       </View>
     );
   }
@@ -107,7 +129,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#34778A',
   },
   signup: {
-    flex: .12,
+    flex: .15,
     alignItems: 'center',
     justifyContent: 'center',
   },

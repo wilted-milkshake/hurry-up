@@ -19,6 +19,20 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 class hurryup extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: false
+    };
+  }
+
+  handleSignIn() {
+    this.setState({
+      loggedIn: !this.state.loggedIn
+    });
+    console.log(this.state.loggedIn);
+    this.render();
+  }
 
   render() {
     return (
@@ -29,17 +43,29 @@ class hurryup extends Component {
         <Text style={styles.welcome}>
           hurryup
         </Text>
-        <ScrollableTabView
-          style={{marginTop: 0, top: 0}}
-          tabBarUnderlineColor="#F5F5F6"
-          tabBarActiveTextColor="#F5F5F6"
-          tabBarInactiveTextColor="#ACB2BE"
-          tabBarBackgroundColor="transparent"
-          tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
-          <Login tabLabel='Log In/Out'/>
-          <CreateEvent tabLabel='Create Event' />
-          <AllEvents tabLabel='My Events' />
-        </ScrollableTabView>
+        {this.state.loggedIn
+          ? (<ScrollableTabView
+              page={1}
+              style={{marginTop: 0, top: 0}}
+              tabBarUnderlineColor="#F5F5F6"
+              tabBarActiveTextColor="#F5F5F6"
+              tabBarInactiveTextColor="#ACB2BE"
+              tabBarBackgroundColor="transparent"
+              tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
+              <Login loggedIn = {this.state.loggedIn} handlePress = {this.handleSignIn.bind(this)} tabLabel='Log Out'/>
+              <CreateEvent tabLabel='Create Event' />
+              <AllEvents tabLabel='My Events' />
+            </ScrollableTabView>)
+          : (<ScrollableTabView
+              style={{marginTop: 0, top: 0}}
+              tabBarUnderlineColor="#F5F5F6"
+              tabBarActiveTextColor="#F5F5F6"
+              tabBarInactiveTextColor="#ACB2BE"
+              tabBarBackgroundColor="transparent"
+              tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
+              <Login loggedIn = {this.state.loggedIn} handlePress = {this.handleSignIn.bind(this)} tabLabel=''/>
+            </ScrollableTabView>)
+        }
       </View>
     );
   }
