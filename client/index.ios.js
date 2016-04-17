@@ -1,37 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 
 import React, {
-  AppRegistry,
-  Component,
-  StyleSheet,
   Text,
   View,
-  TouchableHighlight,
   Image,
-  Dimensions
+  Component,
+  Dimensions,
+  StyleSheet,
+  AppRegistry,
+  TouchableHighlight,
 } from 'react-native';
 
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import Login from './views/signin_mock';
-import CreateEvent from './views/create-event';
+import Login from './views/signin';
 import AllEvents from './views/all-events';
+import CreateEvent from './views/create-event';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 class hurryup extends Component {
+
   render() {
     return (
       <View style={styles.parent}>
-        <Image style={styles.bg} source={require('./background.png')} />
+        <Image
+          style={styles.bg}
+          source={require('./background.png')}/>
         <Text style={styles.welcome}>
           hurryup
         </Text>
-        <ScrollableTabView style={{marginTop: 0, top: 0}} tabBarBackgroundColor="transparent" tabBarUnderlineColor="#F5F5F6" tabBarActiveTextColor="#F5F5F6" tabBarInactiveTextColor="#ACB2BE" tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
-          <Login tabLabel='Log In/Out' locked='true' />
+        <ScrollableTabView
+          style={{marginTop: 0, top: 0}}
+          tabBarUnderlineColor="#F5F5F6"
+          tabBarActiveTextColor="#F5F5F6"
+          tabBarInactiveTextColor="#ACB2BE"
+          tabBarBackgroundColor="transparent"
+          tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
+          <Login tabLabel='Log In/Out'/>
           <CreateEvent tabLabel='Create Event' />
           <AllEvents tabLabel='My Events' />
         </ScrollableTabView>
@@ -47,24 +52,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bg: {
-    position: 'absolute',
-    left: 0,
     top: 0,
+    left: 0,
     width: deviceWidth,
-    height: deviceHeight
+    position: 'absolute',
+    height: deviceHeight,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'transparent',
   },
   welcome: {
-    color: '#F5F5F6',
     fontSize: 25,
-    fontFamily: 'HelveticaNeue',
-    textAlign: 'center',
     marginTop: 20,
+    color: '#F5F5F6',
+    textAlign: 'center',
+    fontFamily: 'HelveticaNeue',
   },
 });
 

@@ -2,20 +2,18 @@
 
 export const sendEvent = (newEvent) => {
   fetch('http://localhost:8080/api/events' , {
-    method: 'POST' ,
+    method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(newEvent),
   })
-  .then((response) => console.log('POST response: ', response))
-  .catch((error) => {
-    console.warn('Unable to send event', error);
-  });
+  .then((response) => console.log('Event POST response: ', response))
+  .catch((error) => console.warn('Unable to send event', error));
 };
 
-export const updateLocation = (origin, that) => {
+export const updateLocation = (origin, context) => {
   // TODO: grab user id from login session(?)
   var userId = 1;
 
@@ -29,20 +27,16 @@ export const updateLocation = (origin, that) => {
   })
   .then((response) => {
     var res = JSON.parse(response._bodyText);
-    if (res.clearWatch) {
-      navigator.geolocation.clearWatch(that.watchID);
-    } else {
-      console.log(res.clearWatch);
-    }
-    console.log('PUT response: ', response);
+    if (res.clearWatch) { navigator.geolocation.clearWatch(context.watchID); }
+    console.log('Location PUT response: ', response);
   })
-  .catch((error) => {
-    console.warn('Unable to send phone location', error);
-  });
+  .catch((error) => console.warn('Unable to send phone location', error));
 };
 
-export const getAllEvents = (that) => {
+export const getAllEvents = (context) => {
+  // TODO: grab user id from login session(?)
   var userId = 1;
+
   fetch('http://localhost:8080/api/events' + userId, {
     method: 'GET',
     headers: {
@@ -52,10 +46,8 @@ export const getAllEvents = (that) => {
   })
   .then((response) => {
     var res = JSON.parse(response._bodyText);
-    that.setState({ events: res });
-    console.log("GET response: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", res);
+    context.setState( { events: res } );
+    console.log('All Events GET response: ', response);
   })
-  .catch((error) => {
-    console.warn('Unable to get user events', error);
-  });
+  .catch((error) => console.warn('Unable to get user events', error));
 };
