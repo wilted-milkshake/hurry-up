@@ -10,9 +10,9 @@ import React, {
   TouchableHighlight,
 } from 'react-native';
 
-import Login from './views/signin';
-import AllEvents from './views/all-events';
-import CreateEvent from './views/create-event';
+import Login from './client/views/signin';
+import AllEvents from './client/views/all-events';
+import CreateEvent from './client/views/create-event';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -39,7 +39,7 @@ class hurryup extends Component {
       <View style={styles.parent}>
         <Image
           style={styles.bg}
-          source={require('./background.png')}/>
+          source={require('./client/background.png')}/>
         <Text style={styles.welcome}>
           hurryup
         </Text>
