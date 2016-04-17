@@ -47,7 +47,9 @@ class CreateEvent extends Component {
       values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
     };
   }
-
+  //TODO: Must move all timer/ location events to main app view otherwise on signout
+  // this gets unmounted and cannot update state
+  //(for location so last posiion/Initial position)
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       var initialPosition = position;
@@ -73,40 +75,43 @@ class CreateEvent extends Component {
   }
 
   buttonClicked() {
-    var newEvent  = {
-      mode: this.state.mode,
-      eventName: this.state.eventName,
-      eventTime: this.state.eventTime,
-      destination: this.state.destination,
-      earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
-    };
-    sendEvent(newEvent);
+    if (this.state.eventName && this.state.eventTime && this.state.destination) {
+      var newEvent  = {
+        mode: this.state.mode,
+        eventName: this.state.eventName,
+        eventTime: this.state.eventTime,
+        destination: this.state.destination,
+        earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
+      };
+      sendEvent(newEvent);
+      this.clearForm();
 
-    this.clearForm();
+      var origin   = this.state.initialPosition.coords;
+      updateLocation(origin);
 
-    var origin   = this.state.initialPosition.coords;
-    updateLocation(origin);
+      this.watchID = navigator.geolocation.watchPosition((position) => {
+        var lastPosition = position;
+        this.setState({ lastPosition });
+        var initialPosition   = this.state.initialPosition;
+        var lastLatitude      = lastPosition.coords.latitude;
+        var lastLongitude     = lastPosition.coords.longitude;
+        var initialLatitude   = initialPosition.coords.latitude;
+        var initialLongitude  = initialPosition.coords.longitude;
 
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = position;
-      this.setState({ lastPosition });
-      var initialPosition   = this.state.initialPosition;
-      var lastLatitude      = lastPosition.coords.latitude;
-      var lastLongitude     = lastPosition.coords.longitude;
-      var initialLatitude   = initialPosition.coords.latitude;
-      var initialLongitude  = initialPosition.coords.longitude;
+        var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
 
-      var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
+        var that = this;
 
-      var that = this;
-
-      if (distanceTraveled >= DISTANCE_TO_REFRESH) {
-        updateLocation(this.state.lastPosition.coords, that);
-        this.setState({ initialPosition: lastPosition });
-      }
-    },
-    (error) => alert(error.message),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000});
+        if (distanceTraveled >= DISTANCE_TO_REFRESH) {
+          updateLocation(this.state.lastPosition.coords, that);
+          this.setState({ initialPosition: lastPosition });
+        }
+      },
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000});
+    } else {
+      alert( 'You must fill out each field!' );
+    }
   }
 
   onChange(event){
