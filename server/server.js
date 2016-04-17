@@ -1,4 +1,4 @@
-var app = require('./router.js');
+var app = require('./router/router.js');
 
 //console.log('Hurry-up is listening on 8080');
 

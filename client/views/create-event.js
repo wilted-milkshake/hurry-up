@@ -1,15 +1,15 @@
 import React, {
-  SegmentedControlIOS,
-  Component,
-  StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableHighlight,
   Image,
-  Dimensions,
   Animated,
-  PickerIOS
+  PickerIOS,
+  TextInput,
+  Component,
+  Dimensions,
+  StyleSheet,
+  TouchableHighlight,
+  SegmentedControlIOS,
 } from 'react-native';
 
 import Picker from './picker';
@@ -18,7 +18,15 @@ import {sendEvent, updateLocation} from '../helpers/request-helpers';
 const DISTANCE_TO_REFRESH = 0.004;
 const deviceWidth         = Dimensions.get('window').width;
 const deviceHeight        = Dimensions.get('window').height;
-const earlyArrivalTimes   = [{time: '5 minutes', value: '300'},{time: '10 minutes', value: '600'},{time: '15 minutes', value: '900'}, {time: '20 minutes', value: '1200'}, {time: '30 minutes', value: '1800'}, {time: '45 minutes', value: '2700'}, {time: '1 hour', value: '3600'}];
+const earlyArrivalTimes   = [
+  {time: '5 minutes', value: '300'},
+  {time: '10 minutes', value: '600'},
+  {time: '15 minutes', value: '900'},
+  {time: '20 minutes', value: '1200'},
+  {time: '30 minutes', value: '1800'},
+  {time: '45 minutes', value: '2700'},
+  {time: '1 hour', value: '3600'}
+];
 
 class CreateEvent extends Component {
 
@@ -28,15 +36,15 @@ class CreateEvent extends Component {
     this.watchID = null;
 
     this.state = {
-      initialPosition: 'unknown',
-      lastPosition: 'unknown',
       eventName: '',
       eventTime: '',
       destination: '',
-      earlyArrivalIndex: 0,
       mode: 'Driving',
-      values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      earlyArrivalIndex: 0,
+      lastPosition: 'unknown',
+      initialPosition: 'unknown',
       offSet: new Animated.Value(deviceHeight),
+      values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
     };
   }
 
@@ -55,38 +63,38 @@ class CreateEvent extends Component {
 
   clearForm() {
     this.setState({
+      modal: false,
       eventName: '',
       eventTime: '',
       destination: '',
       earlyArrivalIndex: 0,
-  //  mode: 'Driving',  //Until refresh unhighlights previous selected segment
-      modal: false,
+    //mode: 'Driving',        //Commented out until refresh unhighlights previous selected segment
     });
   }
 
   buttonClicked() {
     var newEvent  = {
+      mode: this.state.mode,
       eventName: this.state.eventName,
       eventTime: this.state.eventTime,
       destination: this.state.destination,
       earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
-      mode: this.state.mode,
     };
-    this.clearForm();
-    var origin   = this.state.initialPosition.coords;
-
     sendEvent(newEvent);
+
+    this.clearForm();
+
+    var origin   = this.state.initialPosition.coords;
     updateLocation(origin);
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = position;
       this.setState({ lastPosition });
-
       var initialPosition   = this.state.initialPosition;
-      var initialLatitude   = initialPosition.coords.latitude;
-      var initialLongitude  = initialPosition.coords.longitude;
       var lastLatitude      = lastPosition.coords.latitude;
       var lastLongitude     = lastPosition.coords.longitude;
+      var initialLatitude   = initialPosition.coords.latitude;
+      var initialLongitude  = initialPosition.coords.longitude;
 
       var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
 
@@ -101,13 +109,13 @@ class CreateEvent extends Component {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000});
   }
 
-  _onChange(event){
+  onChange(event){
     this.setState({
       selectedIndex: event.nativeEvent.selectedSegmentIndex,
     });
   }
 
-  _onValueChange(value) {
+  onValueChange(value) {
     this.setState({
       mode: value,
     });
@@ -117,68 +125,72 @@ class CreateEvent extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.inputsContainer}>
-
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.inputFormat, styles.inputStyle]}
               placeholder="Event Name"
-              placeholderTextColor="#F5F5F6"
               value={this.state.eventName}
-              onChangeText={(eventName) => this.setState({eventName})}
-            />
+              placeholderTextColor="#F5F5F6"
+              style={[styles.inputFormat, styles.inputStyle]}
+              onChangeText={(eventName) => this.setState({eventName})}/>
           </View>
-
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.inputFormat, styles.inputStyle]}
               placeholder="Event Location"
               placeholderTextColor="#F5F5F6"
               value={this.state.destination}
-              onChangeText={(destination) => this.setState({destination})}
-            />
+              style={[styles.inputFormat, styles.inputStyle]}
+              onChangeText={(destination) => this.setState({destination})}/>
           </View>
-
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.inputFormat, styles.inputStyle]}
               placeholder="Event Time"
-              placeholderTextColor="#F5F5F6"
               value={this.state.eventTime}
-              onChangeText={(eventTime) => this.setState({eventTime})}
-            />
+              placeholderTextColor="#F5F5F6"
+              style={[styles.inputFormat, styles.inputStyle]}
+              onChangeText={(eventTime) => this.setState({eventTime})}/>
           </View>
-
           <View style={styles.inputContainer}>
-            <TouchableHighlight style={styles.inputFormat} underlayColor="transparent" onPress={ () => this.setState({modal: true}) }>
-              <Text style={styles.inputStyle}>Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}</Text>
+            <TouchableHighlight
+              style={styles.inputFormat}
+              underlayColor="transparent"
+              onPress={ () => this.setState({modal: true}) }>
+              <Text style={styles.inputStyle}>
+                Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}
+              </Text>
             </TouchableHighlight>
-            { this.state.modal ? <Picker closeModal={() => this.setState({ modal: false })} offSet={this.state.offSet} changeEarlyArrival={this.changeEarlyArrival.bind(this)} earlyArrivalIndex={this.state.earlyArrivalIndex} /> : null }
+              { this.state.modal
+                ? <Picker
+                  offSet={this.state.offSet}
+                  earlyArrivalIndex={this.state.earlyArrivalIndex}
+                  closeModal={() => this.setState({ modal: false })}
+                  changeEarlyArrival={this.changeEarlyArrival.bind(this)}/>
+                : null
+              }
           </View>
-
           <View style={this.state.modal ? styles.hidden : styles.segmentedContainer}>
             <TextInput
-              style={[styles.inputFormat, styles.inputStyle]}
+              placeholderTextColor="#F5F5F6"
               placeholder="Mode of Transport"
-              placeholderTextColor="#F5F5F6"/>
-              <View style={styles.segmentedSpacing}></View>
-            <SegmentedControlIOS tintColor="#CCC"
+              style={[styles.inputFormat, styles.inputStyle]}/>
+            <View style={styles.segmentedSpacing}></View>
+            <SegmentedControlIOS
+              tintColor="#CCC"
               style={styles.segmented}
               values={this.state.values}
-              onChange={this._onChange.bind(this)}
-              onValueChange={this._onValueChange.bind(this)}/>
+              onChange={this.onChange.bind(this)}
+              onValueChange={this.onValueChange.bind(this)}/>
           </View>
-
         </View>
-
         <TouchableHighlight
+          onPress={this.buttonClicked.bind(this)}
           pointerEvents={this.state.modal ? 'none' : 'auto'}
-          style={this.state.modal ? styles.hidden : styles.submitButton}
-          onPress={this.buttonClicked.bind(this)}>
+          style={this.state.modal ? styles.hidden : styles.submitButton}>
           <View>
-            <Text style={styles.inputStyle}>Submit!</Text>
+            <Text style={styles.inputStyle}>
+              Submit!
+            </Text>
           </View>
         </TouchableHighlight>
-
         <View style={styles.empty}></View>
       </View>
     );
@@ -192,54 +204,54 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   inputsContainer: {
+    flex: .75,
     marginTop: 25,
-    marginBottom: 15,
     paddingTop: 20,
-    flex: .75
+    marginBottom: 15,
   },
   segmentedContainer: {
-    padding: 10,
     margin: 10,
+    padding: 10,
   },
   inputContainer: {
-    padding: 10,
     margin: 10,
+    padding: 10,
     borderWidth: 1,
     borderBottomColor: '#CCC',
-    borderColor: 'transparent'
+    borderColor: 'transparent',
   },
   inputFormat: {
-    left: 35,
     top: 5,
+    left: 35,
     right: 0,
     height: 25,
   },
   inputStyle: {
+    fontSize: 16,
     color: '#F5F5F6',
-    fontSize: 16
   },
   submitButton: {
-    backgroundColor: '#34778A',
     padding: 20,
     alignItems: 'center',
+    backgroundColor: '#34778A',
   },
   empty: {
-    justifyContent: 'center',
+    flex: .15,
     alignItems: 'center',
-    flex: .15
+    justifyContent: 'center',
   },
   buttonText: {
-    color: '#F5F5F6',
     fontSize: 16,
-    fontFamily: 'HelveticaNeue-Light',
+    color: '#F5F5F6',
     textAlign: 'center',
+    fontFamily: 'HelveticaNeue-Light',
   },
   inputs: {
-    padding: 10,
     margin: 10,
+    padding: 10,
     borderWidth: 1,
+    borderColor: 'transparent',
     borderBottomColor: '#F5F5F6',
-    borderColor: 'transparent'
   },
   hidden: {
     opacity: 0,
@@ -253,6 +265,5 @@ const styles = StyleSheet.create({
     height: 20,
   }
 });
-
 
 export default CreateEvent;

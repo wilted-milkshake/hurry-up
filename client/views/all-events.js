@@ -1,11 +1,11 @@
 import React, {
-  Component,
-  StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  Component,
   Dimensions,
-  ScrollView
+  ScrollView,
+  StyleSheet,
+  TouchableHighlight
 } from 'react-native';
 
 import {getAllEvents} from '../helpers/request-helpers';
@@ -28,16 +28,16 @@ class AllEvents extends Component {
   }
 
   buttonClicked() {
+    //look into using websockets instead of refresh button / or state control
     var that = this;
     getAllEvents(that);
     this.render();
   }
 
   render() {
-    var _scrollView: ScrollView;
     return (
       <View style={{flex: 1}}>
-      <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
+        <ScrollView>
           {this.state.events.map((event, index) =>
             <View style={styles.EventContainer} key={index}>
               <View style={styles.EventRow}>
@@ -61,14 +61,14 @@ class AllEvents extends Component {
             </View>
           )}
           <Text style={styles.welcome}>no more events</Text>
-      </ScrollView>
-      <TouchableHighlight
-        style={styles.button}
-        onPress={this.buttonClicked.bind(this)}>
-        <View>
-          <Text style={styles.buttonText}>Refresh!</Text>
-        </View>
-      </TouchableHighlight>
+        </ScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={this.buttonClicked.bind(this)}>
+          <View>
+            <Text style={styles.buttonText}>Refresh!</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 150,
     borderWidth: 1,
+    borderColor: 'transparent',
     borderBottomColor: '#F5F5F6',
-    borderColor: 'transparent'
   },
   EventRow: {
     flex: 1,
@@ -105,25 +105,24 @@ const styles = StyleSheet.create({
     color: '#F5F5F6',
   },
   welcome: {
-    color: '#ACB2BE',
-    fontSize: 20,
-    fontFamily: 'HelveticaNeue',
-    textAlign: 'center',
     margin: 20,
+    fontSize: 20,
+    color: '#ACB2BE',
+    textAlign: 'center',
+    fontFamily: 'HelveticaNeue',
   },
   button: {
-    backgroundColor: '#34778A',
     padding: 15,
+    width: deviceWidth,
     alignItems: 'center',
-    width: deviceWidth
+    backgroundColor: '#34778A',
   },
   buttonText: {
-    color: '#F5F5F6',
     fontSize: 16,
-    fontFamily: 'HelveticaNeue-Light',
+    color: '#F5F5F6',
     textAlign: 'center',
+    fontFamily: 'HelveticaNeue-Light',
   },
 });
-
 
 export default AllEvents;
