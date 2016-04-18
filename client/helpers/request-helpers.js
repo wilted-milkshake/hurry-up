@@ -25,7 +25,7 @@ export const createUser = (newUser, context) => {
   .then((response) => {
     var res = JSON.parse(response._bodyText);
     if (res.success) {
-      context.state.handleClick();
+      context.state.handleClick(res.id);
     }
   })
   .catch((error) => console.warn('Error creating user', error));
@@ -43,7 +43,7 @@ export const login = (user, context) => {
   .then((response) => {
     var res = JSON.parse(response._bodyText);
     if (res.success) {
-      context.state.handleClick();
+      context.state.handleClick(res.id);
     }
   })
   .catch((error) => console.warn('Error creating user', error));
@@ -51,8 +51,7 @@ export const login = (user, context) => {
 
 export const updateLocation = (origin, context) => {
   // TODO: grab user id from login session(?)
-  var userId = 1;
-
+  var userId = context.state.userId;
   fetch('http://localhost:8080/api/users/' + userId, {
     method: 'PUT' ,
     headers: {
@@ -71,9 +70,9 @@ export const updateLocation = (origin, context) => {
 
 export const getAllEvents = (context) => {
   // TODO: grab user id from login session(?)
-  var userId = 1;
-
-  fetch('http://localhost:8080/api/events' + userId, {
+console.log('STATED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', context.state.userId);
+  var userId = context.state.userId;
+  fetch('http://localhost:8080/api/events/' + userId, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
