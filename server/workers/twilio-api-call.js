@@ -23,7 +23,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
     new Event({id: event.id})
       .destroy()
       .then(function(model) {
-        console.log('Event has been destroyed');
+        console.log('Event has been destroyed', model);
       })
       .catch(function(err) {
         console.log(err);
