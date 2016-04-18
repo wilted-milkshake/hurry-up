@@ -11,7 +11,7 @@ import React, {
   TouchableHighlight,
 } from 'react-native';
 
-import {createUser} from '../helpers/request-helpers';
+import {createUser, login} from '../helpers/request-helpers';
 
 const windowSize = Dimensions.get('window');
 
@@ -23,13 +23,27 @@ class Login extends Component {
       username: '',
       password: '',
       phoneNumber: '',
+      signup: false,
       loggedIn: props.loggedIn,
       handleClick: props.handlePress
     };
   }
 
-  onClick() {
-    this.state.handleClick();
+  onLogin() {
+    if (this.state.username && this.state.password) {
+      var user = {
+        username: this.state.username,
+        password: this.state.password,
+      };
+      var that = this;
+      login(user, that);//createUser(newUser, that);
+    } else {
+      alert( 'You must fill out each field!' );
+    }
+  }
+
+  onSignup() {
+    console.log('Signup workds!!!!!!!!!!!')
     if (this.state.username && this.state.password && this.state.phoneNumber) {
       var newUser = {
         username: this.state.username,
@@ -43,6 +57,11 @@ class Login extends Component {
     }
   }
 
+  goToSignup() {
+    this.setState({signup: true});
+    this.render();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -51,8 +70,50 @@ class Login extends Component {
             style={styles.mark}
             source={{uri: 'http://i.imgur.com/da4G0Io.png'}}/>
         </View>
-        {this.state.loggedIn
-          ? null
+        {this.state.signup
+          ? (<View style={styles.inputs}>
+              <View style={styles.inputContainer}>
+                <Image
+                  style={styles.inputUsername}
+                  source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
+                <TextInput
+                  placeholder="Username"
+                  value={this.state.username}
+                  placeholderTextColor="#FFF"
+                  style={[styles.input, styles.whiteFont]}
+                  onChangeText={(username) => this.setState({username})}/>
+              </View>
+              <View style={styles.inputContainer}>
+                <Image
+                  style={styles.inputPassword}
+                  source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+                <TextInput
+                  password={true}
+                  placeholder="Password"
+                  value={this.state.password}
+                  placeholderTextColor="#FFF"
+                  style={[styles.input, styles.whiteFont]}
+                  onChangeText={(password) => this.setState({password})}/>
+              </View>
+              <View style={styles.inputContainer}>
+                <Image
+                  style={styles.inputPassword}
+                  source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+                <TextInput
+                  style={[styles.input, styles.whiteFont]}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#FFF"
+                  value={this.state.phoneNumber}
+                  onChangeText={(phoneNumber) => this.setState({phoneNumber})}/>
+              </View>
+              <TouchableHighlight
+                style={styles.signup}
+                onPress={this.onSignup.bind(this)}>
+                  <Text style={styles.whiteFont}>
+                    Sign Up
+                  </Text>
+              </TouchableHighlight>
+            </View>)
           :(<View style={styles.inputs}>
             <View style={styles.inputContainer}>
               <Image
@@ -77,37 +138,23 @@ class Login extends Component {
                 style={[styles.input, styles.whiteFont]}
                 onChangeText={(password) => this.setState({password})}/>
             </View>
-            <View style={styles.inputContainer}>
-              <Image
-                style={styles.inputPassword}
-                source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
-              <TextInput
-                style={[styles.input, styles.whiteFont]}
-                placeholder="Phone Number"
-                placeholderTextColor="#FFF"
-                value={this.state.phoneNumber}
-                onChangeText={(phoneNumber) => this.setState({phoneNumber})}/>
-            </View>
+            <TouchableHighlight
+              style={styles.signin}
+              onPress={this.onLogin.bind(this)}>
+                  <Text style={styles.whiteFont}>
+                    Sign In
+                  </Text>
+            </TouchableHighlight>
           </View>)
         }
-        <TouchableHighlight
-          style={styles.signin}
-          onPress={this.onClick.bind(this)}>
-            {this.state.loggedIn
-              ?(<Text style={styles.whiteFont}>
-                  Sign Out
-                </Text>)
-              : (<Text style={styles.whiteFont}>
-                  Sign In
-                </Text>)
-            }
-        </TouchableHighlight>
 
-        {this.state.loggedIn
-          ? (<View style={styles.signup}></View>)
-          : (<View style={styles.signup}>
+        {this.state.signup
+          ? null
+          : (<View style={styles.signupButton}>
               <Text style={styles.greyFont}>Don't have an account?</Text>
-              <Text style={styles.whiteFont}>Sign Up</Text>
+              <TouchableHighlight onPress={this.goToSignup.bind(this)}>
+                <Text style={styles.whiteFont}>Sign Up</Text>
+              </TouchableHighlight>
             </View>)
         }
       </View>
@@ -141,16 +188,26 @@ const styles = StyleSheet.create({
   },
   signin: {
       padding: 20,
+      marginTop: 30,
       alignItems: 'center',
       backgroundColor: '#34778A',
   },
   signup: {
+      flex: 1,
+      padding: 20,
+      marginTop: 30,
+      marginBottom: 30,
+      alignItems: 'center',
+      backgroundColor: '#34778A',
+  },
+  signupButton: {
     flex: .15,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30
   },
   inputs: {
-      flex: .28,
+      flex: .38,
       marginTop: 10,
       marginBottom: 10,
   },

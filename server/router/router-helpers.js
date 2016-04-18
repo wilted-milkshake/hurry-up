@@ -105,11 +105,11 @@ exports.login = function(req, res) {
           } else {
             if (match) {
               // log the user in!
-              console.log('success');
-              res.send(201);
+              console.log('Login successful');
+              res.status(201).send({success: true});
             } else {
               console.log('That password was incorrect');
-              res.send(201);
+              res.status(201).send({success: false});
             }
           }
         });
@@ -148,7 +148,7 @@ exports.signup = function(req, res) {
                   phoneNumber: phoneNumber
                 })
                 .then(function(user) {
-                  res.status(201).send({id : user.attributes.id});
+                  res.status(201).send({id : user.attributes.id, success: true});
                 })
                 .catch(function(err) {
                   console.error('Error signing up new user', err);
