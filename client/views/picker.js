@@ -44,19 +44,22 @@ class Picker extends Component {
     }).start(this.props.closeModal);
   }
 
+  /* REMOVED 'choose' TOUCHABLE HIGHLIGHT
+  <View style={styles.closeButtonContainer}>
+    <TouchableHighlight
+      onPress={this.closeModal.bind(this)}
+      underlayColor='transparent'
+      style={styles.closeButton}>
+      <Text style={styles.closeButtonText}>
+        Choose
+      </Text>
+    </TouchableHighlight>
+  </View>
+  */
+
   render() {
     return (
       <Animated.View style={[{ transform: [{translateY: this.props.offSet}] }, styles.pickerPosition]}>
-        <View style={styles.closeButtonContainer}>
-          <TouchableHighlight
-            onPress={this.closeModal.bind(this)}
-            underlayColor='transparent'
-            style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>
-              Choose
-            </Text>
-          </TouchableHighlight>
-        </View>
         <PickerIOS
           selectedValue={this.props.earlyArrivalIndex}
           onValueChange={(index) => this.props.changeEarlyArrival(index)}>
@@ -76,8 +79,8 @@ const styles = StyleSheet.create({
   pickerPosition: {
     width: deviceWidth,
     position: 'absolute',
-    top: deviceHeight*.1,
-    height: deviceHeight*.5,
+    top: deviceHeight*.025,
+    height: deviceHeight*.375,
     left: -(deviceWidth*.025),
     backgroundColor: '#D8D8D8',
   },
