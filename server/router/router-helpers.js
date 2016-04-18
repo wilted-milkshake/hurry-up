@@ -62,7 +62,6 @@ exports.updateUserLocation =  function(req, res) {
             .then(function(events) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
-                  console.log('each event - CHECK TWILIOSENT: ', event);
                   if (event.attributes.twilioSent === 'false') {
                     googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                   }
