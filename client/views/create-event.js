@@ -91,7 +91,7 @@ class CreateEvent extends Component {
   }
 
   buttonClicked() {
-    if (this.state.eventName && this.state.date && this.state.address) {
+    if (this.state.eventName && this.state.eventTime && this.state.address && this.state.city && this.state.state && this.state.mode) {
       var newEvent  = {
         mode: this.state.mode,
         eventName: this.state.eventName,
