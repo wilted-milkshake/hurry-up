@@ -38,11 +38,13 @@ class CreateEvent extends Component {
     this.state = {
       eventName: '',
       eventTime: '',
-      destination: '',
+      address: '',
       mode: 'Driving',
       earlyArrivalIndex: 0,
       lastPosition: 'unknown',
       initialPosition: 'unknown',
+      state:'',
+      city:'',
       offSet: new Animated.Value(deviceHeight),
       values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
     };
@@ -68,21 +70,26 @@ class CreateEvent extends Component {
       modal: false,
       eventName: '',
       eventTime: '',
-      destination: '',
+      address: '',
+      state:'',
+      city:'',
       earlyArrivalIndex: 0,
     //mode: 'Driving',        //Commented out until refresh unhighlights previous selected segment
     });
   }
 
   buttonClicked() {
-    if (this.state.eventName && this.state.eventTime && this.state.destination) {
+    if (this.state.eventName && this.state.eventTime && this.state.address) {
       var newEvent  = {
         mode: this.state.mode,
         eventName: this.state.eventName,
         eventTime: this.state.eventTime,
-        destination: this.state.destination,
+        address: this.state.address + ',' ,
+        city: this.state.city + ',' ,
+        state: this.state.state ,
         earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
       };
+      console.log(newEvent);
       sendEvent(newEvent);
       this.clearForm();
 
@@ -138,14 +145,34 @@ class CreateEvent extends Component {
               style={[styles.inputFormat, styles.inputStyle]}
               onChangeText={(eventName) => this.setState({eventName})}/>
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Event Location"
-              placeholderTextColor="#F5F5F6"
-              value={this.state.destination}
-              style={[styles.inputFormat, styles.inputStyle]}
-              onChangeText={(destination) => this.setState({destination})}/>
+
+           <View style={styles.rowcontainer}>
+             <View style={styles.rowaddressContainer}>
+              <TextInput style={styles.textInput}
+                placeholder=" Event Address"
+                placeholderTextColor="#F5F5F6"
+                value={this.state.address}
+                style={[styles.inputFormat, styles.inputStyle]}
+                onChangeText={(address) => this.setState({address})}/>
+            </View> 
+             <View style={styles.rowcityContainer}>
+              <TextInput style={styles.textInput}
+                placeholder="City"
+                placeholderTextColor="#F5F5F6"
+                value={this.state.city}
+                style={[styles.inputFormat, styles.inputStyle]}
+                onChangeText={(city) => this.setState({city})}/>
+            </View>
+            <View style={styles.rowstateContainer}>
+              <TextInput style={styles.textInput}
+                placeholder="St"
+                placeholderTextColor="#F5F5F6"
+                value={this.state.state}
+                style={[styles.inputFormat, styles.inputStyle]}
+                onChangeText={(state) => this.setState({state})}/>
+            </View>
           </View>
+  
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Event Time"
@@ -209,10 +236,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   inputsContainer: {
-    flex: .75,
-    marginTop: 25,
-    paddingTop: 20,
-    marginBottom: 15,
+    flex: 1,
+    marginTop: 5,
+    paddingTop: 5,
+    marginBottom: 5,
   },
   segmentedContainer: {
     margin: 10,
@@ -227,9 +254,9 @@ const styles = StyleSheet.create({
   },
   inputFormat: {
     top: 5,
-    left: 35,
+    left: 3,
     right: 0,
-    height: 25,
+    height: 20,
   },
   inputStyle: {
     fontSize: 16,
@@ -268,7 +295,42 @@ const styles = StyleSheet.create({
   },
   segmentedSpacing: {
     height: 20,
-  }
+  },
+  rowcontainer: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+ },
+ rowaddressContainer: {
+     flex:.60,
+     height: 40,
+     width: 60,
+     margin: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderBottomColor: '#CCC',
+    borderColor: 'transparent',
+ },
+ rowcityContainer: {
+     flex:.45,
+     height: 40,
+     width: 20,
+     margin: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderBottomColor: '#CCC',
+    borderColor: 'transparent',
+ },
+ rowstateContainer: {
+     flex:.15,
+     height: 40,
+     width:5,
+     margin: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderBottomColor: '#CCC',
+    borderColor: 'transparent',
+ }
+   
 });
 
 export default CreateEvent;
