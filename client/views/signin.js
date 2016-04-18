@@ -115,7 +115,7 @@ class Login extends Component {
                   </Text>
               </TouchableHighlight>
             </View>)
-          :(<View style={styles.inputs}>
+          :(<View style={styles.signininputs}>
             <View style={styles.inputContainer}>
               <Image
                 style={styles.inputUsername}
@@ -178,39 +178,52 @@ const styles = StyleSheet.create({
       height: windowSize.height,
   },
   header: {
-      flex: .4,
+      flex: .30,
+      marginTop:10,
+      marginBottom:20,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent'
   },
   mark: {
-      width: 150,
-      height: 200
+      alignSelf:'center',
+      marginTop: 30,
+      width: 145,
+      height: 145
   },
   signin: {
-      padding: 20,
-      marginTop: 30,
+      flex:.45,
+      padding: 23,
+      marginTop: 10,
+      marginBottom: 20,
       alignItems: 'center',
+      justifyContent: 'center',
       backgroundColor: '#34778A',
   },
-  signup: {
-      flex: 1,
-      padding: 20,
-      marginTop: 30,
-      marginBottom: 30,
+  signup: { 
+      flex: .45,
+      padding: 15,
+      marginTop: 10,
+      marginBottom: 20,
       alignItems: 'center',
+      justifyContent: 'center',
       backgroundColor: '#34778A',
   },
   signupButton: {
-    flex: .15,
+    flex: .25,
+    paddingTop:10,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30
+    marginTop: 20,
+    
   },
   inputs: {
-      flex: .38,
-      marginTop: 10,
+      flex: .35,
       marginBottom: 10,
+  },
+  signininputs: {
+      flex: .35,
+      marginTop: 30,
+      marginBottom: 30,
   },
   inputPassword: {
       width: 20,
@@ -238,11 +251,14 @@ const styles = StyleSheet.create({
 
   },
   greyFont: {
+
     color: '#D8D8D8'
   },
   whiteFont: {
+    
     fontSize: 16,
     color: '#FFF',
+    
   }
 });
 
