@@ -27,7 +27,9 @@ db.knex.schema.hasTable('events').then(function(exists) {
       event.increments('id').primary();
       event.string('eventName', 20);
       event.string('eventTime', 20);
-      event.string('destination', 100);
+      event.string('address', 100);
+      event.string('city', 100);
+      event.string('state', 20);
       event.string('earlyArrival', 20);
       event.string('mode', 30);
       event.integer('userId');
