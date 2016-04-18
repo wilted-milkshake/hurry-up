@@ -9,10 +9,12 @@ The goal of hurry-up is to make sure you are never late to an appointment again.
 
 #### Client-side specifics
 
-1. To open the project in Xcode, do `open ios/hurryup.xcodeproj`
-2. Click 'Build and Run' to open the application in the simulator
-3. To change the simulated location, go to Debug -> Location -> (choose option)
-4. This application has only been tested on iPhone 5 and 6 models. Visual elements will not display correctly on older models.
+1. Run `npm start` to start the React Native server.
+2. To open the project in Xcode, do `open ios/hurryup.xcodeproj`
+3. Click 'Build and Run' to open the application in the simulator
+4. To change the simulated location, go to Debug -> Location -> (choose option)
+5. This application has only been tested on iPhone 5 and 6 models. 
+..* Visual elements will not display correctly on older models.
 
 ## API's
 
