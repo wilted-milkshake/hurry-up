@@ -40,4 +40,4 @@ server/api_keys.js
 dist/
 
 #DB
-server/db/hurryup.sqlite
+server/db/
