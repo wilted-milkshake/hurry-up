@@ -12,7 +12,14 @@ import React, {
   SegmentedControlIOS,
 } from 'react-native';
 
+/* Temporary fix for DatePicker type warnings.
+ * Refer to: https://github.com/facebook/react-native/issues/4547 */ 
+console.ignoredYellowBox = [
+  'Warning: Failed propType',
+];
+
 import Picker from './picker';
+import DatePicker from './datePicker';
 import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const DISTANCE_TO_REFRESH = 0.004;
@@ -45,8 +52,13 @@ class CreateEvent extends Component {
       initialPosition: 'unknown',
       state:'',
       city:'',
+      modal: false,
       offSet: new Animated.Value(deviceHeight),
       values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      date: new Date(),
+      timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
+      dateModal: false,
+      dateOffset: new Animated.Value(deviceHeight)
     };
   }
   //TODO: Must move all timer/ location events to main app view otherwise on signout
@@ -79,11 +91,11 @@ class CreateEvent extends Component {
   }
 
   buttonClicked() {
-    if (this.state.eventName && this.state.eventTime && this.state.address) {
+    if (this.state.eventName && this.state.date && this.state.address) {
       var newEvent  = {
         mode: this.state.mode,
         eventName: this.state.eventName,
-        eventTime: this.state.eventTime,
+        eventTime: this.state.date,
         address: this.state.address + ',' ,
         city: this.state.city + ',' ,
         state: this.state.state ,
@@ -133,6 +145,10 @@ class CreateEvent extends Component {
     });
   }
 
+  onDateChange(date) {
+    this.setState({date: date});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -174,14 +190,28 @@ class CreateEvent extends Component {
           </View>
   
           <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Event Time"
-              value={this.state.eventTime}
-              placeholderTextColor="#F5F5F6"
-              style={[styles.inputFormat, styles.inputStyle]}
-              onChangeText={(eventTime) => this.setState({eventTime})}/>
+            <TouchableHighlight
+              style={styles.inputFormat}
+              underlayColor="transparent"
+              onPress={() => { this.state.dateModal ? this.setState({ dateModal: false }) : this.setState({ dateModal: true })}}>
+              <Text style={styles.inputStyle}>
+                Event Time -- {this.state.date.toString().slice(0,21)}
+              </Text>
+            </TouchableHighlight>
+              { this.state.dateModal
+                ? <DatePicker
+                  dateOffset={this.state.dateOffset}
+                  closeModal={console.log('ERR: closeModal not working')}
+                  onDateChange={this.onDateChange.bind(this)}
+                  date={this.state.date}
+                  mode="datetime"
+                  minuteInterval={10}
+                  timeZoneOffsetInHours={this.state.timeZoneOffsetInHours}/>
+                : null
+              }
           </View>
-          <View style={styles.inputContainer}>
+
+          <View style={this.state.dateModal ? styles.hidden : styles.inputContainer}>
             <TouchableHighlight
               style={styles.inputFormat}
               underlayColor="transparent"
@@ -199,7 +229,8 @@ class CreateEvent extends Component {
                 : null
               }
           </View>
-          <View style={this.state.modal ? styles.hidden : styles.segmentedContainer}>
+
+          <View style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.segmentedContainer}>
             <TextInput
               placeholderTextColor="#F5F5F6"
               placeholder="Mode of Transport"
@@ -212,11 +243,13 @@ class CreateEvent extends Component {
               onChange={this.onChange.bind(this)}
               onValueChange={this.onValueChange.bind(this)}/>
           </View>
+
         </View>
+
         <TouchableHighlight
           onPress={this.buttonClicked.bind(this)}
-          pointerEvents={this.state.modal ? 'none' : 'auto'}
-          style={this.state.modal ? styles.hidden : styles.submitButton}>
+          pointerEvents={(this.state.modal || this.state.dateModal) ? 'none' : 'auto'}
+          style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.submitButton}>
           <View>
             <Text style={styles.inputStyle}>
               Submit!
@@ -237,9 +270,9 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 1,
-    marginTop: 5,
-    paddingTop: 5,
-    marginBottom: 5,
+    marginTop: 10,
+    paddingTop: 20,
+    marginBottom: 10,
   },
   segmentedContainer: {
     margin: 10,
@@ -301,30 +334,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
  },
  rowaddressContainer: {
-     flex:.60,
-     height: 40,
-     width: 60,
-     margin: 10,
+    flex: .60,
+    height: 40,
+    width: 60,
+    margin: 10,
     padding: 10,
     borderWidth: 1,
     borderBottomColor: '#CCC',
     borderColor: 'transparent',
  },
  rowcityContainer: {
-     flex:.45,
-     height: 40,
-     width: 20,
-     margin: 10,
+    flex: .45,
+    height: 40,
+    width: 20,
+    margin: 10,
     padding: 10,
     borderWidth: 1,
     borderBottomColor: '#CCC',
     borderColor: 'transparent',
  },
  rowstateContainer: {
-     flex:.15,
-     height: 40,
-     width:5,
-     margin: 10,
+    flex: .15,
+    height: 40,
+    width: 5,
+    margin: 10,
     padding: 10,
     borderWidth: 1,
     borderBottomColor: '#CCC',
