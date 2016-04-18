@@ -9,7 +9,9 @@ exports.addEvent = function(req, res) {
   var mode         = req.body.mode;
   var eventName    = req.body.eventName;
   var eventTime    = req.body.eventTime;
-  var destination  = req.body.destination;
+  var address      = req.body.address;
+  var city         = req.body.city;
+  var state        = req.body.state;
   var earlyArrival = req.body.earlyArrival;
 
   // TODO: determine username on client side ? or sessions?
@@ -23,7 +25,9 @@ exports.addEvent = function(req, res) {
         mode: mode,
         eventName: eventName,
         eventTime: eventTime,
-        destination: destination,
+        address: address,
+        city: city,
+        state: state,
         earlyArrival: earlyArrival,
       });
       newEvent.save()
