@@ -11,6 +11,8 @@ import React, {
   TouchableHighlight,
 } from 'react-native';
 
+import {createUser} from '../helpers/request-helpers';
+
 const windowSize = Dimensions.get('window');
 
 class Login extends Component {
@@ -28,6 +30,17 @@ class Login extends Component {
 
   onClick() {
     this.state.handleClick();
+    if (this.state.username && this.state.password && this.state.phoneNumber) {
+      var newUser = {
+        username: this.state.username,
+        password: this.state.password,
+        phoneNumber: this.state.phoneNumber,
+      };
+      var that = this;
+      createUser(newUser, that);
+    } else {
+      alert( 'You must fill out each field!' );
+    }
   }
 
   render() {
@@ -49,7 +62,8 @@ class Login extends Component {
                 placeholder="Username"
                 value={this.state.username}
                 placeholderTextColor="#FFF"
-                style={[styles.input, styles.whiteFont]}/>
+                style={[styles.input, styles.whiteFont]}
+                onChangeText={(username) => this.setState({username})}/>
             </View>
             <View style={styles.inputContainer}>
               <Image
@@ -60,7 +74,8 @@ class Login extends Component {
                 placeholder="Password"
                 value={this.state.password}
                 placeholderTextColor="#FFF"
-                style={[styles.input, styles.whiteFont]}/>
+                style={[styles.input, styles.whiteFont]}
+                onChangeText={(password) => this.setState({password})}/>
             </View>
             <View style={styles.inputContainer}>
               <Image
@@ -70,7 +85,8 @@ class Login extends Component {
                 style={[styles.input, styles.whiteFont]}
                 placeholder="Phone Number"
                 placeholderTextColor="#FFF"
-                value={this.state.phoneNumber}/>
+                value={this.state.phoneNumber}
+                onChangeText={(phoneNumber) => this.setState({phoneNumber})}/>
             </View>
           </View>)
         }

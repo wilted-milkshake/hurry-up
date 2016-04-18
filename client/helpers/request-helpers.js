@@ -13,6 +13,38 @@ export const sendEvent = (newEvent) => {
   .catch((error) => console.warn('Unable to send event', error));
 };
 
+export const createUser = (newUser, context) => {
+  fetch('http://localhost:8080/api/signup', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newUser),
+  })
+  .then((response) => {
+    var res = JSON.parse(response._bodyText);
+    console.log(res);
+  })
+  .catch((error) => console.warn('Error creating user', error));
+};
+
+export const login = (user, context) => {
+  fetch('http://localhost:8080/api/login', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  })
+  .then((response) => {
+    var res = JSON.parse(response._bodyText);
+    console.log(res);
+  })
+  .catch((error) => console.warn('Error creating user', error));
+};
+
 export const updateLocation = (origin, context) => {
   // TODO: grab user id from login session(?)
   var userId = 1;

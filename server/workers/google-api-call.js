@@ -5,10 +5,9 @@ var TwilioSend = require('./twilio-api-call.js');
 // note: in-memory storage ? write to db?  ...for clearing timeouts
 var events = {};
 
-var googleWorker = function(event, origin, responseToClient) {
+var googleWorker = function(event, origin, phoneNumber) {
   // TODO: parse eventtime and earlyarrival to manipulate milliseconds // validate user form entry
   // var arrivalTime = event.eventTime (convert to UTC sec) - event.earlyArrival (convert to UTC sec);
-
   var arrivalTime  = Date.now()/1000;     //seconds
   var currentTime  = Date.now()/1000;     //seconds
 
