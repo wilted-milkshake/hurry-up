@@ -95,7 +95,7 @@ class CreateEvent extends Component {
       var newEvent  = {
         mode: this.state.mode,
         eventName: this.state.eventName,
-        eventTime: this.state.date,
+        eventTime: this.state.date.toString(),
         address: this.state.address + ',' ,
         city: this.state.city + ',' ,
         state: this.state.state ,
@@ -144,6 +144,15 @@ class CreateEvent extends Component {
       mode: value,
     });
   }
+
+  // displayTime() {
+  //   var dateString = this.state.date.toString();
+  //   var date = dateString.substring(0,16);
+  //   var hours = dateString.substring(17,18);
+  //   var minutes = this.state.date.toString().slice(19,21);
+  //   // var display = this.state.date.toString().slice(0,21);
+  //   return date + hours + minutes;
+  // }
 
   onDateChange(date) {
     this.setState({date: date});
@@ -195,7 +204,7 @@ class CreateEvent extends Component {
               underlayColor="transparent"
               onPress={() => { this.state.dateModal ? this.setState({ dateModal: false }) : this.setState({ dateModal: true })}}>
               <Text style={styles.inputStyle}>
-                Event Time -- {this.state.date.toString().slice(0,21)}
+                Event Time -- {this.state.date.toString().slice(0, 21)} 
               </Text>
             </TouchableHighlight>
               { this.state.dateModal
@@ -205,7 +214,7 @@ class CreateEvent extends Component {
                   onDateChange={this.onDateChange.bind(this)}
                   date={this.state.date}
                   mode="datetime"
-                  minuteInterval={10}
+                  minuteInterval={null}
                   timeZoneOffsetInHours={this.state.timeZoneOffsetInHours}/>
                 : null
               }

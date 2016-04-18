@@ -7,7 +7,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
   //send twilio text
   client.sendMessage({
       to: userPhoneNumber,  // Any number Twilio can deliver to
-      from: '+15005550006', // TO TEST:'+15005550006', //Ranes Tiwilio # '+12673544918' //Liams Twilio #'+17346362216', // A number you bought from Twilio
+      from: '+12673544918', // TO TEST:'+15005550006', //Ranes Tiwilio # '+12673544918' //Liams Twilio #'+17346362216', // A number you bought from Twilio
       body: 'Hurry Up! Leave now to get to ' + event.eventName + ' by ' + event.eventTime // body of the SMS message
   }, function(err, responseData) { //this function is executed when a response is received from Twilio
       if (err) {

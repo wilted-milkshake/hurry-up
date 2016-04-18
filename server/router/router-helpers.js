@@ -28,6 +28,7 @@ exports.addEvent = function(req, res) {
         address: address,
         city: city,
         state: state,
+        twilioSent: 'false',
         earlyArrival: earlyArrival,
       });
       newEvent.save()
@@ -61,7 +62,10 @@ exports.updateUserLocation =  function(req, res) {
             .then(function(events) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
-                  googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
+                  console.log('each event - CHECK TWILIOSENT: ', event);
+                  if (event.attributes.twilioSent === 'false') {
+                    googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
+                  }
                 });
                 console.log('Called worker for each scheduled event');
                 updatedUser.clearWatch = false;
