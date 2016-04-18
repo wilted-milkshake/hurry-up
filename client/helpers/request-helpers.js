@@ -24,7 +24,9 @@ export const createUser = (newUser, context) => {
   })
   .then((response) => {
     var res = JSON.parse(response._bodyText);
-    console.log(res);
+    if (res.success) {
+      context.state.handleClick();
+    }
   })
   .catch((error) => console.warn('Error creating user', error));
 };
@@ -40,7 +42,9 @@ export const login = (user, context) => {
   })
   .then((response) => {
     var res = JSON.parse(response._bodyText);
-    console.log(res);
+    if (res.success) {
+      context.state.handleClick();
+    }
   })
   .catch((error) => console.warn('Error creating user', error));
 };
