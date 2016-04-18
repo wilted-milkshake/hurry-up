@@ -1,7 +1,9 @@
 var User         = require('../app/models/user.js');
+var Users        = require('../app/collections/users.js');
 var Event        = require('../app/models/event.js');
 var bcrypt       = require('bcrypt');
 var googleWorker = require('../workers/google-api-call.js');
+var SALT_WORK_FACTOR = 10;
 
 exports.addEvent = function(req, res) {
   var mode         = req.body.mode;
@@ -47,6 +49,7 @@ exports.updateUserLocation =  function(req, res) {
   new User({ id: userId })
     .fetch()
     .then(function(user) {
+      var phoneNumber = user.attributes.phoneNumber;
       user.set('origin', origin);
       user.save()
         .then(function(updatedUser) {
@@ -54,7 +57,7 @@ exports.updateUserLocation =  function(req, res) {
             .then(function(events) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
-                  googleWorker(event.attributes, updatedUser.attributes.origin);
+                  googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                 });
                 console.log('Called worker for each scheduled event');
                 updatedUser.clearWatch = false;
@@ -96,15 +99,24 @@ exports.login = function(req, res) {
     .then(function(user) {
       if (user) {
         bcrypt.compare(password, user.get('password'), function(err, match) {
-          if (match) {
-            // log the user in!
+          if (err) {
+            console.error(err);
+            res.status(404).send(err);
           } else {
-            console.log('That password was incorrect');
+            if (match) {
+              // log the user in!
+              console.log('success');
+              res.send(201);
+            } else {
+              console.log('That password was incorrect');
+              res.send(201);
+            }
           }
         });
       } else {
         // user was not found... we could send them to the signup page, or
         // keep them on the login page.
+        console.log('Sorry, that username is not in our database.');
       }
     });
 };
@@ -112,7 +124,7 @@ exports.login = function(req, res) {
 exports.signup = function(req, res) {
   var username    = req.body.username;
   var password    = req.body.password;
-  var phoneNumber = '+1' + req.body.password; // Add +1 to beggining for use with twilio
+  var phoneNumber = '+1' + req.body.phoneNumber; // Add +1 to beggining for use with twilio
   // check username against db to avoid duplicate users
   new User({ username: username })
     .fetch()
@@ -120,17 +132,31 @@ exports.signup = function(req, res) {
       if (found) {
         console.log('Sorry, that username is already in the database!');
       } else {
-        // if we decide to use a salt, we pass it in instead of null
-        bcrypt.hash(password, null, function(err, hashedPassword){
-          User.create({
-            username: username,
-            password: hashedPassword,
-            phoneNumber: phoneNumber
-          })
-          .then(function(user) {
-            // this is where we create a session or execute whatever action
-            // needs to take place after a user is successfully created.
-          });
+        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+          if (err) {
+            console.log('Could not create salt', err);
+            res.status(404).send(err);
+          } else {
+            bcrypt.hash(password, salt, function(err, hashedPassword){
+              if (err) {
+                console.log('Could not hash password', err);
+                res.status(404).send(err);
+              } else {
+                Users.create({
+                  username: username,
+                  password: hashedPassword,
+                  phoneNumber: phoneNumber
+                })
+                .then(function(user) {
+                  res.status(201).send({id : user.attributes.id});
+                })
+                .catch(function(err) {
+                  console.error('Error signing up new user', err);
+                  res.status(404).send(err);
+                });
+              }
+            });
+          }
         });
       }
     });
