@@ -14,7 +14,8 @@ var googleWorker = function(event, origin, phoneNumber) {
     //split into each field
   var originLat    = origin.latitude;     //37.773972
   var originLong   = origin.longitude;    //-122.431297
-  var eventAddress = event.destination;   //'1118FolsomStreet,SanFrancisco,CA';
+  //'1118FolsomStreet,SanFrancisco,CA' Doesnt actually need spaces removed, but regex practice is nice;
+  var eventAddress = event.address.replace(/\s/g, '') + event.city.replace(/\s/g, '') + event.state;
   var travelMode   = event.mode;          //'driving';
 
   // Get routes time duration from Google API
