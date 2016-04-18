@@ -68,7 +68,8 @@ class Login extends Component {
         <View style={styles.header}>
           <Image
             style={styles.mark}
-            source={{uri: 'http://i.imgur.com/da4G0Io.png'}}/>
+            resizeMode="contain"
+            source={require('../rabbitLogo.png')}/>
         </View>
         {this.state.signup
           ? (<View style={styles.inputs}>
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   },
   mark: {
       width: 150,
-      height: 150
+      height: 200
   },
   signin: {
       padding: 20,
