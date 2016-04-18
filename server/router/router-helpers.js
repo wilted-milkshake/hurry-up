@@ -15,9 +15,9 @@ exports.addEvent = function(req, res) {
   var earlyArrival = req.body.earlyArrival;
 
   // TODO: determine username on client side ? or sessions?
-  var username = 'Liam';
+  var userId = req.body.userId;
 
-  new User({ username: username })
+  new User({ id: userId })
     .fetch()
     .then(function(user) {
       var newEvent = new Event({
@@ -58,7 +58,8 @@ exports.updateUserLocation =  function(req, res) {
       user.set('origin', origin);
       user.save()
         .then(function(updatedUser) {
-          Event.fetchAll({ where: { userId: userId }})
+          Event.where({ userId: userId })
+            .fetchAll({})
             .then(function(events) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
@@ -86,7 +87,8 @@ exports.updateUserLocation =  function(req, res) {
 exports.getAllUserEvents = function(req, res) {
   var userId = req.params.id;
 
-  Event.fetchAll({where: { userId: userId }})
+  Event.where({ userId: userId })
+    .fetchAll({})
     .then(function(events) {
       console.log('Got all user\'s events for event list');
       res.send(events);
@@ -113,7 +115,7 @@ exports.login = function(req, res) {
             if (match) {
               // log the user in!
               console.log('Login successful');
-              res.status(201).send({success: true});
+              res.status(201).send({id : user.attributes.id, success: true});
             } else {
               console.log('That password was incorrect');
               res.status(201).send({success: false});

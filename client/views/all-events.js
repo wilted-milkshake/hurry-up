@@ -18,7 +18,8 @@ class AllEvents extends Component {
     super(props);
 
     this.state = {
-      events: []
+      events: [],
+      userId: props.userId,
     };
   }
 

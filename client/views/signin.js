@@ -25,7 +25,7 @@ class Login extends Component {
       phoneNumber: '',
       signup: false,
       loggedIn: props.loggedIn,
-      handleClick: props.handlePress
+      handleClick: props.handlePress,
     };
   }
 
@@ -43,7 +43,6 @@ class Login extends Component {
   }
 
   onSignup() {
-    console.log('Signup workds!!!!!!!!!!!')
     if (this.state.username && this.state.password && this.state.phoneNumber) {
       var newUser = {
         username: this.state.username,

@@ -22,15 +22,16 @@ class hurryup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      userId: null
     };
   }
 
-  handleSignIn() {
+  handleSignIn(userId) {
     this.setState({
-      loggedIn: true
+      loggedIn: true,
+      userId: userId
     });
-    console.log(this.state.loggedIn);
     this.render();
   }
 
@@ -52,8 +53,8 @@ class hurryup extends Component {
               tabBarInactiveTextColor="#ACB2BE"
               tabBarBackgroundColor="transparent"
               tabBarTextStyle={{fontFamily: 'HelveticaNeue-Light', fontSize: 15}}>
-              <CreateEvent tabLabel='Create Event' />
-              <AllEvents tabLabel='My Events' />
+              <CreateEvent userId = {this.state.userId} tabLabel='Create Event' />
+              <AllEvents userId = {this.state.userId} tabLabel='My Events' />
             </ScrollableTabView>)
           : (<ScrollableTabView
               style={{marginTop: 0, top: 0}}

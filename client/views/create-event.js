@@ -13,7 +13,7 @@ import React, {
 } from 'react-native';
 
 /* Temporary fix for DatePicker type warnings.
- * Refer to: https://github.com/facebook/react-native/issues/4547 */ 
+ * Refer to: https://github.com/facebook/react-native/issues/4547 */
 console.ignoredYellowBox = [
   'Warning: Failed propType',
 ];
@@ -43,6 +43,7 @@ class CreateEvent extends Component {
     this.watchID = null;
 
     this.state = {
+      userId: props.userId,
       eventName: '',
       eventTime: '',
       address: '',
@@ -100,13 +101,14 @@ class CreateEvent extends Component {
         city: this.state.city + ',' ,
         state: this.state.state ,
         earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
+        userId: this.state.userId,
       };
-      console.log(newEvent);
       sendEvent(newEvent);
       this.clearForm();
 
       var origin   = this.state.initialPosition.coords;
-      updateLocation(origin);
+      var that = this;
+      updateLocation(origin, that);
 
       this.watchID = navigator.geolocation.watchPosition((position) => {
         var lastPosition = position;
@@ -119,7 +121,6 @@ class CreateEvent extends Component {
 
         var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
 
-        var that = this;
 
         if (distanceTraveled >= DISTANCE_TO_REFRESH) {
           updateLocation(this.state.lastPosition.coords, that);
@@ -179,7 +180,7 @@ class CreateEvent extends Component {
                 value={this.state.address}
                 style={[styles.inputFormat, styles.inputStyle]}
                 onChangeText={(address) => this.setState({address})}/>
-            </View> 
+            </View>
              <View style={styles.rowcityContainer}>
               <TextInput style={styles.textInput}
                 placeholder="City"
@@ -197,14 +198,14 @@ class CreateEvent extends Component {
                 onChangeText={(state) => this.setState({state})}/>
             </View>
           </View>
-  
+
           <View style={styles.inputContainer}>
             <TouchableHighlight
               style={styles.inputFormat}
               underlayColor="transparent"
               onPress={() => { this.state.dateModal ? this.setState({ dateModal: false }) : this.setState({ dateModal: true })}}>
               <Text style={styles.inputStyle}>
-                Event Time -- {this.state.date.toString().slice(0, 21)} 
+                Event Time -- {this.state.date.toString().slice(0, 21)}
               </Text>
             </TouchableHighlight>
               { this.state.dateModal
@@ -372,7 +373,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CCC',
     borderColor: 'transparent',
  }
-   
+
 });
 
 export default CreateEvent;
