@@ -58,7 +58,7 @@ class AllEvents extends Component {
               <View style={styles.EventRow}>
                 <Text style={styles.EventTitle}>Event:</Text>
                 <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.eventName} @ {event.eventTime.substring(0,10)}, {this.displayTime(event.eventTime)}</Text>
+                  <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
                 </View>
               </View>
               <View style={styles.EventRow}>
