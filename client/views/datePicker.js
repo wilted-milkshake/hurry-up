@@ -63,9 +63,8 @@ class DatePicker extends Component {
   }
 };
 
-const styles = StyleSheet.create({
-  pickerPosition: {
-    width: deviceWidth,
+/*
+width: deviceWidth,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
@@ -73,6 +72,18 @@ const styles = StyleSheet.create({
     height: deviceHeight*.5,
     left: -(deviceWidth*.025),
     backgroundColor: '#D8D8D8',
+*/
+
+const styles = StyleSheet.create({
+  pickerPosition: {
+    width: deviceWidth,
+    position: 'absolute',
+    top: deviceHeight*.025,
+    height: deviceHeight*.375,
+    left: -(deviceWidth*.025),
+    backgroundColor: '#D8D8D8',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeButtonContainer: {
     borderTopWidth: 1,

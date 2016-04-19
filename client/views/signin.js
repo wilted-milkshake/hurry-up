@@ -98,7 +98,7 @@ class Login extends Component {
               <View style={styles.inputContainer}>
                 <Image
                   style={styles.inputPassword}
-                  source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+                  source={require('../telephone.png')}/>
                 <TextInput
                   style={[styles.input, styles.whiteFont]}
                   placeholder="Phone Number"
