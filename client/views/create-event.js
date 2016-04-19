@@ -146,14 +146,20 @@ class CreateEvent extends Component {
     });
   }
 
-  // displayTime() {
-  //   var dateString = this.state.date.toString();
-  //   var date = dateString.substring(0,16);
-  //   var hours = dateString.substring(17,18);
-  //   var minutes = this.state.date.toString().slice(19,21);
-  //   // var display = this.state.date.toString().slice(0,21);
-  //   return date + hours + minutes;
-  // }
+  displayTime() {
+    var dateString = this.state.date.toString();
+    var date = dateString.substring(0,10);
+    var hours = dateString.substring(16,18);
+    var postfix;
+    if (Number(hours) > 12) {
+      postfix = 'PM';
+      hours = hours - 12;
+    } else {
+      postfix = 'AM';
+    }
+    var minutes = dateString.substring(19,21);
+    return date + ', ' + hours + ':' + minutes + ' ' + postfix;
+  }
 
   onDateChange(date) {
     this.setState({date: date});
@@ -205,7 +211,7 @@ class CreateEvent extends Component {
               underlayColor="transparent"
               onPress={() => { this.state.dateModal ? this.setState({ dateModal: false }) : this.setState({ dateModal: true })}}>
               <Text style={styles.inputStyle}>
-                Event Time -- {this.state.date.toString().slice(0, 21)}
+                Event Time -- {this.displayTime()}
               </Text>
             </TouchableHighlight>
               { this.state.dateModal
@@ -221,11 +227,11 @@ class CreateEvent extends Component {
               }
           </View>
 
-          <View style={this.state.dateModal ? styles.hidden : styles.inputContainer}>
+          <View style={this.state.dateModal ? [{ transform: [{translateY: deviceHeight*.7}] }] : styles.inputContainer}>
             <TouchableHighlight
               style={styles.inputFormat}
               underlayColor="transparent"
-              onPress={ () => this.setState({modal: true}) }>
+              onPress={() => { this.state.modal ? this.setState({ modal: false }) : this.setState({ modal: true })}}>
               <Text style={styles.inputStyle}>
                 Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}
               </Text>
@@ -234,7 +240,7 @@ class CreateEvent extends Component {
                 ? <Picker
                   offSet={this.state.offSet}
                   earlyArrivalIndex={this.state.earlyArrivalIndex}
-                  closeModal={() => this.setState({ modal: false })}
+                  closeModal={console.log(':( consistent modal-ing')}
                   changeEarlyArrival={this.changeEarlyArrival.bind(this)}/>
                 : null
               }
@@ -289,7 +295,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   inputContainer: {
-    margin: 10,
+    margin: 15,
     padding: 10,
     borderWidth: 1,
     borderBottomColor: '#CCC',
@@ -311,7 +317,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#34778A',
   },
   empty: {
-    flex: .15,
+    flex: .17,
     alignItems: 'center',
     justifyContent: 'center',
   },

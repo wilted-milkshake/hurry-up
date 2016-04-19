@@ -35,6 +35,20 @@ class AllEvents extends Component {
     this.render();
   }
 
+  displayTime(time) {
+    var dateTime = time.toString();
+    var hours = dateTime.substring(16,18);
+    var postfix;
+    if (Number(hours) > 12) {
+      postfix = 'PM';
+      hours = hours - 12;
+    } else {
+      postfix = 'AM';
+    }
+    var minutes = dateTime.substring(19,21);
+    return hours + ':' + minutes + ' ' + postfix;
+  }
+
   render() {
     return (
       <View style={{flex: 1}}>
@@ -44,7 +58,7 @@ class AllEvents extends Component {
               <View style={styles.EventRow}>
                 <Text style={styles.EventTitle}>Event:</Text>
                 <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.eventName} @ {event.eventTime.substring(0,10)}, {event.eventTime.substring(15,21)}</Text>
+                  <Text style={styles.EventText}>{event.eventName} @ {event.eventTime.substring(0,10)}, {this.displayTime(event.eventTime)}</Text>
                 </View>
               </View>
               <View style={styles.EventRow}>
