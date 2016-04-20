@@ -19,9 +19,12 @@ var displayTime = function(time) {
 
 var sendText = function(userPhoneNumber, event, timeoutTime) {
   var eventTime = displayTime(event.eventTime);
-  const { eventName, address, city, state, mode} = event;
-  address.replace(/\s/g, '+');
-  city.replace(/\s/g, '+')
+  const eventName, address, city, state, mode;
+  eventName = event.eventName;
+  address = event.address.replace(/\s/g, '+');
+  city = event.city.replace(/\s/g, '+');
+  state = event.state;
+  mode = event.mode;
 
   //send twilio text
   client.sendMessage({
