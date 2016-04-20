@@ -56,6 +56,7 @@ exports.updateUserLocation =  function(req, res) {
     .then(function(user) {
       var phoneNumber = user.attributes.phoneNumber;
       user.set('origin', origin);
+      // saving new user location in database
       user.save()
         .then(function(updatedUser) {
           Event.where({ userId: userId })
@@ -64,6 +65,7 @@ exports.updateUserLocation =  function(req, res) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
                   if (event.attributes.twilioSent === 'false') {
+                    // sending info to Google API
                     googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                   }
                 });

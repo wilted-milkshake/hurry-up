@@ -13,12 +13,27 @@ var alreadySentTwilio = function(event) {
       event.set('twilioSent', 'true');
       event.save()
         .then(function(updatedEvent) {
-          console.log('Change twilioSent for event: ', updatedEvent);
+          console.log('Changed twilioSent for event: ', updatedEvent);
         })
         .catch(function(err) {
           console.log('Error updated twilioSent for event ', err);
         });
       });
+};
+
+var saveDuration = function(event, duration) {
+  new Event({ id: event.id })
+    .fetch()
+    .then(function(event) {
+      event.set('duration', duration);
+      event.save()
+        .then(function(updatedEvent) {
+          console.log('Updated duration for event: ', updatedEvent);
+        })
+        .catch(function(err) {
+          console.log('Error updating duration for event: ', err);
+        });
+    })
 };
 
 var googleWorker = function(event, origin, phoneNumber) {
@@ -45,7 +60,7 @@ var googleWorker = function(event, origin, phoneNumber) {
     var parsedBody = JSON.parse(body);
     if (err || !parsedBody.routes[0]) { console.log('There was an error with Google API', err); }
     else {
-      var duration = parsedBody.routes[0].legs[0].duration.value;
+      var duration = parsedBody.routes[0].legs[0].duration.value; // travel time
       var timeoutDuration = (arrivalTime - duration) - currentTime;
       if (timeoutDuration < 0) {
         timeoutDuration = 0;
@@ -53,6 +68,11 @@ var googleWorker = function(event, origin, phoneNumber) {
       if (events[event.id]) {
         clearTimeout(events[event.id]);
       }
+
+      // save duration in database
+      saveDuration(event, duration);
+
+      // send text to phone number
       events[event.id] = setTimeout(function() {
         TwilioSend(phoneNumber, event, duration + event.earlyArrival);
         alreadySentTwilio(event);

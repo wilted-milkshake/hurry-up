@@ -33,6 +33,7 @@ db.knex.schema.hasTable('events').then(function(exists) {
       event.string('earlyArrival', 20);
       event.string('mode', 30);
       event.string('twilioSent', 30);
+      event.integer('duration');
       event.integer('userId');
     }).then(function(table) {
       console.log('Created Event Table', table);

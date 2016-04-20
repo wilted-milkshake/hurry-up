@@ -121,7 +121,6 @@ class CreateEvent extends Component {
 
         var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
 
-
         if (distanceTraveled >= DISTANCE_TO_REFRESH) {
           updateLocation(this.state.lastPosition.coords, that);
           this.setState({ initialPosition: lastPosition });
