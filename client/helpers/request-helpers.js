@@ -36,7 +36,9 @@ export const createUser = (newUser, context) => {
     body: JSON.stringify(newUser),
   })
   .then((response) => {
-    var res = JSON.parse(response._bodyText);
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
     if (res.success) {
       context.state.handleClick(res.id);
     }
@@ -54,7 +56,9 @@ export const login = (user, context) => {
     body: JSON.stringify(user),
   })
   .then((response) => {
-    var res = JSON.parse(response._bodyText);
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
     if (res.success) {
       context.state.handleClick(res.id);
     }
