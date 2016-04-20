@@ -106,7 +106,7 @@ class CreateEvent extends Component {
       sendEvent(newEvent);
       this.clearForm();
 
-      var origin   = this.state.initialPosition.coords;
+      var origin = this.state.initialPosition.coords;
       var that = this;
       updateLocation(origin, that);
 
@@ -120,7 +120,6 @@ class CreateEvent extends Component {
         var initialLongitude  = initialPosition.coords.longitude;
 
         var distanceTraveled  = Math.sqrt(Math.pow((initialLatitude - lastLatitude), 2) + Math.pow((initialLongitude - lastLongitude), 2));
-
 
         if (distanceTraveled >= DISTANCE_TO_REFRESH) {
           updateLocation(this.state.lastPosition.coords, that);

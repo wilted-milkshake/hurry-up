@@ -12,7 +12,7 @@ app.post('/api/signup', route.signup);
 
 app.post('/api/events', route.addEvent);
 
-app.get('/api/events/:id', route.getAllUserEvents);
+app.get('/api/events/:id', route.getAllUserEvents); // id is user id
 
 app.put('/api/users/:id', route.updateUserLocation);
 

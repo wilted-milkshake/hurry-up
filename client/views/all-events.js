@@ -49,6 +49,23 @@ class AllEvents extends Component {
     return hours + ':' + minutes + ' ' + postfix;
   }
 
+  displayDuration(duration) {
+    var minutes = Math.ceil(duration / 60);
+    
+    if (minutes < 60) {
+      minutes = minutes.toString();
+      return minutes + 'm';
+    }
+
+    if (minutes > 60) {
+      var hours = Math.floor(minutes / 60);
+      minutes = Math.ceil(minutes - hours * 60);
+      minutes = minutes.toString();
+      hours = hours.toString();
+      return hours + 'h ' + minutes + 'm';
+    }
+  }
+
   render() {
     return (
       <View style={{flex: 1}}>
@@ -67,6 +84,14 @@ class AllEvents extends Component {
                   <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
                 </View>
               </View>
+
+              <View style={styles.EventRow}>
+                <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
+                <View style={styles.EventInput}>
+                  <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                </View>
+              </View>
+
               <View style={styles.EventRow}>
                 <Text style={styles.EventTitle}>Getting there by: </Text>
                 <View style={styles.EventInput}>
