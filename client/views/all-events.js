@@ -50,7 +50,20 @@ class AllEvents extends Component {
   }
 
   displayDuration(duration) {
+    var minutes = Math.ceil(duration / 60);
+    
+    if (minutes < 60) {
+      minutes = minutes.toString();
+      return minutes + 'm';
+    }
 
+    if (minutes > 60) {
+      var hours = Math.floor(minutes / 60);
+      minutes = Math.ceil(minutes - hours * 60);
+      minutes = minutes.toString();
+      hours = hours.toString();
+      return hours + 'h ' + minutes + 'm';
+    }
   }
 
   render() {
@@ -75,7 +88,7 @@ class AllEvents extends Component {
               <View style={styles.EventRow}>
                 <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
                 <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.duration}</Text>
+                  <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
                 </View>
               </View>
 
