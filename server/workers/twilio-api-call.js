@@ -19,12 +19,16 @@ var displayTime = function(time) {
 
 var sendText = function(userPhoneNumber, event, timeoutTime) {
   var eventTime = displayTime(event.eventTime);
+  const { eventName, address, city, state, mode} = event;
+  address.replace(/\s/g, '+');
+  city.replace(/\s/g, '+')
+
   //send twilio text
   client.sendMessage({
-      to: userPhoneNumber,  // Any number Twilio can deliver to
-      from: '+12673544918', // TO TEST:'+15005550006', //Ranes Tiwilio # '+12673544918' //Liams Twilio #'+17346362216', // A number you bought from Twilio
-      body: 'Hurry Up! Leave now to get to ' + event.eventName + ' by ' + eventTime // body of the SMS message
-  }, function(err, responseData) { //this function is executed when a response is received from Twilio
+      to: userPhoneNumber,
+      from: '+14156894189',
+      body:`Hurry Up! Leave now to get to ${eventName} by ${eventTime}. Click here to get directions: http://maps.apple.com/?daddr=${address}+${city}+${state}&dirflg=d&t=m`
+    }, function(err, responseData) {
       if (err) {
         console.log("Error sending Twilio text", err);
       } else {
