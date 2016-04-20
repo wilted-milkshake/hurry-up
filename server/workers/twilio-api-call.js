@@ -19,9 +19,9 @@ var displayTime = function(time) {
 
 var sendText = function(userPhoneNumber, event, timeoutTime) {
   var eventTime = displayTime(event.eventTime);
-  const { eventName, address, city, state, mode} = event;
-  address.replace(/\s/g, '+');
-  city.replace(/\s/g, '+')
+  const { eventName, state, mode } = event;
+  const address = event.address.replace(/\s/g, '+');
+  const city = event.city.replace(/\s/g, '+');
 
   //send twilio text
   client.sendMessage({
@@ -32,10 +32,11 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
       if (err) {
         console.log("Error sending Twilio text", err);
       } else {
-          console.log(responseData.from); // outputs "+14506667788"
-          console.log(responseData.body); // outputs "word to your mother."
+        console.log(responseData.from); // outputs "+14506667788"
+        console.log(responseData.body); // outputs "word to your mother."
       }
-  });
+    }
+  );
 
   //delete event from database after it starts
   setTimeout(function() {
