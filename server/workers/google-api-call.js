@@ -70,6 +70,7 @@ var googleWorker = function(event, origin, phoneNumber) {
       }
 
       // save duration in database
+      console.log('outside saveDuration: ', event, duration);
       saveDuration(event, duration);
 
       // send text to phone number

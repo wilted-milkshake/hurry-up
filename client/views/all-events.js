@@ -49,6 +49,10 @@ class AllEvents extends Component {
     return hours + ':' + minutes + ' ' + postfix;
   }
 
+  displayDuration(duration) {
+
+  }
+
   render() {
     return (
       <View style={{flex: 1}}>
@@ -67,6 +71,14 @@ class AllEvents extends Component {
                   <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
                 </View>
               </View>
+
+              <View style={styles.EventRow}>
+                <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
+                <View style={styles.EventInput}>
+                  <Text style={styles.EventText}>{event.duration}</Text>
+                </View>
+              </View>
+
               <View style={styles.EventRow}>
                 <Text style={styles.EventTitle}>Getting there by: </Text>
                 <View style={styles.EventInput}>

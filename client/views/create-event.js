@@ -106,7 +106,7 @@ class CreateEvent extends Component {
       sendEvent(newEvent);
       this.clearForm();
 
-      var origin   = this.state.initialPosition.coords;
+      var origin = this.state.initialPosition.coords;
       var that = this;
       updateLocation(origin, that);
 

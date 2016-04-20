@@ -65,7 +65,7 @@ exports.updateUserLocation =  function(req, res) {
               if (events.length !== 0) {
                 events.forEach(function(event) {
                   if (event.attributes.twilioSent === 'false') {
-                    // sending info to Google API
+                    // sending info to Google API, also saves duration in database
                     googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                   }
                 });
