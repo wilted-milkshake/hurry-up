@@ -48,6 +48,7 @@ class CreateEvent extends Component {
       eventTime: '',
       address: '',
       mode: 'Driving',
+      repeat: 'Never',
       earlyArrivalIndex: 0,
       lastPosition: 'unknown',
       initialPosition: 'unknown',
@@ -55,7 +56,8 @@ class CreateEvent extends Component {
       city:'',
       modal: false,
       offSet: new Animated.Value(deviceHeight),
-      values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      transportTypes: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      repeatTypes: ['Never', 'Daily', 'Weekly', 'Monthly'],
       date: new Date(),
       timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
       dateModal: false,
@@ -140,9 +142,15 @@ class CreateEvent extends Component {
     });
   }
 
-  onValueChange(value) {
+  onTransportValueChange(value) {
     this.setState({
-      mode: value,
+      mode: value
+    });
+  }
+
+  onRepeatValueChange(value) {
+    this.setState({
+      repeat: value
     });
   }
 
@@ -258,9 +266,23 @@ class CreateEvent extends Component {
             <SegmentedControlIOS
               tintColor="#CCC"
               style={styles.segmented}
-              values={this.state.values}
+              values={this.state.transportTypes}
               onChange={this.onChange.bind(this)}
-              onValueChange={this.onValueChange.bind(this)}/>
+              onValueChange={this.onTransportValueChange.bind(this)}/>
+          </View>
+
+          <View style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.segmentedContainer}>
+            <TextInput
+             placeholderTextColor="#F5F5F6"
+             placeholder="Repeat"
+             style={[styles.inputFormat, styles.inputStyle]}/>
+            <View style={styles.segmentedSpacing}></View>
+            <SegmentedControlIOS
+             tintColor="#CCC"
+             style={styles.segmented}
+             values={this.state.repeatTypes}
+             onChange={this.onChange.bind(this)}
+             onValueChange={this.onRepeatValueChange.bind(this)}/>
           </View>
 
         </View>
@@ -275,7 +297,7 @@ class CreateEvent extends Component {
             </Text>
           </View>
         </TouchableHighlight>
-        <View style={styles.empty}></View>
+
       </View>
     );
   }
