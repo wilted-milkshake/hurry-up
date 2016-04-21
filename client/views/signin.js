@@ -80,6 +80,8 @@ class Login extends Component {
                   placeholder="Username"
                   value={this.state.username}
                   placeholderTextColor="#FFF"
+                  autoCapitalize="none"
+                  autoCorrect={false}
                   style={[styles.input, styles.whiteFont]}
                   onChangeText={(username) => this.setState({username})}/>
               </View>
@@ -103,6 +105,7 @@ class Login extends Component {
                   style={[styles.input, styles.whiteFont]}
                   placeholder="Phone Number"
                   placeholderTextColor="#FFF"
+                  keyboardType="phone-pad"
                   value={this.state.phoneNumber}
                   onChangeText={(phoneNumber) => this.setState({phoneNumber})}/>
               </View>
@@ -123,6 +126,8 @@ class Login extends Component {
                 placeholder="Username"
                 value={this.state.username}
                 placeholderTextColor="#FFF"
+                autoCapitalize="none"
+                autoCorrect={false}
                 style={[styles.input, styles.whiteFont]}
                 onChangeText={(username) => this.setState({username})}/>
             </View>
