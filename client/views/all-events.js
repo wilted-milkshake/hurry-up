@@ -21,6 +21,7 @@ class AllEvents extends Component {
       events: [],
       userId: props.userId,
       clicked: false,
+      indexClicked: null
     };
   }
 
@@ -36,9 +37,8 @@ class AllEvents extends Component {
     this.render();
   }
 
-  eventClicked() {
-    // var that = this;
-    this.setState({clicked: !this.state.clicked});
+  eventClicked(index) {
+    this.setState({clicked: !this.state.clicked, indexClicked: index});
     this.render();
   }
 
@@ -84,9 +84,10 @@ class AllEvents extends Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView>
+
           {this.state.events.map((event, index) =>
             <View key={index}>
-            <TouchableHighlight onPress={this.eventClicked.bind(this)}>
+            <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
               <View style={styles.EventContainer}>
                 <View style={styles.EventRow}>
                   <Text style={styles.EventTitle}>Event:</Text>
@@ -116,7 +117,7 @@ class AllEvents extends Component {
                 </View>
               </View>
             </TouchableHighlight>
-            {this.state.clicked
+            {(this.state.clicked && index === this.state.indexClicked)
               ? (<TouchableHighlight
                 style={styles.button}
                 onPress={this.onDelete.bind(this, event)}>
@@ -126,7 +127,6 @@ class AllEvents extends Component {
               </TouchableHighlight>)
               : (<View></View>)
             }
-
             </View>
           )}
           <Text style={styles.welcome}>no more events</Text>
@@ -138,6 +138,7 @@ class AllEvents extends Component {
             <Text style={styles.buttonText}>Refresh!</Text>
           </View>
         </TouchableHighlight>
+      
       </View>
     );
   }
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
     margin: 7,
     padding: 15,
     height: 150,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'transparent',
     borderBottomColor: '#F5F5F6',
   },

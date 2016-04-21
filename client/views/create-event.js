@@ -102,6 +102,7 @@ class CreateEvent extends Component {
         state: this.state.state ,
         earlyArrival: earlyArrivalTimes[this.state.earlyArrivalIndex].value,
         userId: this.state.userId,
+        hasOccured: 'false'
       };
       sendEvent(newEvent);
       this.clearForm();
