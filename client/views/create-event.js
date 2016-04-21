@@ -318,13 +318,13 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 1,
-    marginTop: 10,
-    paddingTop: 20,
+    // marginTop: 0,
+    // paddingTop: 0,
     marginBottom: 10,
   },
   segmentedContainer: {
-    margin: 10,
-    padding: 10,
+    margin: 5,
+    padding: 5,
   },
   inputContainer: {
     margin: 15,
