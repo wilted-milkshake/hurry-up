@@ -182,6 +182,7 @@ class CreateEvent extends Component {
               <TextInput style={styles.textInput}
                 placeholder=" Event Address"
                 placeholderTextColor="#F5F5F6"
+                autoCorrect={false}
                 value={this.state.address}
                 style={[styles.inputFormat, styles.inputStyle]}
                 onChangeText={(address) => this.setState({address})}/>
@@ -190,6 +191,7 @@ class CreateEvent extends Component {
               <TextInput style={styles.textInput}
                 placeholder="City"
                 placeholderTextColor="#F5F5F6"
+                autoCorrect={false}
                 value={this.state.city}
                 style={[styles.inputFormat, styles.inputStyle]}
                 onChangeText={(city) => this.setState({city})}/>
@@ -198,6 +200,7 @@ class CreateEvent extends Component {
               <TextInput style={styles.textInput}
                 placeholder="St"
                 placeholderTextColor="#F5F5F6"
+                autoCorrect={false}
                 value={this.state.state}
                 style={[styles.inputFormat, styles.inputStyle]}
                 onChangeText={(state) => this.setState({state})}/>
