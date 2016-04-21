@@ -101,12 +101,12 @@ console.log('STATED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', context.state.userId);
     return response.json();
   }).then((res) => {
     // var res = JSON.parse(response._bodyText);
-    var events = res.map((event, index) => {
-      if (event.hasOccurred === 'false') {
-        return event;
-      }
-    })
-    context.setState( { events: events } );
+    // var events = res.map((event, index) => {
+    //   if (event.hasOccurred === 'false') {
+    //     return event;
+    //   }
+    // })
+    context.setState( { events: res } );
     console.log('All Events GET response: ', res);
   })
   .catch((error) => console.warn('Unable to get user events', error));
