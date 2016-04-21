@@ -16,4 +16,6 @@ app.get('/api/events/:id', route.getAllUserEvents); // id is user id
 
 app.put('/api/users/:id', route.updateUserLocation);
 
+app.delete('/api/events', route.deleteEvent);
+
 module.exports = app;

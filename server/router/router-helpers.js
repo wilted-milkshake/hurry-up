@@ -66,7 +66,7 @@ exports.updateUserLocation =  function(req, res) {
                 events.forEach(function(event) {
                   if (event.attributes.twilioSent === 'false') {
                     // sending info to Google API, also saves duration in database
-                    googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
+                    googleWorker.googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                   }
                 });
                 console.log('Called worker for each scheduled event');
@@ -129,6 +129,20 @@ exports.login = function(req, res) {
         // keep them on the login page.
         console.log('Sorry, that username is not in our database.');
       }
+    });
+};
+
+exports.deleteEvent = function(req, res) {
+  var eventId = req.body.id;
+
+  new Event({ id: eventId })
+    .destroy()
+    .then(function() {
+      console.log('worker before', googleWorker.events);
+      if (googleWorker.events[eventId]) {
+        clearTimeout(googleWorker.events[eventId]);
+      }
+      console.log('worker after', googleWorker.events);
     });
 };
 

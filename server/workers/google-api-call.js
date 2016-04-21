@@ -4,6 +4,7 @@ var TwilioSend = require('./twilio-api-call.js');
 var Event      = require('../app/models/event.js');
 
 // note: in-memory storage ? write to db?  ...for clearing timeouts
+
 var events = {};
 
 var alreadySentTwilio = function(event) {
@@ -82,6 +83,7 @@ var googleWorker = function(event, origin, phoneNumber) {
   });
 };
 
-module.exports = googleWorker;
-
-
+module.exports = {
+  googleWorker: googleWorker,
+  events: events
+};
