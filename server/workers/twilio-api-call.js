@@ -64,6 +64,7 @@ var addRecurringEvent = function(event, eventTime) {
 };
 
 var setRecurringEventTime = function(event) {
+  console.log('setRecurringEventTime is called!!!!!');
   var time, newEventTime;
 
   if (event.repeat === 'Daily') {
@@ -89,7 +90,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
   //send twilio text
   client.sendMessage({
       to: userPhoneNumber,
-      from: '+12097011216',
+      from: '+14156894189', // connie: '+14156894189'
       body:`Hurry Up! Leave now to get to ${eventName} by ${eventTime}. Click here to get directions: http://maps.apple.com/?daddr=${address}+${city}+${state}&dirflg=d&t=m`
     }, function(err, responseData) { //this function is executed when a response is received from Twilio
       if (err) {
@@ -100,16 +101,18 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
       }
     }
   );
-
   
   //archive event in database after it starts
+  console.log('eventTime >>>>>', event.eventTime);
+  console.log('new Date().getTime() >>>>>', new Date().getTime());
   var time = parseInt(Date.parse(event.eventTime) - (new Date().getTime()))
+  console.log('time >>>>>', time);
   setTimeout(function() {
+    console.log('setTimeout is invoked!!!!!');
     new Event({id: event.id})
       .fetch()
       .then(function(event) {
         event.set('hasOccured', 'true')
-        console.log(event, 'HIOHEOIFK')
       })
       .catch(function(err) {
         console.log(err);
