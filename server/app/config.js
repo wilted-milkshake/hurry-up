@@ -32,6 +32,7 @@ db.knex.schema.hasTable('events').then(function(exists) {
       event.string('state', 20);
       event.string('earlyArrival', 20);
       event.string('mode', 30);
+      event.string('repeat', 30);
       event.string('twilioSent', 30);
       event.string('hasOccured', 30);
       event.integer('duration');

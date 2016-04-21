@@ -7,6 +7,7 @@ var SALT_WORK_FACTOR = 10;
 
 exports.addEvent = function(req, res) {
   var mode         = req.body.mode;
+  var repeat       = req.body.repeat;
   var eventName    = req.body.eventName;
   var eventTime    = req.body.eventTime;
   var address      = req.body.address;
@@ -24,6 +25,7 @@ exports.addEvent = function(req, res) {
       var newEvent = new Event({
         userId: user.get('id'),
         mode: mode,
+        repeat: repeat,
         eventName: eventName,
         eventTime: eventTime,
         address: address,

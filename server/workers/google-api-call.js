@@ -2,6 +2,11 @@ var request    = require('request');
 var API_KEYS   = require('../api_keys.js');
 var TwilioSend = require('./twilio-api-call.js');
 var Event      = require('../app/models/event.js');
+var User       = require('../app/models/user.js');
+var moment     = require('moment');
+
+moment().format();
+// var route      = require('../router/route-helper.js');
 
 // note: in-memory storage ? write to db?  ...for clearing timeouts
 
@@ -37,9 +42,83 @@ var saveDuration = function(event, duration) {
     })
 };
 
+var addRecurringEvent = function(event, eventTime) {
+  var userId       = event.userId;
+  var mode         = event.mode;
+  var repeat       = event.repeat;
+  var eventName    = event.eventName;
+  var address      = event.address;
+  var city         = event.city;
+  var state        = event.state;
+  var earlyArrival = event.earlyArrival;
+  var eventTime    = eventTime;
+
+  new User({ id: userId })
+    .fetch()
+    .then(function(user) {
+      var newEvent = new Event({
+        userId: user.get('id'),
+        mode: mode,
+        repeat: repeat,
+        eventName: eventName,
+        eventTime: eventTime,
+        address: address,
+        city: city,
+        state: state,
+        twilioSent: 'false',
+        earlyArrival: earlyArrival,
+      });
+      newEvent.save()
+        .then(function(createdEvent) {
+          console.log('Created new recurring event: ', createdEvent);
+          // res.status(201).send(createdEvent);
+        })
+        .catch(function(err) {
+          console.error('Could not create new recurring event 1: ', err);
+          // res.status(500).send(err);
+        });
+    })
+    .catch(function(err) {
+      console.error('Could not create new recurring event 2: ', err);
+      // res.status(500).send(err);
+    });
+};
+
+var setRecurringEventTime = function(event) {
+  var time, newEventTime;
+
+  if (event.repeat === 'Daily') {
+    time = moment(event.eventTime).add(1, 'day').format('ddd MMM D YYYY k:mm:ss');
+    newEventTime = time + ' GMT-0700 (PDT)'; 
+  } else if (event.repeat === 'Weekly') {
+    time = moment(event.eventTime).add(1, 'day').format('ddd MMM D YYYY k:mm:ss');
+    newEventTime = time + ' GMT-0700 (PDT)';
+  } else if (event.repeat === 'Monthly') {
+    time = moment(event.eventTime).add(1, 'day').format('ddd MMM D YYYY k:mm:ss');
+    newEventTime = time + ' GMT-0700 (PDT)';
+  }
+
+  addRecurringEvent(event, newEventTime);
+  
+  // switch(event.repeat) {
+  //   case 'Never':
+  //     break;
+  //   case 'Daily':
+  //     console.log('NEW TIME >>>>>> ', newEventTime);
+  //     break;
+  //   case 'Weekly': 
+  //     addRecurringEvent(event, newEventTime);
+  //     break;
+  //   case 'Monthly':
+  //     addRecurringEvent(event, newEventTime);
+  //     break;
+  // }
+};
+
 var googleWorker = function(event, origin, phoneNumber) {
   // TODO: parse eventtime and earlyarrival to manipulate milliseconds // validate user form entry
   // var arrivalTime = event.eventTime (convert to UTC sec) - event.earlyArrival (convert to UTC sec);
+  // Date.parse() converts time in string into milliseconds
   var arrivalTime  = Date.parse(event.eventTime)/1000 - event.earlyArrival;
   var currentTime  = Date.now()/1000;     //seconds
 
@@ -76,6 +155,21 @@ var googleWorker = function(event, origin, phoneNumber) {
       // send text to phone number
       events[event.id] = setTimeout(function() {
         TwilioSend(phoneNumber, event, duration + event.earlyArrival);
+
+        if (event.repeat !== 'Never') {
+          setRecurringEventTime(event); // if event is set to repeat, re-add event to database
+        }
+        
+        // var test = moment(event.eventTime).add(1, 'day').format('ddd MMM D YYYY, k:mm:ss') + ' GMT-0700 (PDT)';
+        // moment converts to milliseconds
+        // delete
+        // console.log('TESTING MOMENT >>>', test);
+        // TESTING MOMENT >>> { [Number: 1461204074000]
+        //   _isAMomentObject: true,
+        //   _i: 'Wed Apr 20 2016 19:01:14 GMT-0700 (PDT)',
+        //   _isUTC: false,
+
+
         alreadySentTwilio(event);
       }, timeoutDuration*1000);
     }
