@@ -1,4 +1,3 @@
-
 import React, {
   Text,
   View,
@@ -36,7 +35,7 @@ class Login extends Component {
         password: this.state.password,
       };
       var that = this;
-      login(user, that);//createUser(newUser, that);
+      login(user, that); //createUser(newUser, that);
     } else {
       alert( 'You must fill out each field!' );
     }

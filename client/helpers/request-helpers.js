@@ -101,7 +101,12 @@ console.log('STATED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', context.state.userId);
     return response.json();
   }).then((res) => {
     // var res = JSON.parse(response._bodyText);
-    context.setState( { events: res } );
+    var events = res.map((event, index) => {
+      if (event.hasOccurred === 'false') {
+        return event;
+      }
+    })
+    context.setState( { events: events } );
     console.log('All Events GET response: ', res);
   })
   .catch((error) => console.warn('Unable to get user events', error));

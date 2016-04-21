@@ -13,6 +13,7 @@ exports.addEvent = function(req, res) {
   var city         = req.body.city;
   var state        = req.body.state;
   var earlyArrival = req.body.earlyArrival;
+  var hasOccured = req.body.hasOccured;
 
   // TODO: determine username on client side ? or sessions?
   var userId = req.body.userId;
@@ -30,6 +31,7 @@ exports.addEvent = function(req, res) {
         state: state,
         twilioSent: 'false',
         earlyArrival: earlyArrival,
+        hasOccured: hasOccured
       });
       newEvent.save()
         .then(function(createdEvent) {
