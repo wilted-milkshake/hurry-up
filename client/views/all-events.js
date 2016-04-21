@@ -9,12 +9,6 @@ import React, {
 } from 'react-native';
 
 import {getAllEvents, deleteEvent} from '../helpers/request-helpers';
-import Swipeout from 'react-native-swipeout';
-
-const swipeButtons = [
-  {text: 'Edit'},
-  {text: 'Delete', backgroundColor: '#FF0000'},
-];
 
 const deviceWidth = Dimensions.get('window').width;
 
