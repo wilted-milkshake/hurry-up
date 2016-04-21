@@ -14,7 +14,7 @@ var alreadySentTwilio = function(event) {
       event.set('twilioSent', 'true');
       event.save()
         .then(function(updatedEvent) {
-          console.log('Changed twilioSent for event: ', updatedEvent);
+          // console.log('Changed twilioSent for event: ', updatedEvent);
         })
         .catch(function(err) {
           console.log('Error updated twilioSent for event ', err);
@@ -29,7 +29,7 @@ var saveDuration = function(event, duration) {
       event.set('duration', duration);
       event.save()
         .then(function(updatedEvent) {
-          console.log('Updated duration for event: ', updatedEvent);
+          // console.log('Updated duration for event: ', updatedEvent);
         })
         .catch(function(err) {
           console.log('Error updating duration for event: ', err);
@@ -71,12 +71,10 @@ var googleWorker = function(event, origin, phoneNumber) {
       }
 
       // save duration in database
-      console.log('outside saveDuration: ', event, duration);
       saveDuration(event, duration);
 
       // send text to phone number
       events[event.id] = setTimeout(function() {
-        console.log('hihihih');
         TwilioSend(phoneNumber, event, duration + event.earlyArrival);
         alreadySentTwilio(event);
       }, timeoutDuration*1000);

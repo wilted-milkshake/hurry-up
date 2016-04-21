@@ -140,11 +140,9 @@ exports.deleteEvent = function(req, res) {
   new Event({ id: eventId })
     .destroy()
     .then(function() {
-      console.log('worker before', googleWorker.events);
       if (googleWorker.events[eventId]) {
         clearTimeout(googleWorker.events[eventId]);
       }
-      console.log('worker after', googleWorker.events);
     });
 };
 

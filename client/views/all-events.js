@@ -82,8 +82,9 @@ class AllEvents extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <ScrollView>
+      <ScrollView style={{flex: 1}}>
+      
+        <View>
           {this.state.events.map((event, index) =>
             <View key={index}>
             <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
@@ -129,7 +130,7 @@ class AllEvents extends Component {
             </View>
           )}
           <Text style={styles.welcome}>no more events</Text>
-        </ScrollView>
+        </View>
         <TouchableHighlight
           style={styles.button}
           onPress={this.buttonClicked.bind(this)}>
@@ -137,7 +138,8 @@ class AllEvents extends Component {
             <Text style={styles.buttonText}>Refresh!</Text>
           </View>
         </TouchableHighlight>
-      </View>
+      
+      </ScrollView>
     );
   }
 };
