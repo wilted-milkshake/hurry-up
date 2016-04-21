@@ -8,7 +8,13 @@ import React, {
   TouchableHighlight
 } from 'react-native';
 
-import {getAllEvents} from '../helpers/request-helpers';
+import {getAllEvents, deleteEvent} from '../helpers/request-helpers';
+import Swipeout from 'react-native-swipeout';
+
+const swipeButtons = [
+  {text: 'Edit'},
+  {text: 'Delete', backgroundColor: '#FF0000'},
+];
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -20,6 +26,7 @@ class AllEvents extends Component {
     this.state = {
       events: [],
       userId: props.userId,
+      clicked: false,
     };
   }
 
@@ -32,6 +39,19 @@ class AllEvents extends Component {
     //look into using websockets instead of refresh button / or state control
     var that = this;
     getAllEvents(that);
+    this.render();
+  }
+
+  eventClicked() {
+    // var that = this;
+    this.setState({clicked: !this.state.clicked});
+    this.render();
+  }
+
+  onDelete(event) {
+    deleteEvent(event);
+    this.setState({clicked: false});
+    this.buttonClicked();
     this.render();
   }
 
@@ -51,7 +71,7 @@ class AllEvents extends Component {
 
   displayDuration(duration) {
     var minutes = Math.ceil(duration / 60);
-    
+
     if (minutes < 60) {
       minutes = minutes.toString();
       return minutes + 'm';
@@ -71,33 +91,48 @@ class AllEvents extends Component {
       <View style={{flex: 1}}>
         <ScrollView>
           {this.state.events.map((event, index) =>
-            <View style={styles.EventContainer} key={index}>
-              <View style={styles.EventRow}>
-                <Text style={styles.EventTitle}>Event:</Text>
-                <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
+            <View key={index}>
+            <TouchableHighlight onPress={this.eventClicked.bind(this)}>
+              <View style={styles.EventContainer}>
+                <View style={styles.EventRow}>
+                  <Text style={styles.EventTitle}>Event:</Text>
+                  <View style={styles.EventInput}>
+                    <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.EventRow}>
-                <Text style={styles.EventTitle}>Where: </Text>
-                <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                <View style={styles.EventRow}>
+                  <Text style={styles.EventTitle}>Where: </Text>
+                  <View style={styles.EventInput}>
+                    <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                  </View>
                 </View>
-              </View>
 
-              <View style={styles.EventRow}>
-                <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
-                <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                <View style={styles.EventRow}>
+                  <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
+                  <View style={styles.EventInput}>
+                    <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                  </View>
                 </View>
-              </View>
 
-              <View style={styles.EventRow}>
-                <Text style={styles.EventTitle}>Getting there by: </Text>
-                <View style={styles.EventInput}>
-                  <Text style={styles.EventText}>{event.mode}</Text>
+                <View style={styles.EventRow}>
+                  <Text style={styles.EventTitle}>Getting there by: </Text>
+                  <View style={styles.EventInput}>
+                    <Text style={styles.EventText}>{event.mode}</Text>
+                  </View>
                 </View>
               </View>
+            </TouchableHighlight>
+            {this.state.clicked
+              ? (<TouchableHighlight
+                style={styles.button}
+                onPress={this.onDelete.bind(this, event)}>
+                <View>
+                  <Text style={styles.buttonText}>Delete</Text>
+                </View>
+              </TouchableHighlight>)
+              : (<View></View>)
+            }
+
             </View>
           )}
           <Text style={styles.welcome}>no more events</Text>

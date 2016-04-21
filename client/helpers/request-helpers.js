@@ -13,6 +13,19 @@ export const sendEvent = (newEvent) => {
   .catch((error) => console.warn('Unable to send event', error));
 };
 
+export const deleteEvent = (event) => {
+  fetch('http://localhost:8080/api/events' , {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(event),
+  })
+  .then((response) => console.log('Event DELETE response: ', response))
+  .catch((error) => console.warn('Unable to send event', error));
+};
+
 export const createUser = (newUser, context) => {
   fetch('http://localhost:8080/api/signup', {
     method: 'POST',
