@@ -38,7 +38,7 @@ class AllEvents extends Component {
   }
 
   eventClicked(index) {
-    this.setState({clicked: true, indexClicked: index});
+    this.setState({clicked: !this.state.clicked, indexClicked: index});
     this.render();
   }
 

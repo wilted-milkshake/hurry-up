@@ -22,7 +22,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
   const { eventName, state, mode } = event;
   const address = event.address.replace(/\s/g, '+');
   const city = event.city.replace(/\s/g, '+');
-
+  console.log('IN SEND TEXT', timeoutTime)
   //send twilio text
   client.sendMessage({
       to: userPhoneNumber,
@@ -38,17 +38,28 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
     }
   );
 
+  // new Event({id: event.id})
+  //   .fetch()
+  //     .then(function(event) {
+  //       console.log('Moving to Archive', event);
+
+  //     }).catch(function(err) {
+  //       console.log('ERROR', err);
+  //     })
   //delete event from database after it starts
-  setTimeout(function() {
-    new Event({id: event.id})
-      .destroy()
-      .then(function(model) {
-        console.log('Event has been destroyed', model);
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-  }, timeoutTime);
+  // setTimeout(function() {
+  //   new Event({id: event.id})
+  //     .fetch()
+  //     .then(function(event) {
+  //       console.log(event, 'HIOHEOIFK')
+  //       console.log(timeoutTime, 'HIOHEOIFK')
+  //       event.set('hasOccured', 'true')
+  //       console.log('Event happened', event);
+  //     })
+  //     .catch(function(err) {
+  //       console.log(err);
+  //     });
+  // }, timeoutTime);
 };
 
 module.exports = sendText;
