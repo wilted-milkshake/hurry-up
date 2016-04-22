@@ -46,6 +46,7 @@ var addRecurringEvent = function(event, eventTime) {
         state: state,
         twilioSent: 'false',
         earlyArrival: earlyArrival,
+        hasOccured: 'false',
       });
       newEvent.save()
         .then(function(createdEvent) {

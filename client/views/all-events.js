@@ -20,8 +20,10 @@ class AllEvents extends Component {
     this.state = {
       events: [],
       userId: props.userId,
-      clicked: false,
-      indexClicked: null
+      eventClicked: false,
+      archivedClicked: false,
+      eventIndexClicked: null,
+      archivedIndexClicked: null,
     };
   }
 
@@ -38,13 +40,18 @@ class AllEvents extends Component {
   }
 
   eventClicked(index) {
-    this.setState({clicked: !this.state.clicked, indexClicked: index});
+    this.setState({eventClicked: !this.state.eventClicked, eventIndexClicked: index});
+    this.render();
+  }
+
+  archivedEventClicked(index) {
+    this.setState({archivedClicked: !this.state.archivedClicked, archivedIndexClicked: index});
     this.render();
   }
 
   onDelete(event) {
     deleteEvent(event);
-    this.setState({clicked: false});
+    this.setState({eventClicked: false});
     this.buttonClicked();
     this.render();
   }
@@ -116,7 +123,7 @@ class AllEvents extends Component {
                   </View>
                 </View>
               </TouchableHighlight>
-              {(this.state.clicked && index === this.state.indexClicked)
+              {(this.state.eventClicked && index === this.state.eventIndexClicked)
                 ? (<TouchableHighlight
                   style={styles.button}
                   onPress={this.onDelete.bind(this, event)}>
@@ -132,8 +139,8 @@ class AllEvents extends Component {
             <Text style={styles.welcome}>Archived Events</Text>
 
             {this.state.events.filter(event => event.hasOccured === 'true').map((event, index) =>
-              <View key={index}>
-              <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
+              <View key={'main' + index}>
+              <TouchableHighlight onPress={this.archivedEventClicked.bind(this, index)}>
                 <View style={styles.EventContainer}>
                   <View style={styles.EventRow}>
                     <Text style={styles.EventTitle}>Event:</Text>
@@ -163,7 +170,7 @@ class AllEvents extends Component {
                   </View>
                 </View>
               </TouchableHighlight>
-              {(this.state.clicked && index === this.state.indexClicked)
+              {(this.state.archivedClicked && index === this.state.archivedIndexClicked)
                 ? (<TouchableHighlight
                   style={styles.button}
                   onPress={this.onDelete.bind(this, event)}>
