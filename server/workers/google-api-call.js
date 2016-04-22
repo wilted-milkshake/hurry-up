@@ -24,13 +24,15 @@ var alreadySentTwilio = function(event) {
 };
 
 var saveDuration = function(event, duration) {
+  console.log('saveDuration is called!!!!! event.id: ', event.id);
   new Event({ id: event.id })
     .fetch()
     .then(function(event) {
+      console.log('successfully fetched event: ', duration);
       event.set('duration', duration);
       event.save()
         .then(function(updatedEvent) {
-          // console.log('Updated duration for event: ', updatedEvent);
+          console.log('Updated duration for event: ', updatedEvent); // ???
         })
         .catch(function(err) {
           console.log('Error updating duration for event: ', err);
@@ -61,26 +63,29 @@ var googleWorker = function(event, origin, phoneNumber) {
 
   request(apiRequest, function(err, res, body) {
     var parsedBody = JSON.parse(body);
+    console.log('parsedBody: ', parsedBody.routes[0].legs[0]);
     if (err || !parsedBody.routes[0]) { console.log('There was an error with Google API', err); }
     else {
       var duration = parsedBody.routes[0].legs[0].duration.value; // travel time
+      // duration, event.earlyArrival are strings, also in seconds
       var timeoutDuration = (arrivalTime - duration) - currentTime;
+      var archiveEventTimeoutTime = parseInt(duration) + parseInt(event.earlyArrival);
+      
       if (timeoutDuration < 0) {
         timeoutDuration = 0;
+        archiveEventTimeoutTime = arrivalTime - currentTime;
       }
       if (events[event.id]) {
         clearTimeout(events[event.id]);
       }
 
       // save duration in database
-      console.log('outside saveDuration: ', duration);
+      console.log('outside saveDuration: ', duration, typeof duration);
       saveDuration(event, duration);
 
       // send text to phone number
       events[event.id] = setTimeout(function() {
-        var archiveEventTimeoutTime = duration + event.earlyArrival;
-        TwilioSend(phoneNumber, event, archiveEventTimeoutTime);
-
+        TwilioSend(phoneNumber, event, archiveEventTimeoutTime*1000);
         alreadySentTwilio(event);
       }, timeoutDuration*1000);
     }
