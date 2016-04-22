@@ -8,7 +8,7 @@ export const sendEvent = (newEvent) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(newEvent),
-  })
+  }).then((response) => response.json())
   .then((response) => console.log('Event POST response: ', response))
   .catch((error) => console.warn('Unable to send event', error));
 };
@@ -23,7 +23,7 @@ export const deleteEvent = (event) => {
     body: JSON.stringify(event),
   })
   .then((response) => console.log('Event DELETE response: ', response))
-  .catch((error) => console.warn('Unable to delete event', error));
+  .catch((error) => console.warn('Unable to send event', error));
 };
 
 export const createUser = (newUser, context) => {
@@ -36,7 +36,9 @@ export const createUser = (newUser, context) => {
     body: JSON.stringify(newUser),
   })
   .then((response) => {
-    var res = JSON.parse(response._bodyText);
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
     if (res.success) {
       context.state.handleClick(res.id);
     }
@@ -54,7 +56,9 @@ export const login = (user, context) => {
     body: JSON.stringify(user),
   })
   .then((response) => {
-    var res = JSON.parse(response._bodyText);
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
     if (res.success) {
       context.state.handleClick(res.id);
     }
@@ -74,7 +78,9 @@ export const updateLocation = (origin, context) => {
     body: JSON.stringify({ origin: origin }),
   })
   .then((response) => {
-    var res = JSON.parse(response._bodyText);
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
     if (res.clearWatch) { navigator.geolocation.clearWatch(context.watchID); }
     console.log('Location PUT response: ', response);
   })
@@ -91,11 +97,17 @@ console.log('STATED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', context.state.userId);
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-  })
-  .then((response) => {
-    var res = JSON.parse(response._bodyText);
+  }).then((response) => {
+    return response.json();
+  }).then((res) => {
+    // var res = JSON.parse(response._bodyText);
+    // var events = res.map((event, index) => {
+    //   if (event.hasOccurred === 'false') {
+    //     return event;
+    //   }
+    // })
     context.setState( { events: res } );
-    console.log('All Events GET response: ', response);
+    console.log('All Events GET response: ', res);
   })
   .catch((error) => console.warn('Unable to get user events', error));
 };
