@@ -2,11 +2,12 @@ var User         = require('../app/models/user.js');
 var Users        = require('../app/collections/users.js');
 var Event        = require('../app/models/event.js');
 var bcrypt       = require('bcrypt');
-var googleWorker = require('../workers/google-api-call.js');
+var googleAPI    = require('../workers/google-api-call.js');
 var SALT_WORK_FACTOR = 10;
 
 exports.addEvent = function(req, res) {
   var mode         = req.body.mode;
+  var repeat       = req.body.repeat;
   var eventName    = req.body.eventName;
   var eventTime    = req.body.eventTime;
   var address      = req.body.address;
@@ -24,6 +25,7 @@ exports.addEvent = function(req, res) {
       var newEvent = new Event({
         userId: user.get('id'),
         mode: mode,
+        repeat: repeat,
         eventName: eventName,
         eventTime: eventTime,
         address: address,
@@ -68,7 +70,7 @@ exports.updateUserLocation =  function(req, res) {
                 events.forEach(function(event) {
                   if (event.attributes.twilioSent === 'false') {
                     // sending info to Google API, also saves duration in database
-                    googleWorker.googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
+                    googleAPI.googleWorker(event.attributes, updatedUser.attributes.origin, phoneNumber);
                   }
                 });
                 console.log('Called worker for each scheduled event');
@@ -140,8 +142,8 @@ exports.deleteEvent = function(req, res) {
   new Event({ id: eventId })
     .destroy()
     .then(function() {
-      if (googleWorker.events[eventId]) {
-        clearTimeout(googleWorker.events[eventId]);
+      if (googleAPI.events[eventId]) {
+        clearTimeout(googleAPI.events[eventId]);
       }
     });
 };

@@ -48,6 +48,7 @@ class CreateEvent extends Component {
       eventTime: '',
       address: '',
       mode: 'Driving',
+      repeat: 'Never',
       earlyArrivalIndex: 0,
       lastPosition: 'unknown',
       initialPosition: 'unknown',
@@ -55,7 +56,8 @@ class CreateEvent extends Component {
       city:'',
       modal: false,
       offSet: new Animated.Value(deviceHeight),
-      values: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      transportTypes: ['Driving', 'Walking' , 'Bicycling', 'Transit'],
+      repeatTypes: ['Never', 'Daily', 'Weekly', 'Monthly'],
       date: new Date(),
       timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
       dateModal: false,
@@ -92,9 +94,14 @@ class CreateEvent extends Component {
   }
 
   buttonClicked() {
+
+    // console.log('date: ', this.state.date);
+    // console.log('eventTime: ', this.state.eventTime);
+
     if (this.state.eventName && this.state.date && this.state.address && this.state.city && this.state.state && this.state.mode) {
       var newEvent  = {
         mode: this.state.mode,
+        repeat: this.state.repeat,
         eventName: this.state.eventName,
         eventTime: this.state.date.toString(),
         address: this.state.address + ',' ,
@@ -104,8 +111,10 @@ class CreateEvent extends Component {
         userId: this.state.userId,
         hasOccured: 'false'
       };
+      // "eventTime":"Wed Apr 20 2016 18:21:35 GMT-0700
       sendEvent(newEvent);
       this.clearForm();
+      // TODO: redirect to My Events page???
 
       var origin = this.state.initialPosition.coords;
       var that = this;
@@ -140,9 +149,15 @@ class CreateEvent extends Component {
     });
   }
 
-  onValueChange(value) {
+  onTransportValueChange(value) {
     this.setState({
-      mode: value,
+      mode: value
+    });
+  }
+
+  onRepeatValueChange(value) {
+    this.setState({
+      repeat: value
     });
   }
 
@@ -178,8 +193,8 @@ class CreateEvent extends Component {
               onChangeText={(eventName) => this.setState({eventName})}/>
           </View>
 
-           <View style={styles.rowcontainer}>
-             <View style={styles.rowaddressContainer}>
+          <View style={styles.rowcontainer}>
+            <View style={styles.rowaddressContainer}>
               <TextInput style={styles.textInput}
                 placeholder=" Event Address"
                 placeholderTextColor="#F5F5F6"
@@ -188,7 +203,7 @@ class CreateEvent extends Component {
                 style={[styles.inputFormat, styles.inputStyle]}
                 onChangeText={(address) => this.setState({address})}/>
             </View>
-             <View style={styles.rowcityContainer}>
+            <View style={styles.rowcityContainer}>
               <TextInput style={styles.textInput}
                 placeholder="City"
                 placeholderTextColor="#F5F5F6"
@@ -258,9 +273,23 @@ class CreateEvent extends Component {
             <SegmentedControlIOS
               tintColor="#CCC"
               style={styles.segmented}
-              values={this.state.values}
+              values={this.state.transportTypes}
               onChange={this.onChange.bind(this)}
-              onValueChange={this.onValueChange.bind(this)}/>
+              onValueChange={this.onTransportValueChange.bind(this)}/>
+          </View>
+
+          <View style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.segmentedContainer}>
+            <TextInput
+             placeholderTextColor="#F5F5F6"
+             placeholder="Repeat"
+             style={[styles.inputFormat, styles.inputStyle]}/>
+            <View style={styles.segmentedSpacing}></View>
+            <SegmentedControlIOS
+             tintColor="#CCC"
+             style={styles.segmented}
+             values={this.state.repeatTypes}
+             onChange={this.onChange.bind(this)}
+             onValueChange={this.onRepeatValueChange.bind(this)}/>
           </View>
 
         </View>
@@ -275,7 +304,7 @@ class CreateEvent extends Component {
             </Text>
           </View>
         </TouchableHighlight>
-        <View style={styles.empty}></View>
+
       </View>
     );
   }
@@ -289,13 +318,13 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     flex: 1,
-    marginTop: 10,
-    paddingTop: 20,
+    // marginTop: 0,
+    // paddingTop: 0,
     marginBottom: 10,
   },
   segmentedContainer: {
-    margin: 10,
-    padding: 10,
+    margin: 5,
+    padding: 5,
   },
   inputContainer: {
     margin: 15,

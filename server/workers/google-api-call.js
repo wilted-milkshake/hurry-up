@@ -2,6 +2,7 @@ var request    = require('request');
 var API_KEYS   = require('../api_keys.js');
 var TwilioSend = require('./twilio-api-call.js');
 var Event      = require('../app/models/event.js');
+// var route      = require('../router/route-helper.js');
 
 // note: in-memory storage ? write to db?  ...for clearing timeouts
 
@@ -40,6 +41,7 @@ var saveDuration = function(event, duration) {
 var googleWorker = function(event, origin, phoneNumber) {
   // TODO: parse eventtime and earlyarrival to manipulate milliseconds // validate user form entry
   // var arrivalTime = event.eventTime (convert to UTC sec) - event.earlyArrival (convert to UTC sec);
+  // Date.parse() converts time in string into milliseconds
   var arrivalTime  = Date.parse(event.eventTime)/1000 - event.earlyArrival;
   var currentTime  = Date.now()/1000;     //seconds
 
@@ -71,11 +73,13 @@ var googleWorker = function(event, origin, phoneNumber) {
       }
 
       // save duration in database
+      console.log('outside saveDuration: ', duration);
       saveDuration(event, duration);
 
       // send text to phone number
       events[event.id] = setTimeout(function() {
         TwilioSend(phoneNumber, event, duration + event.earlyArrival);
+
         alreadySentTwilio(event);
       }, timeoutDuration*1000);
     }

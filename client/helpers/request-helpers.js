@@ -23,7 +23,7 @@ export const deleteEvent = (event) => {
     body: JSON.stringify(event),
   })
   .then((response) => console.log('Event DELETE response: ', response))
-  .catch((error) => console.warn('Unable to send event', error));
+  .catch((error) => console.warn('Unable to delete event', error));
 };
 
 export const createUser = (newUser, context) => {
