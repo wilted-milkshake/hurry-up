@@ -84,52 +84,98 @@ class AllEvents extends Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView>
-
-          {this.state.events.map((event, index) =>
+          {this.state.events.filter(event => event.hasOccured === 'false').map((event, index) =>
             <View key={index}>
-            <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
-              <View style={styles.EventContainer}>
-                <View style={styles.EventRow}>
-                  <Text style={styles.EventTitle}>Event:</Text>
-                  <View style={styles.EventInput}>
-                    <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
+              <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
+                <View style={styles.EventContainer}>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Event:</Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.EventRow}>
-                  <Text style={styles.EventTitle}>Where: </Text>
-                  <View style={styles.EventInput}>
-                    <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Where: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                    </View>
                   </View>
-                </View>
 
-                <View style={styles.EventRow}>
-                  <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
-                  <View style={styles.EventInput}>
-                    <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                    </View>
                   </View>
-                </View>
 
-                <View style={styles.EventRow}>
-                  <Text style={styles.EventTitle}>Getting there by: </Text>
-                  <View style={styles.EventInput}>
-                    <Text style={styles.EventText}>{event.mode}</Text>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Getting there by: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.mode}</Text>
+                    </View>
                   </View>
                 </View>
+              </TouchableHighlight>
+              {(this.state.clicked && index === this.state.indexClicked)
+                ? (<TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onDelete.bind(this, event)}>
+                  <View>
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </View>
+                </TouchableHighlight>)
+                : (<View></View>)
+              }
               </View>
-            </TouchableHighlight>
-            {(this.state.clicked && index === this.state.indexClicked)
-              ? (<TouchableHighlight
-                style={styles.button}
-                onPress={this.onDelete.bind(this, event)}>
-                <View>
-                  <Text style={styles.buttonText}>Delete</Text>
+            )}
+
+            <Text style={styles.welcome}>Archived Events</Text>
+
+            {this.state.events.filter(event => event.hasOccured === 'true').map((event, index) =>
+              <View key={index}>
+              <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
+                <View style={styles.EventContainer}>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Event:</Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.eventName} @ {this.displayTime(event.eventTime)} on {event.eventTime.substring(0,10)}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Where: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Estimated Travel Time: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{this.displayDuration(event.duration)}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.EventRow}>
+                    <Text style={styles.EventTitle}>Getting there by: </Text>
+                    <View style={styles.EventInput}>
+                      <Text style={styles.EventText}>{event.mode}</Text>
+                    </View>
+                  </View>
                 </View>
-              </TouchableHighlight>)
-              : (<View></View>)
-            }
+              </TouchableHighlight>
+              {(this.state.clicked && index === this.state.indexClicked)
+                ? (<TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onDelete.bind(this, event)}>
+                  <View>
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </View>
+                </TouchableHighlight>)
+                : (<View></View>)
+              }
             </View>
           )}
-          <Text style={styles.welcome}>no more events</Text>
+
         </ScrollView>
 
         <TouchableHighlight
@@ -181,6 +227,7 @@ const styles = StyleSheet.create({
     color: '#ACB2BE',
     textAlign: 'center',
     fontFamily: 'HelveticaNeue',
+    textDecorationLine: 'underline',
   },
   button: {
     padding: 20,
