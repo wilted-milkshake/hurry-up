@@ -2,6 +2,7 @@ var request    = require('request');
 var API_KEYS   = require('../api_keys.js');
 var TwilioSend = require('./twilio-api-call.js');
 var Event      = require('../app/models/event.js');
+// var moment     = require('moment');
 // var route      = require('../router/route-helper.js');
 
 // note: in-memory storage ? write to db?  ...for clearing timeouts
@@ -24,15 +25,15 @@ var alreadySentTwilio = function(event) {
 };
 
 var saveDuration = function(event, duration) {
-  console.log('saveDuration is called!!!!! event.id: ', event.id);
+  // console.log('saveDuration is called!!!!! event.id: ', event.id);
   new Event({ id: event.id })
     .fetch()
     .then(function(event) {
-      console.log('successfully fetched event: ', duration);
+      // console.log('successfully fetched event: ', duration);
       event.set('duration', duration);
       event.save()
         .then(function(updatedEvent) {
-          console.log('Updated duration for event: ', updatedEvent); // ???
+          // console.log('Updated duration for event: ', updatedEvent); // ???
         })
         .catch(function(err) {
           console.log('Error updating duration for event: ', err);
@@ -44,8 +45,15 @@ var googleWorker = function(event, origin, phoneNumber) {
   // TODO: parse eventtime and earlyarrival to manipulate milliseconds // validate user form entry
   // var arrivalTime = event.eventTime (convert to UTC sec) - event.earlyArrival (convert to UTC sec);
   // Date.parse() converts time in string into milliseconds
-  var arrivalTime  = Date.parse(event.eventTime)/1000 - event.earlyArrival;
-  var currentTime  = Date.now()/1000;     //seconds
+
+  var arrivalTime  = Date.parse(event.eventTime)/1000 - parseInt(event.earlyArrival); // in seconds
+  var currentTime  = Date.now()/1000; // in seconds
+
+
+  // console.log(Date.parse(event.eventTime));
+  // console.log(moment(event.eventTime));
+  console.log('arrivalTime: ', arrivalTime);
+  console.log('currentTime: ', currentTime);
 
     //split into each field
   var originLat    = origin.latitude;     //37.773972
@@ -63,31 +71,35 @@ var googleWorker = function(event, origin, phoneNumber) {
 
   request(apiRequest, function(err, res, body) {
     var parsedBody = JSON.parse(body);
-    console.log('parsedBody: ', parsedBody.routes[0].legs[0]);
+    // console.log('parsedBody: ', parsedBody.routes[0].legs[0]);
     if (err || !parsedBody.routes[0]) { console.log('There was an error with Google API', err); }
     else {
-      var duration = parsedBody.routes[0].legs[0].duration.value; // travel time
+      var duration = parsedBody.routes[0].legs[0].duration.value; // travel time in seconds
       // duration, event.earlyArrival are strings, also in seconds
-      var timeoutDuration = (arrivalTime - duration) - currentTime;
-      var archiveEventTimeoutTime = parseInt(duration) + parseInt(event.earlyArrival);
+      var sendTextTimeout = (arrivalTime - duration) - currentTime;
+      var archiveEventTimeout = parseInt(duration) + parseInt(event.earlyArrival);
       
-      if (timeoutDuration < 0) {
-        timeoutDuration = 0;
-        archiveEventTimeoutTime = arrivalTime - currentTime;
+      if (sendTextTimeout < 0) {
+        sendTextTimeout = 0;
+        archiveEventTimeout = arrivalTime + parseInt(event.earlyArrival) - currentTime;
       }
+
+      console.log('duration: ', duration);
+      console.log('sendTextTimeout: ', sendTextTimeout);
+      console.log('archiveEventTimeout: ', archiveEventTimeout);
+
       if (events[event.id]) {
         clearTimeout(events[event.id]);
       }
 
       // save duration in database
-      console.log('outside saveDuration: ', duration, typeof duration);
       saveDuration(event, duration);
 
       // send text to phone number
       events[event.id] = setTimeout(function() {
-        TwilioSend(phoneNumber, event, archiveEventTimeoutTime*1000);
+        TwilioSend(phoneNumber, event, archiveEventTimeout*1000);
         alreadySentTwilio(event);
-      }, timeoutDuration*1000);
+      }, sendTextTimeout*1000);
     }
   });
 };
