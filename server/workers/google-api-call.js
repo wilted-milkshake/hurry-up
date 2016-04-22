@@ -25,20 +25,18 @@ var alreadySentTwilio = function(event) {
 };
 
 var saveDuration = function(event, duration) {
-  // console.log('saveDuration is called!!!!! event.id: ', event.id);
   new Event({ id: event.id })
-    .fetch()
-    .then(function(event) {
-      // console.log('successfully fetched event: ', duration);
-      event.set('duration', duration);
-      event.save()
-        .then(function(updatedEvent) {
-          // console.log('Updated duration for event: ', updatedEvent); // ???
-        })
-        .catch(function(err) {
-          console.log('Error updating duration for event: ', err);
-        });
-    })
+  .fetch()
+  .then(function(event) {
+    event.set('duration', duration);
+    return event.save();
+  })
+  .then(function(updatedEvent) {
+    console.log('Updated duration for event: ', updatedEvent);
+  })
+  .catch(function(err) {
+    console.log('Error updating duration for event: ', err);
+  });
 };
 
 var googleWorker = function(event, origin, phoneNumber) {
