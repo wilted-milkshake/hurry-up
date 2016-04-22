@@ -8,7 +8,7 @@ import React, {
   StyleSheet,
   AppRegistry,
   TouchableHighlight,
-  Animated
+  Animated,
 } from 'react-native';
 
 import {createUser, login} from '../helpers/request-helpers';
@@ -54,7 +54,7 @@ class Login extends Component {
       var that = this;
       createUser(newUser, that);
     } else {
-      alert( 'You must fill out each field!' );
+      alert('You must fill out each field!');
     }
   }
 
@@ -68,6 +68,9 @@ class Login extends Component {
     this.render();
   }
 
+  componentDidMount() {
+    Animated.timing(this.state.fadeAnim, {toValue: 1, duration: 2000}).start();
+  }
 
   render() {
     return (
@@ -172,14 +175,14 @@ class Login extends Component {
               </Animated.View>
             </View>
           </View>)
-        }
-        {this.state.signup
-          ? (<View style={styles.signupButton}>
-              <Text style={styles.greyFont}>Already have an account?</Text>
-              <TouchableHighlight onPress={this.goToLogin.bind(this)}>
-                <Text style={styles.whiteFont}>Login</Text>
-              </TouchableHighlight>
-            </View>)
+      }
+      {this.state.signup
+        ? (<View style={styles.signupButton}>
+            <Text style={styles.greyFont}>Already have an account?</Text>
+            <TouchableHighlight onPress={this.goToLogin.bind(this)}>
+              <Text style={styles.whiteFont}>Login</Text>
+            </TouchableHighlight>
+          </View>)
           : (<View style={styles.signupButton}>
               <Text style={styles.greyFont}>Don't have an account?</Text>
               <TouchableHighlight onPress={this.goToSignup.bind(this)}>

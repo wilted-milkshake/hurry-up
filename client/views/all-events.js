@@ -20,10 +20,18 @@ class AllEvents extends Component {
     this.state = {
       events: [],
       userId: props.userId,
+<<<<<<< 1e1ac600663f7b9ef81a0cc740720b49d1dee7bf
       eventClicked: false,
       archivedClicked: false,
       eventIndexClicked: null,
       archivedIndexClicked: null,
+||||||| merged common ancestors
+      clicked: false,
+      indexClicked: null
+=======
+      clicked: false,
+      indexClicked: null,
+>>>>>>> working on calander
     };
   }
 
@@ -53,10 +61,11 @@ class AllEvents extends Component {
     deleteEvent(event);
     this.setState({eventClicked: false});
     this.buttonClicked();
-    this.render();
+    // this.render();
   }
 
   displayTime(time) {
+    console.log('TIME', time)
     var dateTime = time.toString();
     var hours = dateTime.substring(16,18);
     var postfix;
