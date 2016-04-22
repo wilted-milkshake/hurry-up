@@ -78,7 +78,8 @@ var googleWorker = function(event, origin, phoneNumber) {
 
       // send text to phone number
       events[event.id] = setTimeout(function() {
-        TwilioSend(phoneNumber, event, duration + event.earlyArrival);
+        var archiveEventTimeoutTime = duration + event.earlyArrival;
+        TwilioSend(phoneNumber, event, archiveEventTimeoutTime);
 
         alreadySentTwilio(event);
       }, timeoutDuration*1000);
