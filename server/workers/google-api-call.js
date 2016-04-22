@@ -47,12 +47,6 @@ var googleWorker = function(event, origin, phoneNumber) {
   var arrivalTime  = Date.parse(event.eventTime)/1000 - parseInt(event.earlyArrival); // in seconds
   var currentTime  = Date.now()/1000; // in seconds
 
-
-  // console.log(Date.parse(event.eventTime));
-  // console.log(moment(event.eventTime));
-  console.log('arrivalTime: ', arrivalTime);
-  console.log('currentTime: ', currentTime);
-
     //split into each field
   var originLat    = origin.latitude;     //37.773972
   var originLong   = origin.longitude;    //-122.431297
@@ -69,12 +63,11 @@ var googleWorker = function(event, origin, phoneNumber) {
 
   request(apiRequest, function(err, res, body) {
     var parsedBody = JSON.parse(body);
-    // console.log('parsedBody: ', parsedBody.routes[0].legs[0]);
     if (err || !parsedBody.routes[0]) { console.log('There was an error with Google API', err); }
     else {
       var duration = parsedBody.routes[0].legs[0].duration.value; // travel time in seconds
-      // duration, event.earlyArrival are strings, also in seconds
-      var sendTextTimeout = (arrivalTime - duration) - currentTime;
+
+      var sendTextTimeout = (arrivalTime - duration) - currentTime; // duration, event.earlyArrival are strings, also in seconds
       var archiveEventTimeout = parseInt(duration) + parseInt(event.earlyArrival);
       
       if (sendTextTimeout < 0) {
@@ -82,9 +75,9 @@ var googleWorker = function(event, origin, phoneNumber) {
         archiveEventTimeout = arrivalTime + parseInt(event.earlyArrival) - currentTime;
       }
 
-      console.log('duration: ', duration);
-      console.log('sendTextTimeout: ', sendTextTimeout);
-      console.log('archiveEventTimeout: ', archiveEventTimeout);
+      // console.log('duration: ', duration);
+      // console.log('sendTextTimeout: ', sendTextTimeout);
+      // console.log('archiveEventTimeout: ', archiveEventTimeout);
 
       if (events[event.id]) {
         clearTimeout(events[event.id]);
