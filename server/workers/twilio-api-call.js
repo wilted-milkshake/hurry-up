@@ -105,7 +105,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
 
   //archive event in database after it starts
   setTimeout(function() {
-    console.log('setTimeout is invoked!!!!!');
+    console.log('setTimeout is invoked!!!!!', timeoutTime);
     new Event({id: event.id})
       .fetch()
       .then(function(event) {
