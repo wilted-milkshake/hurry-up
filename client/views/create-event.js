@@ -20,7 +20,6 @@ console.ignoredYellowBox = [
 ];
 
 import Picker from './picker';
-// import DatePicker from './datePicker';
 import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const DISTANCE_TO_REFRESH = 0.004;
@@ -311,7 +310,8 @@ class CreateEvent extends Component {
 
 const styles = StyleSheet.create({
   greyStyles: {
-    color: 'black'
+    color: 'black',
+    fontWeight: 'bold',
   },
   pickerPosition: {
     marginTop: 30,
@@ -340,7 +340,8 @@ const styles = StyleSheet.create({
   submit: {
     flex: 1,
     padding: 10,
-    margin: 30,
+    margin: 5,
+    borderRadius: 5,
     alignItems: 'center',
     backgroundColor: '#EEE',
   },
