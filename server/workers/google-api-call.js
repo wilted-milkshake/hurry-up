@@ -71,7 +71,7 @@ var googleWorker = function(event, origin, phoneNumber) {
       var archiveEventTimeout = parseInt(duration) + parseInt(event.earlyArrival);
       
       if (sendTextTimeout < 0) {
-        sendTextTimeout = 0;
+        sendTextTimeout = 1; // hacky fix: set to 1 instead of 0 so that duration time shows up for all events
         archiveEventTimeout = arrivalTime + parseInt(event.earlyArrival) - currentTime;
       }
 

@@ -96,7 +96,7 @@ exports.getAllUserEvents = function(req, res) {
   Event.where({ userId: userId })
     .fetchAll({})
     .then(function(events) {
-      console.log('Got all user\'s events for event list');
+      console.log('Got all user\'s events for event list', events);
       res.send(events);
     })
     .catch(function(err) {
