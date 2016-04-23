@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   backgroundVideo: {
     position: 'absolute',
-    opacity: 0.6,
+    opacity: 0.7,
     top: 0,
     left: 0,
     bottom: 0,
@@ -241,11 +241,13 @@ const styles = StyleSheet.create({
     margin: 30,
     alignItems: 'center',
     backgroundColor: '#EEE',
+    borderRadius: 5,
   },
   signupButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30
+    marginBottom: 30,
+    borderRadius: 5,
   },
   inputs: {
     flex: .38,

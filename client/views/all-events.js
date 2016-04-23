@@ -93,9 +93,9 @@ class AllEvents extends Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView>
-          {this.state.events.filter(event => event.hasOccured === 'false').map((event, index) =>
-            <View key={index}>
-              <TouchableHighlight onPress={this.eventClicked.bind(this, index)}>
+          {this.state.events.filter(event => event.hasOccured === 'false').map((event) =>
+            <View key={event.id}>
+              <TouchableHighlight onPress={this.eventClicked.bind(this, event.id)}>
                 <View style={styles.EventContainer}>
                   <View style={styles.EventRow}>
                     <Text style={styles.EventTitle}>Event:</Text>
@@ -106,7 +106,7 @@ class AllEvents extends Component {
                   <View style={styles.EventRow}>
                     <Text style={styles.EventTitle}>Where: </Text>
                     <View style={styles.EventInput}>
-                      <Text style={styles.EventText}>{event.address}</Text>
+                      <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
                     </View>
                   </View>
 
@@ -125,7 +125,7 @@ class AllEvents extends Component {
                   </View>
                 </View>
               </TouchableHighlight>
-              {(this.state.eventClicked && index === this.state.eventIndexClicked)
+              {(this.state.eventClicked && event.id === this.state.eventIndexClicked)
                 ? (<TouchableHighlight
                   style={styles.deleteButton}
                   onPress={this.onDelete.bind(this, event)}>
@@ -140,9 +140,9 @@ class AllEvents extends Component {
 
             <Text style={styles.welcome}>Archived Events</Text>
 
-            {this.state.events.filter(event => event.hasOccured === 'true').map((event, index) =>
-              <View key={'main' + index}>
-              <TouchableHighlight onPress={this.archivedEventClicked.bind(this, index)}>
+            {this.state.events.filter(event => event.hasOccured === 'true').map((event) =>
+              <View key={event.id}>
+              <TouchableHighlight onPress={this.archivedEventClicked.bind(this, event.id)}>
                 <View style={styles.ArchiveContainer}>
                   <View style={styles.EventRow}>
                     <Text style={styles.EventTitle}>Event:</Text>
@@ -158,7 +158,7 @@ class AllEvents extends Component {
                   </View>
                 </View>
               </TouchableHighlight>
-              {(this.state.archivedClicked && index === this.state.archivedIndexClicked)
+              {(this.state.archivedClicked && event.id === this.state.archivedIndexClicked)
                 ? (<TouchableHighlight
                   style={styles.deleteButton}
                   onPress={this.onDelete.bind(this, event)}>
@@ -172,15 +172,13 @@ class AllEvents extends Component {
           )}
 
         </ScrollView>
-
         <TouchableHighlight
           style={styles.button}
           onPress={this.buttonClicked.bind(this)}>
           <View>
-            <Text style={styles.buttonText}>Refresh!</Text>
+            <Text style={styles.greyText}>Refresh!</Text>
           </View>
         </TouchableHighlight>
-
       </View>
     );
   }
@@ -221,10 +219,8 @@ const styles = StyleSheet.create({
     height: 90,
     borderWidth: 1,
     borderColor: 'transparent',
-    // borderBottomColor: '#284D59',
-    // backgroundColor: '#1B3138',
     borderBottomColor: '#353B3D',
-    backgroundColor: '#2F3336',
+    // backgroundColor: '#2F3336',
   },
   ArchivedText: {
     flex: 1,
@@ -238,20 +234,26 @@ const styles = StyleSheet.create({
     color: '#ACB2BE',
     textAlign: 'center',
     fontFamily: 'HelveticaNeue',
-    // backgroundColor: '#15272E',
     backgroundColor: '#242829',
   },
+  greyText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
   button: {
-    padding: 20,
-    width: deviceWidth,
+    padding: 10,
+    margin: 15,
+    borderRadius: 5,
     alignItems: 'center',
-    backgroundColor: '#34778A',
+    backgroundColor: 'white',
   },
   deleteButton: {
-    padding: 20,
-    width: deviceWidth,
+    flex: 1,
+    padding: 10,
     alignItems: 'center',
     backgroundColor: '#A10000',
+    borderRadius: 5,
+    margin: 5,
   },
   buttonText: {
     fontSize: 16,
