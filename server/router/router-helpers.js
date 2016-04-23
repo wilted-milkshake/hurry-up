@@ -41,7 +41,7 @@ exports.addEvent = function(req, res) {
           res.status(201).send(createdEvent);
         })
         .catch(function(err) {
-          console.error('Could not create new event: ', err);
+          console.error('Could not create new : ', err);
           res.status(500).send(err);
         });
     })

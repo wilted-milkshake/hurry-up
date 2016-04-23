@@ -188,7 +188,7 @@ class CreateEvent extends Component {
             <TextInput
               placeholder="Event Name"
               value={this.state.eventName}
-              placeholderTextColor="#F5F5F6"
+              placeholderTextColor="#939393"
               style={[styles.inputFormat, styles.inputStyle]}
               onChangeText={(eventName) => this.setState({eventName})}/>
           </View>
@@ -197,7 +197,7 @@ class CreateEvent extends Component {
             <View style={styles.rowaddressContainer}>
               <TextInput style={styles.textInput}
                 placeholder=" Event Address"
-                placeholderTextColor="#F5F5F6"
+                placeholderTextColor="#939393"
                 autoCorrect={false}
                 value={this.state.address}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -206,7 +206,7 @@ class CreateEvent extends Component {
             <View style={styles.rowcityContainer}>
               <TextInput style={styles.textInput}
                 placeholder="City"
-                placeholderTextColor="#F5F5F6"
+                placeholderTextColor="#939393"
                 autoCorrect={false}
                 value={this.state.city}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -214,8 +214,8 @@ class CreateEvent extends Component {
             </View>
             <View style={styles.rowstateContainer}>
               <TextInput style={styles.textInput}
-                placeholder="St"
-                placeholderTextColor="#F5F5F6"
+                placeholder="State"
+                placeholderTextColor="#939393"
                 autoCorrect={false}
                 value={this.state.state}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -229,7 +229,7 @@ class CreateEvent extends Component {
               underlayColor="transparent"
               onPress={() => { this.state.dateModal ? this.setState({ dateModal: false }) : this.setState({ dateModal: true })}}>
               <Text style={styles.inputStyle}>
-                Event Time -- {this.displayTime()}
+                Event Time : {this.displayTime()}
               </Text>
             </TouchableHighlight>
               { this.state.dateModal
@@ -251,7 +251,7 @@ class CreateEvent extends Component {
               underlayColor="transparent"
               onPress={() => { this.state.modal ? this.setState({ modal: false }) : this.setState({ modal: true })}}>
               <Text style={styles.inputStyle}>
-                Early Arrival -- {earlyArrivalTimes[this.state.earlyArrivalIndex].time}
+                Early Arrival : {earlyArrivalTimes[this.state.earlyArrivalIndex].time}
               </Text>
             </TouchableHighlight>
               { this.state.modal
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
  rowaddressContainer: {
     flex: .60,
     height: 40,
-    width: 60,
+    width: 50,
     margin: 10,
     padding: 10,
     borderWidth: 1,
@@ -392,9 +392,9 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
  },
  rowcityContainer: {
-    flex: .45,
+    flex: .40,
     height: 40,
-    width: 20,
+    width: 16,
     margin: 10,
     padding: 10,
     borderWidth: 1,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
  },
  rowstateContainer: {
-    flex: .15,
+    flex: .20,
     height: 40,
     width: 5,
     margin: 10,

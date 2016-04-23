@@ -46,6 +46,7 @@ var addRecurringEvent = function(event, eventTime) {
         state: state,
         twilioSent: 'false',
         earlyArrival: earlyArrival,
+        hasOccured: 'false',
       });
       newEvent.save()
         .then(function(createdEvent) {
@@ -69,7 +70,7 @@ var setRecurringEventTime = function(event) {
 
   if (event.repeat === 'Daily') {
     time = moment(event.eventTime).add(1, 'day').format('ddd MMM D YYYY k:mm:ss');
-    newEventTime = time + ' GMT-0700 (PDT)'; 
+    newEventTime = time + ' GMT-0700 (PDT)';
   } else if (event.repeat === 'Weekly') {
     time = moment(event.eventTime).add(1, 'week').format('ddd MMM D YYYY k:mm:ss');
     newEventTime = time + ' GMT-0700 (PDT)';
@@ -101,29 +102,24 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
       }
     }
   );
-  
+
   //archive event in database after it starts
-  console.log('eventTime >>>>>', event.eventTime);
-  console.log('new Date().getTime() >>>>>', new Date().getTime());
-  var time = parseInt(Date.parse(event.eventTime) - (new Date().getTime()))
-  console.log('time >>>>>', time);
   setTimeout(function() {
-    console.log('setTimeout is invoked!!!!!');
+    console.log('setTimeout is invoked!!!!!', timeoutTime);
     new Event({id: event.id})
       .fetch()
       .then(function(event) {
-        event.set('hasOccured', 'true')
+        event.set('hasOccured', 'true').save();
+        console.log('Event has occurred');
       })
       .catch(function(err) {
         console.log(err);
       });
-
     // if event is set to repeat, re-add event to database
     if (event.repeat !== 'Never') {
-      setRecurringEventTime(event); 
+      setRecurringEventTime(event);
     }
-  }, time);
+  }, timeoutTime);
 }
-
 
 module.exports = sendText;

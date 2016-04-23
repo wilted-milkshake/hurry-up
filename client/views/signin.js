@@ -78,7 +78,7 @@ class Login extends Component {
                 <TextInput
                   placeholder="Username"
                   value={this.state.username}
-                  placeholderTextColor="#FFF"
+                  placeholderTextColor="#939393"
                   autoCapitalize="none"
                   autoCorrect={false}
                   style={[styles.input, styles.whiteFont]}
@@ -92,7 +92,7 @@ class Login extends Component {
                   password={true}
                   placeholder="Password"
                   value={this.state.password}
-                  placeholderTextColor="#FFF"
+                  placeholderTextColor="#939393"
                   style={[styles.input, styles.whiteFont]}
                   onChangeText={(password) => this.setState({password})}/>
               </View>
@@ -103,7 +103,7 @@ class Login extends Component {
                 <TextInput
                   style={[styles.input, styles.whiteFont]}
                   placeholder="Phone Number"
-                  placeholderTextColor="#FFF"
+                  placeholderTextColor="#939393"
                   keyboardType="phone-pad"
                   value={this.state.phoneNumber}
                   onChangeText={(phoneNumber) => this.setState({phoneNumber})}/>
@@ -124,7 +124,7 @@ class Login extends Component {
               <TextInput
                 placeholder="Username"
                 value={this.state.username}
-                placeholderTextColor="#FFF"
+                placeholderTextColor="#939393"
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={[styles.input, styles.whiteFont]}
@@ -138,7 +138,7 @@ class Login extends Component {
                 password={true}
                 placeholder="Password"
                 value={this.state.password}
-                placeholderTextColor="#FFF"
+                placeholderTextColor="#939393"
                 style={[styles.input, styles.whiteFont]}
                 onChangeText={(password) => this.setState({password})}/>
             </View>
