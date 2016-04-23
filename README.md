@@ -5,7 +5,9 @@ The goal of hurry-up is to make sure you are never late to an appointment again.
 ## Installation
 
 1. Install all dependencies (there are many!) - run `npm install`
-2. To run the server - from the root directory do `nodemon server/server.js`
+2. To run the server - from the root directory do `npm start`
+3. For react native video install - `npm install rnpm -g` and - `rnpm link react-native-video`
+ Link to react native video(https://github.com/brentvatne/react-native-video)
 
 #### Client-side specifics
 
