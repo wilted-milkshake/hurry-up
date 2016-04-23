@@ -196,7 +196,7 @@ class CreateEvent extends Component {
           <View style={styles.rowcontainer}>
             <View style={styles.rowaddressContainer}>
               <TextInput style={styles.textInput}
-                placeholder=" Event Address"
+                placeholder="Event Address"
                 placeholderTextColor="#fff"
                 autoCorrect={false}
                 value={this.state.address}
@@ -257,6 +257,7 @@ class CreateEvent extends Component {
             </TouchableHighlight>
               { this.state.modal
                 ? <Picker
+                  onPress={() => this.setState({ dateModal: false })}
                   offSet={this.state.offSet}
                   earlyArrivalIndex={this.state.earlyArrivalIndex}
                   closeModal={console.log(':( consistent modal-ing')}
