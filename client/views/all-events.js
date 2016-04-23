@@ -106,7 +106,7 @@ class AllEvents extends Component {
                   <View style={styles.EventRow}>
                     <Text style={styles.EventTitle}>Where: </Text>
                     <View style={styles.EventInput}>
-                      <Text style={styles.EventText}>{event.address} {event.city} {event.state}</Text>
+                      <Text style={styles.EventText}>{event.address}</Text>
                     </View>
                   </View>
 
