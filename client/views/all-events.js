@@ -55,11 +55,10 @@ class AllEvents extends Component {
     deleteEvent(event);
     this.setState({eventClicked: false});
     this.buttonClicked();
-    // this.render();
+    this.render();
   }
 
   displayTime(time) {
-    console.log('TIME', time)
     var dateTime = time.toString();
     var hours = dateTime.substring(16,18);
     var postfix;
