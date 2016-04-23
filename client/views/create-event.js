@@ -163,11 +163,14 @@ class CreateEvent extends Component {
     var date = dateString.substring(0,10);
     var hours = dateString.substring(16,18);
     var postfix;
-    if (Number(hours) > 12) {
+    if (Number(hours) >= 12) {
       postfix = 'PM';
       hours = hours - 12;
     } else {
       postfix = 'AM';
+    }
+    if (hours == 0) {
+      hours = 12;
     }
     var minutes = dateString.substring(19,21);
     return date + ', ' + hours + ':' + minutes + ' ' + postfix;
