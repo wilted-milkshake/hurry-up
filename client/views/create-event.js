@@ -312,6 +312,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'transparent',
   },
+  picker: {
+    color: 'white'
+  },
   inputsContainer: {
     flex: 1,
     // marginTop: 0,

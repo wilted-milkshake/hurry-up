@@ -50,6 +50,7 @@ class DatePicker extends Component {
 
   render() {
     return (
+      <Animated.View style={[{ transform: [{translateY: this.props.dateOffset}] }, styles.pickerPosition]}>
         <DatePickerIOS
           date={this.props.date}
           mode={this.props.mode}
@@ -57,6 +58,7 @@ class DatePicker extends Component {
           timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
           onDateChange={(date) => this.props.onDateChange(date)}
         />
+      </Animated.View>
     );
   }
 };

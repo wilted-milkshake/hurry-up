@@ -276,7 +276,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   greyFont: {
-    color: 'black'
+    color: 'black',
+    fontWeight: 'bold'
   },
   whiteFont: {
     fontSize: 16,
