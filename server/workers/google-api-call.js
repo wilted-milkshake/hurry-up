@@ -75,10 +75,6 @@ var googleWorker = function(event, origin, phoneNumber) {
         archiveEventTimeout = arrivalTime + parseInt(event.earlyArrival) - currentTime;
       }
 
-      // console.log('duration: ', duration);
-      // console.log('sendTextTimeout: ', sendTextTimeout);
-      // console.log('archiveEventTimeout: ', archiveEventTimeout);
-
       if (events[event.id]) {
         clearTimeout(events[event.id]);
       }
