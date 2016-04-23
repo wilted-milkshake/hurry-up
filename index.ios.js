@@ -43,7 +43,7 @@ class hurryup extends Component {
             <View>
               <Image
                 style={styles.bg}
-                source={require('./client/background.png')}/>
+                source={require('./client/background.jpeg')}/>
               <ScrollableTabView
                 page={0}
                 style={{marginTop: 20, top: 20}}
