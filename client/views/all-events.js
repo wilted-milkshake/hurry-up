@@ -170,15 +170,15 @@ class AllEvents extends Component {
               }
             </View>
           )}
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.greyText}>Refresh!</Text>
-            </View>
-          </TouchableHighlight>
 
         </ScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={this.buttonClicked.bind(this)}>
+          <View>
+            <Text style={styles.greyText}>Refresh!</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
