@@ -2,7 +2,7 @@ var User         = require('../app/models/user.js');
 var Users        = require('../app/collections/users.js');
 var Event        = require('../app/models/event.js');
 var bcrypt       = require('bcryptjs');
-var googleWorker = require('../workers/google-api-call.js');
+var googleAPI = require('../workers/google-api-call.js');
 
 var SALT_WORK_FACTOR = 10;
 

@@ -163,7 +163,7 @@ class Login extends Component {
                   onChangeText={(password) => this.setState({password})} />
               </Animated.View>
             </View>
-            <View style={styles.siginBtn}>
+            <View>
               <Animated.View style={{opacity: this.state.fadeAnim}}>
                 <TouchableHighlight
                   style={styles.signin}
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   backgroundVideo: {
     position: 'absolute',
-    opacity: 0.6,
+    opacity: 0.7,
     top: 0,
     left: 0,
     bottom: 0,
@@ -241,11 +241,13 @@ const styles = StyleSheet.create({
     margin: 30,
     alignItems: 'center',
     backgroundColor: '#EEE',
+    borderRadius: 5,
   },
   signupButton: {
-    flex: .15,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30,
+    borderRadius: 5,
   },
   inputs: {
     flex: .38,

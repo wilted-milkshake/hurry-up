@@ -10,6 +10,7 @@ import React, {
   StyleSheet,
   TouchableHighlight,
   SegmentedControlIOS,
+  DatePickerIOS,
 } from 'react-native';
 
 /* Temporary fix for DatePicker type warnings.
@@ -19,7 +20,6 @@ console.ignoredYellowBox = [
 ];
 
 import Picker from './picker';
-import DatePicker from './datePicker';
 import {sendEvent, updateLocation} from '../helpers/request-helpers';
 
 const DISTANCE_TO_REFRESH = 0.004;
@@ -162,11 +162,14 @@ class CreateEvent extends Component {
     var date = dateString.substring(0,10);
     var hours = dateString.substring(16,18);
     var postfix;
-    if (Number(hours) > 12) {
+    if (Number(hours) >= 12) {
       postfix = 'PM';
       hours = hours - 12;
     } else {
       postfix = 'AM';
+    }
+    if (hours == 0) {
+      hours = 12;
     }
     var minutes = dateString.substring(19,21);
     return date + ', ' + hours + ':' + minutes + ' ' + postfix;
@@ -184,7 +187,7 @@ class CreateEvent extends Component {
             <TextInput
               placeholder="Event Name"
               value={this.state.eventName}
-              placeholderTextColor="#939393"
+              placeholderTextColor="#fff"
               style={[styles.inputFormat, styles.inputStyle]}
               onChangeText={(eventName) => this.setState({eventName})}/>
           </View>
@@ -192,8 +195,8 @@ class CreateEvent extends Component {
           <View style={styles.rowcontainer}>
             <View style={styles.rowaddressContainer}>
               <TextInput style={styles.textInput}
-                placeholder=" Event Address"
-                placeholderTextColor="#939393"
+                placeholder="Event Address"
+                placeholderTextColor="#fff"
                 autoCorrect={false}
                 value={this.state.address}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -202,7 +205,7 @@ class CreateEvent extends Component {
             <View style={styles.rowcityContainer}>
               <TextInput style={styles.textInput}
                 placeholder="City"
-                placeholderTextColor="#939393"
+                placeholderTextColor="#fff"
                 autoCorrect={false}
                 value={this.state.city}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -211,7 +214,7 @@ class CreateEvent extends Component {
             <View style={styles.rowstateContainer}>
               <TextInput style={styles.textInput}
                 placeholder="State"
-                placeholderTextColor="#939393"
+                placeholderTextColor="#fff"
                 autoCorrect={false}
                 value={this.state.state}
                 style={[styles.inputFormat, styles.inputStyle]}
@@ -229,14 +232,15 @@ class CreateEvent extends Component {
               </Text>
             </TouchableHighlight>
               { this.state.dateModal
-                ? <DatePicker
-                  dateOffset={this.state.dateOffset}
-                  closeModal={console.log('ERR: closeModal not working')}
-                  onDateChange={this.onDateChange.bind(this)}
+                ? 
+                <DatePickerIOS
+                  style={styles.pickerPosition}
                   date={this.state.date}
                   mode="datetime"
                   minuteInterval={null}
-                  timeZoneOffsetInHours={this.state.timeZoneOffsetInHours}/>
+                  timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+                  onDateChange={(date) => this.onDateChange(date)}
+                />
                 : null
               }
           </View>
@@ -252,6 +256,7 @@ class CreateEvent extends Component {
             </TouchableHighlight>
               { this.state.modal
                 ? <Picker
+                  onPress={() => this.setState({ dateModal: false })}
                   offSet={this.state.offSet}
                   earlyArrivalIndex={this.state.earlyArrivalIndex}
                   closeModal={console.log(':( consistent modal-ing')}
@@ -293,7 +298,7 @@ class CreateEvent extends Component {
           pointerEvents={(this.state.modal || this.state.dateModal) ? 'none' : 'auto'}
           style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.submit}>
           <View>
-            <Text style={styles.inputStyle}>
+            <Text style={styles.greyStyles}>
               Submit!
             </Text>
           </View>
@@ -304,13 +309,18 @@ class CreateEvent extends Component {
 };
 
 const styles = StyleSheet.create({
+  greyStyles: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  pickerPosition: {
+    marginTop: 30,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'transparent',
-  },
-  picker: {
-    color: 'white'
   },
   inputsContainer: {
     flex: 1,
@@ -330,7 +340,8 @@ const styles = StyleSheet.create({
   submit: {
     flex: 1,
     padding: 10,
-    margin: 30,
+    margin: 5,
+    borderRadius: 5,
     alignItems: 'center',
     backgroundColor: '#EEE',
   },
@@ -406,6 +417,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomColor: '#CCC',
     borderColor: 'transparent',
+ },
+ inputStyle: {
+  color: 'white',
+  fontSize: 16,
  }
 
 });
