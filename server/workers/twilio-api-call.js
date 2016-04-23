@@ -89,7 +89,7 @@ var sendText = function(userPhoneNumber, event, timeoutTime) {
   //send twilio text
   client.sendMessage({
       to: userPhoneNumber,
-      from: '+14156894189', // connie: '+14156894189'
+      from: '+12097011216', // connie: '+14156894189'
       body:`Hurry Up! Leave now to get to ${eventName} by ${eventTime}. Click here to get directions: http://maps.apple.com/?daddr=${address}+${city}+${state}&dirflg=d&t=m`
     }, function(err, responseData) { //this function is executed when a response is received from Twilio
       if (err) {

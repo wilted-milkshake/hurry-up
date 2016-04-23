@@ -287,20 +287,17 @@ class CreateEvent extends Component {
              onChange={this.onChange.bind(this)}
              onValueChange={this.onRepeatValueChange.bind(this)}/>
           </View>
-
         </View>
-
         <TouchableHighlight
           onPress={this.buttonClicked.bind(this)}
           pointerEvents={(this.state.modal || this.state.dateModal) ? 'none' : 'auto'}
-          style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.submitButton}>
+          style={(this.state.modal || this.state.dateModal) ? styles.hidden : styles.submit}>
           <View>
             <Text style={styles.inputStyle}>
               Submit!
             </Text>
           </View>
         </TouchableHighlight>
-
       </View>
     );
   }
@@ -312,10 +309,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'transparent',
   },
+  picker: {
+    color: 'white'
+  },
   inputsContainer: {
     flex: 1,
-    // marginTop: 0,
-    // paddingTop: 0,
     marginBottom: 10,
   },
   segmentedContainer: {
@@ -329,6 +327,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CCC',
     borderColor: 'transparent',
   },
+  submit: {
+    flex: 1,
+    padding: 10,
+    margin: 30,
+    alignItems: 'center',
+    backgroundColor: '#EEE',
+  },
   inputFormat: {
     top: 5,
     left: 3,
@@ -337,12 +342,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontSize: 16,
-    color: '#F5F5F6',
-  },
-  submitButton: {
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#34778A',
+    color: 'black',
   },
   empty: {
     flex: .17,

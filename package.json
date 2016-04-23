@@ -15,6 +15,7 @@
   "dependencies": {
     "babel-cli": "^6.7.5",
     "babel-preset-es2015-node5": "^1.2.0",
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
     "bookshelf": "^0.9.4",
     "express": "^4.13.4",
@@ -27,6 +28,7 @@
     "react-native": "^0.23.0",
     "react-native-form": "^2.0.5",
     "react-native-scrollable-tab-view": "^0.4.1",
+    "react-native-video": "^0.7.1",
     "react-segmented-control": "^0.2.1",
     "request": "^2.70.0",
     "sqlite3": "^3.1.3",
